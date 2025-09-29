@@ -11,6 +11,10 @@ body {
 }
 
 body {
-    background: var(--home-background);
+    background: var(--bg-primary);
     color: var(--text-primary);
+}
+
+h1 {
+    font-weight: bold;
 }
