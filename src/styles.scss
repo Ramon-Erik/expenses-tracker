@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@use "app/styles/index";
+
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: dark;
+}
+
+html.light-mode {
+  color-scheme: light;
+}
