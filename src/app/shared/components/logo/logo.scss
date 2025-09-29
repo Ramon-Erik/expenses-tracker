@@ -1,8 +1,7 @@
 :host {
   .logo {
-    width: fit-content;
-    padding: .625rem;
-    border-radius: 100%;
-    background: var(--white);
+    width: 6.25rem;
+    height: 6.25rem;
+    background: var(--logo-bg);
   }
 }
