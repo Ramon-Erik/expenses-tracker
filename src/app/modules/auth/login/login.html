@@ -2,3 +2,24 @@
   <app-logo/>
   <h1 class="text-center">Entre na sua conta</h1>
 </header>
+<main class="">
+  <form class="mx-auto" style="max-width: 400px;">
+    <app-input-default
+      id="email"
+      label="Email"
+      type="email"
+      placeholder="Digite seu email"
+      [isRequired]="true"
+    ></app-input-default>
+
+    <app-input-default
+      id="password"
+      label="Senha"
+      type="password"
+      placeholder="Digite sua senha"
+      [isRequired]="true"
+    ></app-input-default>
+
+    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+  </form>
+</main>
