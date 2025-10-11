@@ -1,18 +1,19 @@
-<div class="mb-3">
-  <label [for]="id() + '-id'" class="form-label">
-    {{ label() }}
-    @if (isRequired()) {
-      <span class="text-danger">*</span>
-    }
-  </label>
+<label [for]="id() + '-id'" class="form-label mt-3">
+  {{ label() }}
+  @if (isRequired()) {
+    <span class="text-danger">*</span>
+  }
+</label>
 
-  <input
-    [type]="type()"
-    [id]="id() + '-id'"
-    [name]="id() + '-name'"
-    [placeholder]="placeholder()"
-    [required]="isRequired()"
-    autocomplete="off"
-    class="form-control"
-  />
-</div>
+<input
+  [type]="type()"
+  [id]="id() + '-id'"
+  [name]="id() + '-name'"
+  [placeholder]="placeholder()"
+  autocomplete="off"
+  [(ngModel)]="inputValue"
+  (focus)="onToutched && onToutched()"
+  (input)="onChange && onChange(inputValue)"
+  [disabled]="isDisabled"
+  class="form-control"
+/>
