@@ -30,14 +30,39 @@ h1 {
   font-weight: bold;
 }
 
-button.btn-primary {
+p {
+  margin: 0;
+}
+
+button.btn.custom-btn-primary {
   background: var(--button-bg);
   border: 1px solid var(--button-bg);
-  margin-top: 1.25rem;
+  transition: all 0.15s ease-in-out;
 
   &:hover {
     background: var(--button-bg-hover);
     border-color: var(--button-bg-hover);
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    background: var(--button-bg-hover);
+    border-color: var(--button-bg-hover);
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    outline: none;
+  }
+
+  &:active, 
+  &:focus-visible {
+    background: var(--button-bg-active);
+    border-color: var(--button-bg-active);
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: var(--button-bg-disabled);
+    border-color: var(--button-bg-disabled);
+    transform: none;
   }
 }
 

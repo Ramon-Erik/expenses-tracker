@@ -1,9 +1,9 @@
 <header>
-  <app-logo/>
+  <app-logo />
   <h1 class="text-center">Entre na sua conta</h1>
 </header>
 <main>
-  <form [formGroup]="loginForm">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
     <app-input-default
       id="email"
       label="Email"
@@ -11,7 +11,7 @@
       placeholder="Digite seu email"
       [isRequired]="true"
       formControlName="email"
-      ></app-input-default>
+    />
 
     <app-input-default
       id="password"
@@ -20,8 +20,20 @@
       placeholder="Digite sua senha"
       [isRequired]="true"
       formControlName="password"
-      ></app-input-default>
+    />
 
-    <button type="button" (click)="log()" class="btn btn-primary w-100">Entrar</button>
+    @if (authError | async; as error) {
+      <p class="mt-4 text-center text-danger">
+        {{ error }}
+      </p>
+    } 
+
+    <button
+      type="submit"
+      [disabled]="!loginForm.valid || loading"
+      class="btn custom-btn-primary mt-4 w-100"
+    >
+      Entrar
+    </button>
   </form>
 </main>
