@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable, Injector, runInInjectionContext } from '@angular/core';
 import {
   Auth,
   authState,
@@ -17,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class AuthService {
   #firebaseAuth = inject(Auth);
+  #injector = inject(Injector)
   #destroyRef = inject(DestroyRef);
 
   #authState$ = new BehaviorSubject<IAuthState>({
@@ -53,7 +54,7 @@ export class AuthService {
 
   public getErrorAuth() {
     return this.#authState$.pipe(
-      take(1),
+      takeUntilDestroyed(this.#destroyRef),
       map(authState => authState.error)
     )
   }
@@ -63,11 +64,13 @@ export class AuthService {
   }
 
   private async setLocalPersistense() {
+    return runInInjectionContext(this.#injector, async () => {
     try {
       await setPersistence(this.#firebaseAuth, browserLocalPersistence);
     } catch (error) {
-      console.warn('Persistência local não disponível:', error);
+      console.log('Persistência local não disponível:', error);
     }
+  });
   }
 
   private initializeAuthListener() {
@@ -110,10 +113,13 @@ export class AuthService {
 
     return from(this.setLocalPersistense()).pipe(
       switchMap(() => 
-        from(signInWithEmailAndPassword(this.#firebaseAuth, email, password))),
+        from(
+          runInInjectionContext(this.#injector, () => 
+            signInWithEmailAndPassword(this.#firebaseAuth, email, password))
+        )),
       take(1),
       map(() => void 0),
-      tap(tap => this.updateState({ loading: false, error: null })),
+      tap(() => this.updateState({ loading: false, error: null })),
       catchError(error => this.setError(error)),
     )
   }
@@ -121,7 +127,10 @@ export class AuthService {
   public logout() {
     this.updateState({loading: true})
     
-    return from(signOut(this.#firebaseAuth)).pipe(
+    return from(
+      runInInjectionContext(this.#injector, () => 
+      signOut(this.#firebaseAuth))
+    ).pipe(
       take(1),
       tap(() => {
         this.#authState$.next({
@@ -135,6 +144,7 @@ export class AuthService {
   } 
 
   private setError(error: any) {
+    
     const errorMsg = error.code
     this.updateState({loading: false, error: this.getErrorMessage(errorMsg)})
     return of()
@@ -153,6 +163,7 @@ export class AuthService {
   }
     private getErrorMessage(errorCode: string): string {
     const errorMessages: { [key: string]: string } = {
+      'auth/invalid-credential': 'Email ou senha inválidos',
       'auth/invalid-email': 'Email inválido',
       'auth/user-disabled': 'Usuário desativado',
       'auth/user-not-found': 'Usuário não encontrado',
