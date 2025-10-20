@@ -1,167 +1,39 @@
-import { DestroyRef, inject, Injectable, Injector, runInInjectionContext } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Auth,
-  authState,
-  browserLocalPersistence,
-  setPersistence,
+  browserSessionPersistence,
   User as IFirebaseUser,
+  setPersistence,
   signInWithEmailAndPassword,
-  signOut,
+  user,
 } from '@angular/fire/auth';
-import { BehaviorSubject, catchError, from, map, of, switchMap, take, tap } from 'rxjs';
-import { IAuthState, IUser } from './types/auth.interface';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, from, mergeMap, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   #firebaseAuth = inject(Auth);
-  #injector = inject(Injector)
-  #destroyRef = inject(DestroyRef);
 
-  #authState$ = new BehaviorSubject<IAuthState>({
-    user: null,
-    loading: false,
-    error: null,
-  });
-
-  private updateState(newAuthState: Partial<IAuthState>) {
-    const currentAuthState = this.#authState$.value
-    this.#authState$.next({
-      ...currentAuthState,
-      ...newAuthState
-    })
-  }
-
-  public getAuthState() {
-    return this.#authState$.asObservable()
-  }
-
-
-  public getUser() {
-    return this.#authState$.pipe(
-      take(1),
-      map(authState => authState.user)
-    )
-  }
-
-  public getLoadingAuth() {
-    return this.#authState$.pipe(
-      map(authState => authState.loading)
-    )
-  }
-
-  public getErrorAuth() {
-    return this.#authState$.pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      map(authState => authState.error)
-    )
-  }
+  public user$ = new Observable<IFirebaseUser | null>
 
   constructor() {
-    this.initializeAuthListener()
+    this.setSessionPersistence()
+    this.user$ = user(this.#firebaseAuth)
   }
 
-  private async setLocalPersistense() {
-    return runInInjectionContext(this.#injector, async () => {
-    try {
-      await setPersistence(this.#firebaseAuth, browserLocalPersistence);
-    } catch (error) {
-      console.log('Persistência local não disponível:', error);
-    }
-  });
-  }
-
-  private initializeAuthListener() {
-    authState(this.#firebaseAuth).pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      map((firebaseUser: IFirebaseUser | null) => this.mapFirebaseUser(firebaseUser)),
-      tap(user => {
-        const currentState = this.#authState$.value
-        this.#authState$.next({
-          ...currentState,
-          user,
-          loading: false,
-          error: null
-        })
-      }),
-      catchError(error => {
-        this.#authState$.next({
-          user: null,
-          loading: false,
-          error: error.code
-        })
-        return of(null)
-      })
-    ).subscribe();
-  }
-
-  private mapFirebaseUser(fbUser: IFirebaseUser | null): IUser | null {
-    if (!fbUser) return null
-    return {
-      uid: fbUser.uid,
-      email: fbUser.email,
-      displayName: fbUser.displayName,
-      photoURL: fbUser.photoURL,
-      emailVerified: fbUser.emailVerified
-    }
+  private setSessionPersistence() {
+    setPersistence(this.#firebaseAuth, browserSessionPersistence)
+      .then(() => console.log("persistência ativa"))
+      .catch(() => console.log("persistência inativa"))
   }
 
   public login(email: string, password: string) {
-    this.updateState({loading: true, error: null})
-
-    return from(this.setLocalPersistense()).pipe(
-      switchMap(() => 
-        from(
-          runInInjectionContext(this.#injector, () => 
-            signInWithEmailAndPassword(this.#firebaseAuth, email, password))
-        )),
-      take(1),
-      map(() => void 0),
-      tap(() => this.updateState({ loading: false, error: null })),
-      catchError(error => this.setError(error)),
-    )
+    const loginPromise = signInWithEmailAndPassword(this.#firebaseAuth, email, password)
+    return from(loginPromise)
   }
-
-  public logout() {
-    this.updateState({loading: true})
-    
-    return from(
-      runInInjectionContext(this.#injector, () => 
-      signOut(this.#firebaseAuth))
-    ).pipe(
-      take(1),
-      tap(() => {
-        this.#authState$.next({
-          user: null,
-          error: null,
-          loading: false
-        })
-      }),
-      catchError(error => this.setError(error))
-    ) 
-  } 
-
-  private setError(error: any) {
-    
-    const errorMsg = error.code
-    this.updateState({loading: false, error: this.getErrorMessage(errorMsg)})
-    return of()
-  }
-
-  async getCurrentToken(fresh: boolean) {
-    const user = this.#firebaseAuth.currentUser
-    if (user) {
-      if (fresh) 
-        return await user.getIdToken(true)
-      else 
-        return await user.getIdToken()
-    }
-    
-    return null
-  }
-    private getErrorMessage(errorCode: string): string {
+  
+  private getErrorMessage(errorCode: string): string {
     const errorMessages: { [key: string]: string } = {
       'auth/invalid-credential': 'Email ou senha inválidos',
       'auth/invalid-email': 'Email inválido',
@@ -173,7 +45,6 @@ export class AuthService {
       'auth/operation-not-allowed': 'Operação não permitida',
       'auth/too-many-requests': 'Muitas tentativas. Tente novamente mais tarde.',
     };
-    
-    return errorMessages[errorCode] || `Erro: ${errorCode}`;
-  }
+  return errorMessages[errorCode] || `Erro: ${errorCode}`;
+}
 }
