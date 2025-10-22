@@ -22,9 +22,9 @@
       formControlName="password"
     />
 
-    @if (authError | async; as error) {
+    @if (authError) {
       <p class="mt-4 text-center text-danger">
-        {{ error }}
+        {{ authError }}
       </p>
     } 
 

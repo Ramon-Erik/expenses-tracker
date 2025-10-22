@@ -23,8 +23,6 @@ export const appConfig: ApplicationConfig = {
         apiKey: 'AIzaSyC4_0EJSx2LJ6k5fRwSZO7m87XyC07sDMo',
         authDomain: 'expenses-track-auth.firebaseapp.com',
         messagingSenderId: '309455920121',
-        // projectNumber: '309455920121',
-        // version: '2',
       })
     ),
     provideAuth(() => getAuth()),

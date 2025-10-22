@@ -23,9 +23,9 @@ export class AuthService {
   }
 
   private setSessionPersistence() {
-    setPersistence(this.#firebaseAuth, browserSessionPersistence)
+    this.#firebaseAuth.setPersistence(browserSessionPersistence)
       .then(() => console.log("persistência ativa"))
-      .catch(() => console.log("persistência inativa"))
+      .catch((e) => console.log("persistência inativa", e))
   }
 
   public login(email: string, password: string) {

@@ -3,14 +3,14 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
 import { map, take } from 'rxjs';
 
-export const authGuardGuard: CanActivateFn = (route, state) => {
+export const needAuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.getAuthState().pipe(
+  return authService.user$.pipe(
     take(1),
-    map((state) => {
-      if (state.user) {
+    map((user) => {
+      if (user && user.uid) {
         return true;
       } else {
         router.navigate(['/login']);

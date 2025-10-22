@@ -1,15 +1,14 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Logo } from "../../../shared/components/logo/logo";
 import { InputDefault } from '../../../shared/components/inputs/input-default/input-default';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { take, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [Logo, InputDefault, FormsModule, ReactiveFormsModule, AsyncPipe],
+  imports: [Logo, InputDefault, FormsModule, ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
@@ -18,7 +17,7 @@ export class Login {
   #authService = inject(AuthService)
   #router = inject(Router)
 
-  public authError  = this.#authService.getErrorAuth()
+  public authError: string | null  = null
   public loading = false;
 
   public loginForm = this.#fb.group({
