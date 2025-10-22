@@ -16,14 +16,14 @@ body {
 }
 
 main {
-  width: calc(100% - 2.5rem);
   max-width: 68.75rem;
   margin: auto;
 }
 
 section {
+  width: calc(100% - 2.5rem);
   padding: 1rem;
-  margin: 0 0 1rem 0;
+  margin: 0 auto 1rem;
   border: 1.5px solid var(--border);
   border-radius: .5rem;
   background-color: var(--bg-secondary);
