@@ -21,12 +21,20 @@ main {
   margin: auto;
 }
 
+section {
+  padding: 1rem;
+  margin: 0 0 1rem 0;
+  border: 1.5px solid var(--border);
+  border-radius: .5rem;
+  background-color: var(--bg-secondary);
+}
+
 form {
   max-width: 400px;
   margin: auto; 
 }
 
-h1 {
+h1,h2,h3,h4,h5,h6 {
   font-weight: bold;
 }
 
