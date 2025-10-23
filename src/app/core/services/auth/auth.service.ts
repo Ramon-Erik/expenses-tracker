@@ -5,6 +5,7 @@ import {
   User as IFirebaseUser,
   setPersistence,
   signInWithEmailAndPassword,
+  signOut,
   user,
 } from '@angular/fire/auth';
 import { BehaviorSubject, from, mergeMap, Observable } from 'rxjs';
@@ -32,8 +33,13 @@ export class AuthService {
     const loginPromise = signInWithEmailAndPassword(this.#firebaseAuth, email, password)
     return from(loginPromise)
   }
+
+  public logout() {
+    const logoutPromise = signOut(this.#firebaseAuth)
+    return from(logoutPromise)
+  }
   
-  private getErrorMessage(errorCode: string): string {
+  public getErrorMessage(errorCode: string): string {
     const errorMessages: { [key: string]: string } = {
       'auth/invalid-credential': 'Email ou senha inválidos',
       'auth/invalid-email': 'Email inválido',
