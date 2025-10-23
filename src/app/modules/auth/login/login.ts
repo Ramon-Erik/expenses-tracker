@@ -38,6 +38,10 @@ export class Login {
           next: () => {
             this.#router.navigate(['/home'])
           },
+          error: (error) => {
+            this.authError = this.#authService.getErrorMessage(error.code)
+            console.clear()
+          },
           complete: () => {
             this.loading = false;
           }
