@@ -1,8 +1,8 @@
-<header>
-  <app-logo />
-  <h1 class="text-center">Entre na sua conta</h1>
+<header class="d-flex flex-column p-4 align-items-center gap-3">
+  <app-logo class="mt-4" [size]="64"/>
+  <h1>Entre na sua conta</h1>
 </header>
-<main>
+<main class="p-4">
   <form [formGroup]="loginForm" (ngSubmit)="login()">
     <app-input-default
       id="email"
