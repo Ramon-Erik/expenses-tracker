@@ -1,16 +1,24 @@
-<button type="button" class="profile fs-4 rounded-circle p-1">
+<button
+  type="button"
+  class="profile fs-4 rounded-circle p-1"
+  data-bs-toggle="collapse"
+  href="#profileOptions"
+  role="button"
+  aria-expanded="false"
+  aria-controls="profileOptions"
+>
   <i class="bi bi-person"></i>
-  <div class="profile-options p-3">
-    <ul class="fs-6 p-0">
-      <li class="list-group-item">
-        <a href="#">Perfil</a>
-      </li>
-      <li class="list-group-item">
-        <a href="#">Configurações</a>
-      </li>
-      <li class="list-group-item">
-        <span (click)="logout()">Sair</span>
-      </li>
-    </ul>
-  </div>
 </button>
+<div class="collapse collapse-horizontal" id="profileOptions">
+  <ul class="fs-6 list-unstyled" style="width: 190px">
+    <li class="list-group-item p-3 pb-0">
+      <a routerLink="/profile">Perfil</a>
+    </li>
+    <li class="list-group-item p-3 pb-0">
+      <a routerLink="/settings">Configurações</a>
+    </li>
+    <li class="list-group-item p-3 pb-0">
+      <span role="button" (click)="logout()">Sair</span>
+    </li>
+  </ul>
+</div>

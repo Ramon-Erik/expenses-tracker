@@ -42,6 +42,10 @@ p {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 button.btn.custom-btn-primary {
   background: var(--button-bg);
   border: 1px solid var(--button-bg);

@@ -10,15 +10,15 @@
     &:hover {
       background-color: var(--nav-border);
     }
-
-    .profile-options {
-      position: absolute;
-      left: 100%;
-      top: 50px;
-      transform: translateX(-100%);
-      background-color: var(--bg-secondary);
-      border: 1.5px solid var(--border);
-      border-radius: .5rem;
-    }
+  }
+  
+  #profileOptions {
+    position: absolute;
+    left: 95%;
+    top: 75px;
+    transform: translateX(-100%);
+    background-color: var(--bg-secondary);
+    border: 1.5px solid var(--border);
+    border-radius: .5rem;
   }
 }
