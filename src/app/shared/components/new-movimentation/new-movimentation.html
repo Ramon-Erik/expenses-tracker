@@ -1,0 +1,34 @@
+<form class="form-group" [formGroup]="newMovimentationForm">
+    <app-input-default
+      type="text"
+      id="movimentationName"
+      [isRequired]="true"
+      label="Produto:"
+      placeholder="Lanche do ifood"
+      formControlName="name"
+    />
+    @if (showNewMovimentationForm) {
+      <app-input-default
+        type="date"
+        id="movimentationDateBegin"
+        [isRequired]="true"
+        label="Data Inicial: "
+        formControlName="dateBegin"
+      />
+      <app-input-default
+        type="date"
+        id="movimentationDateEnd"
+        [isRequired]="true"
+        label="Data Final:"
+        formControlName="dateEnd"
+      />
+      <button
+      type="submit"
+      [disabled]="!newMovimentationForm.valid || loading"
+      class="btn custom-btn-primary mt-4 w-100"
+    >
+      cadastrar movimentação
+    </button>
+    }
+
+  </form>
