@@ -1,34 +1,67 @@
 <form class="form-group" [formGroup]="newMovimentationForm">
-    <app-input-default
-      type="text"
-      id="movimentationName"
-      [isRequired]="true"
-      label="Produto:"
-      placeholder="Lanche do ifood"
-      formControlName="name"
-    />
-    @if (showNewMovimentationForm) {
-      <app-input-default
-        type="date"
-        id="movimentationDateBegin"
-        [isRequired]="true"
-        label="Data Inicial: "
-        formControlName="dateBegin"
-      />
-      <app-input-default
-        type="date"
-        id="movimentationDateEnd"
-        [isRequired]="true"
-        label="Data Final:"
-        formControlName="dateEnd"
-      />
-      <button
+  <app-input-default
+    type="text"
+    id="movimentationName"
+    [isRequired]="true"
+    label="Produto:"
+    placeholder="Lanche do ifood"
+    formControlName="name"
+  />
+  @if (showNewMovimentationForm) {
+  <app-input-default
+    type="date"
+    id="movimentationDateBegin"
+    [isRequired]="true"
+    label="Data Inicial: "
+    formControlName="dateBegin"
+  />
+  <app-input-default
+    type="date"
+    id="movimentationDateEnd"
+    [isRequired]="true"
+    label="Data Final:"
+    formControlName="dateEnd"
+  />
+
+  <app-input-default
+    type="number"
+    id="installments"
+    [isRequired]="true"
+    label="Parcelas:"
+    formControlName="installments"
+  />
+
+  <app-input-default
+    type="number"
+    id="totalAmount"
+    [isRequired]="true"
+    label="Valor Total:"
+    formControlName="totalAmount"
+  />
+
+  <app-input-default
+    type="text"
+    id="paymentMethod"
+    [isRequired]="true"
+    label="Método de Pagamento:"
+    formControlName="paymentMethod"
+  />
+
+  <app-input-default
+    type="text"
+    id="type"
+    [isRequired]="true"
+    label="Tipo:"
+    formControlName="type"
+  />
+  <div class="w-100">
+    <button
       type="submit"
       [disabled]="!newMovimentationForm.valid || loading"
-      class="btn custom-btn-primary mt-4 w-100"
+      class="btn custom-btn-primary mt-4 mx-auto"
     >
       cadastrar movimentação
     </button>
-    }
-
-  </form>
+  </div>
+  }
+</form>

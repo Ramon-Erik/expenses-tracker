@@ -28,12 +28,14 @@
       </p>
     } 
 
-    <button
-      type="submit"
-      [disabled]="!loginForm.valid || loading"
-      class="btn custom-btn-primary mt-4 w-100"
-    >
-      Entrar
-    </button>
+    <div class="area-btn">
+      <button
+        type="submit"
+        [disabled]="!loginForm.valid || loading"
+        class="btn custom-btn-primary mt-4 w-100"
+      >
+        Entrar
+      </button>
+    </div>
   </form>
 </main>

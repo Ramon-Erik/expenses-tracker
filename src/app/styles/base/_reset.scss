@@ -36,10 +36,9 @@ form {
   width: 100%;
   margin: auto; 
 
-  * {
-    width: 100%;
+  & > *:not(.w-100) {
+    width: calc((100% - 1rem) / 2);
     min-width: 18.75rem;
-    max-width: 25rem;
   }
 }
 
