@@ -3,7 +3,7 @@
   <h1>Entre na sua conta</h1>
 </header>
 <main class="p-4">
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="d-flex flex-column align-items-center justify-contents-center">
     <app-input-default
       id="email"
       label="Email"
