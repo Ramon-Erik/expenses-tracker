@@ -1,5 +1,5 @@
 <template>
-  <h3>Histórico</h3>
+  <h3>Movimentações</h3>
   <ul id="list" class="list" v-if="transactionsList.length">
     <li
       v-for="transaction in transactionsList"
@@ -21,7 +21,7 @@ const emit = defineEmits<{
   deleteTransaction: [transactionId: number]
 }>()
 
-const props = defineProps<{
+defineProps<{
   transactionsList: ITransaction[]
 }>()
 
