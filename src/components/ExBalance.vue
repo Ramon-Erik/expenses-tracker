@@ -4,12 +4,11 @@
 </template>
 
 <script setup lang="ts">
-import currencyFormat from '@/utils/currency';
+import currencyFormat from '@/utils/currency'
 
 const props = defineProps<{
-  total: number;
-}>();
-
+  total: number
+}>()
 </script>
 
 <style scoped>
@@ -21,5 +20,4 @@ h2 {
   margin: 0;
   font-size: 2rem;
 }
-
 </style>

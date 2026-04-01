@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import type ITransaction from "@/interfaces/ITransaction.interface";
-import currencyFormat from "@/utils/currency";
+import type ITransaction from '@/interfaces/ITransaction.interface'
+import currencyFormat from '@/utils/currency'
 
 const emit = defineEmits<{
   deleteTransaction: [transactionId: number]
@@ -28,5 +28,4 @@ const props = defineProps<{
 const emitDeletion = (id: number) => {
   emit('deleteTransaction', id)
 }
-
 </script>

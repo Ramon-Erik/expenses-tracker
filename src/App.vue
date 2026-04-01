@@ -12,46 +12,43 @@
 </template>
 
 <script setup lang="ts">
-import ExAddTransaction from "./components/ExAddTransaction.vue";
-import ExBalance from "./components/ExBalance.vue";
-import ExHeader from "./components/ExHeader.vue";
-import ExIncomeExpense from "./components/ExIncomeExpense.vue";
-import ExTransactionList from "./components/ExTransactionList.vue";
-import type ITransaction from "./interfaces/ITransaction.interface";
+import ExAddTransaction from './components/ExAddTransaction.vue'
+import ExBalance from './components/ExBalance.vue'
+import ExHeader from './components/ExHeader.vue'
+import ExIncomeExpense from './components/ExIncomeExpense.vue'
+import ExTransactionList from './components/ExTransactionList.vue'
+import type ITransaction from './interfaces/ITransaction.interface'
 
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
-const LOCAL_KEY = "exp-tracker";
+const LOCAL_KEY = 'exp-tracker'
 
 const getLocalList = () => {
+  const list = localStorage.getItem(LOCAL_KEY) ? JSON.parse(localStorage.getItem(LOCAL_KEY)!) : []
 
-  const list = localStorage.getItem(LOCAL_KEY)
-    ? JSON.parse(localStorage.getItem(LOCAL_KEY)!)
-    : [];
-
-  return list as ITransaction[];
-};
+  return list as ITransaction[]
+}
 
 const setLocalList = () => {
   localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value))
 }
 
-const transactionsList = ref<ITransaction[]>(getLocalList());
+const transactionsList = ref<ITransaction[]>(getLocalList())
 
 const onNewTransaction = (newTransaction: ITransaction) => {
-  transactionsList.value.push(newTransaction);
+  transactionsList.value.push(newTransaction)
   setLocalList()
-};
+}
 
 const total = computed(() => {
-  const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount;
-  return transactionsList.value.reduce(reduceFn, 0);
-});
+  const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount
+  return transactionsList.value.reduce(reduceFn, 0)
+})
 
 const deleteTransaction = (id: number) => {
-  transactionsList.value = transactionsList.value.filter((tr) => tr.id != id);
+  transactionsList.value = transactionsList.value.filter((tr) => tr.id != id)
   setLocalList()
-};
+}
 </script>
 
 <style scoped></style>

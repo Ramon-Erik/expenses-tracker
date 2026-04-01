@@ -12,27 +12,27 @@
 </template>
 
 <script setup lang="ts">
-import type ITransaction from "@/interfaces/ITransaction.interface";
-import currencyFormat from "@/utils/currency";
-import { computed } from "vue";
+import type ITransaction from '@/interfaces/ITransaction.interface'
+import currencyFormat from '@/utils/currency'
+import { computed } from 'vue'
 
 const props = defineProps<{
-  transactionList: ITransaction[];
-}>();
+  transactionList: ITransaction[]
+}>()
 
 function totalAmount(condition: boolean) {
   const total = props.transactionList.reduce((acc, tr) => {
-    return tr.isIncome == condition ? acc + tr.amount : acc;
-  }, 0);
+    return tr.isIncome == condition ? acc + tr.amount : acc
+  }, 0)
 
-  return currencyFormat(total);
+  return currencyFormat(total)
 }
 
 const income = computed(() => {
-  return totalAmount(true);
-});
+  return totalAmount(true)
+})
 
 const expense = computed(() => {
-  return totalAmount(false);
-});
+  return totalAmount(false)
+})
 </script>
