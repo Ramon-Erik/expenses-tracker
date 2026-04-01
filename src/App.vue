@@ -29,7 +29,7 @@ const getLocalList = () => {
   return list as ITransaction[]
 }
 
-const setLocalList = (callbackFn: () => void) => {
+const updateLocalList = (callbackFn: () => void) => {
   callbackFn()
   localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value))
 }
@@ -37,7 +37,7 @@ const setLocalList = (callbackFn: () => void) => {
 const transactionsList = ref<ITransaction[]>(getLocalList())
 
 const onNewTransaction = (newTransaction: ITransaction) => {
-  setLocalList(() => {
+  updateLocalList(() => {
     transactionsList.value.push(newTransaction)
   })
 }
@@ -48,7 +48,7 @@ const total = computed(() => {
 })
 
 const deleteTransaction = (id: number) => {
-  setLocalList(() => {
+  updateLocalList(() => {
     transactionsList.value = transactionsList.value.filter((tr) => tr.id != id)
   })
 }
