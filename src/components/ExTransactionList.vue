@@ -1,5 +1,8 @@
 <template>
-  <h3>Movimentações</h3>
+  <div class="title">
+    <h3>Movimentações</h3>
+    <ExAddTransaction />
+  </div>
   <ul id="list" class="list" v-if="transactionsList.length">
     <li
       v-for="transaction in transactionsList"
@@ -16,6 +19,7 @@
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
 import currencyFormat from '@/utils/currency'
+import ExAddTransaction from './ExAddTransaction.vue'
 
 const emit = defineEmits<{
   deleteTransaction: [transactionId: number]
@@ -29,3 +33,16 @@ const emitDeletion = (id: number) => {
   emit('deleteTransaction', id)
 }
 </script>
+
+<style scoped>
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #bbb;
+
+  h3 {
+    margin: 0;
+  }
+}
+</style>

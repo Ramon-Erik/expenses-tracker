@@ -7,12 +7,10 @@
       :transactions-list="transactionsList"
       @delete-transaction="deleteTransaction"
     />
-    <ExAddTransaction @transaction-added="onNewTransaction" />
   </div>
 </template>
 
 <script setup lang="ts">
-import ExAddTransaction from './components/ExAddTransaction.vue'
 import ExBalance from './components/ExBalance.vue'
 import ExHeader from './components/ExHeader.vue'
 import ExIncomeExpense from './components/ExIncomeExpense.vue'
@@ -36,11 +34,11 @@ const updateLocalList = (callbackFn: () => void) => {
 
 const transactionsList = ref<ITransaction[]>(getLocalList())
 
-const onNewTransaction = (newTransaction: ITransaction) => {
-  updateLocalList(() => {
-    transactionsList.value.push(newTransaction)
-  })
-}
+// const onNewTransaction = (newTransaction: ITransaction) => {
+//   updateLocalList(() => {
+//     transactionsList.value.push(newTransaction)
+//   })
+// }
 
 const total = computed(() => {
   const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount
