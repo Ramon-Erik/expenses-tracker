@@ -7,10 +7,12 @@
       :transactions-list="transactionsList"
       @delete-transaction="deleteTransaction"
     />
+    <ExAddTransaction />
   </div>
 </template>
 
 <script setup lang="ts">
+import ExAddTransaction from './components/ExAddTransaction.vue'
 import ExBalance from './components/ExBalance.vue'
 import ExHeader from './components/ExHeader.vue'
 import ExIncomeExpense from './components/ExIncomeExpense.vue'
