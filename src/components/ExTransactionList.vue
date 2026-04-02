@@ -1,7 +1,7 @@
 <template>
   <div class="title">
     <h3>Movimentações</h3>
-    <ExAddTransaction @add-transaction="emitNewTransaction"/>
+    <ExAddTransaction @add-transaction="emitNewTransaction" />
   </div>
   <ul id="list" class="list" v-if="transactionsList.length">
     <li
@@ -22,7 +22,7 @@ import currencyFormat from '@/utils/currency'
 import ExAddTransaction from './ExAddTransaction.vue'
 
 const emit = defineEmits<{
-  deleteTransaction: [transactionId: number],
+  deleteTransaction: [transactionId: number]
   addTransaction: [transaction: ITransaction]
 }>()
 
@@ -45,7 +45,7 @@ const emitNewTransaction = (transaction: ITransaction) => {
   justify-content: space-between;
   align-items: center;
 
-  padding-bottom: .8rem;
+  padding-bottom: 0.8rem;
   border-bottom: 1px solid #bbb;
 
   h3 {

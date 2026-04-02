@@ -2,7 +2,11 @@
   <button class="plus-button" @click="togleModal">
     <span class="plus-icon">+</span>
   </button>
-  <ExAddModal :is-modal-open="isModalOpen" @close-modal="togleModal" @new-transaction="handleNewTransaction" />
+  <ExAddModal
+    :is-modal-open="isModalOpen"
+    @close-modal="togleModal"
+    @new-transaction="handleNewTransaction"
+  />
 </template>
 
 <script setup lang="ts">

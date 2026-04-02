@@ -34,7 +34,7 @@ import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
 
 const emit = defineEmits<{
-  newTransaction: [transactoin: ITransaction],
+  newTransaction: [transactoin: ITransaction]
   closeModal: []
 }>()
 defineProps<{
