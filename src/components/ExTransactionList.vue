@@ -39,10 +39,13 @@ const emitDeletion = (id: number) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding-bottom: .8rem;
   border-bottom: 1px solid #bbb;
 
   h3 {
     margin: 0;
+    padding: 0;
   }
 }
 </style>
