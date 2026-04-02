@@ -6,6 +6,7 @@
     <ExTransactionList
       :transactions-list="transactionsList"
       @delete-transaction="deleteTransaction"
+      @add-transaction="onNewTransaction"
     />
   </div>
 </template>
@@ -34,11 +35,11 @@ const updateLocalList = (callbackFn: () => void) => {
 
 const transactionsList = ref<ITransaction[]>(getLocalList())
 
-// const onNewTransaction = (newTransaction: ITransaction) => {
-//   updateLocalList(() => {
-//     transactionsList.value.push(newTransaction)
-//   })
-// }
+const onNewTransaction = (newTransaction: ITransaction) => {
+  updateLocalList(() => {
+    transactionsList.value.push(newTransaction)
+  })
+}
 
 const total = computed(() => {
   const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount

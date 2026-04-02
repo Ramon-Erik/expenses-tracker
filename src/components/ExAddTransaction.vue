@@ -1,59 +1,27 @@
 <template>
-  <button class="plus-button">
+  <button class="plus-button" @click="togleModal">
     <span class="plus-icon">+</span>
   </button>
-  <!-- <h3>Nova movimentação</h3>
-  <form id="form" @submit.prevent="onSubmit">
-    <div class="form-control">
-      <label for="text">Descrição</label>
-      <input type="text" id="text" v-model="description" placeholder="Enter text..." />
-    </div>
-    <div class="form-control">
-      <label for="amount">Valor</label>
-      <input type="number" step=".01" v-model="amount" id="amount" placeholder="Enter amount..." />
-    </div>
-    <button class="btn"><span>Adicionar</span></button>
-  </form> -->
+  <ExAddModal :is-modal-open="isModalOpen" @close-modal="togleModal" @new-transaction="handleNewTransaction" />
 </template>
 
 <script setup lang="ts">
-// import type ITransaction from '@/interfaces/ITransaction.interface'
-// import { ref } from 'vue'
-// import { useToast } from 'vue-toastification'
+import type ITransaction from '@/interfaces/ITransaction.interface'
+import ExAddModal from './ExAddModal.vue'
+import { ref } from 'vue'
 
-// const emit = defineEmits(['transactionAdded'])
+const emit = defineEmits<{
+  addTransaction: [transaction: ITransaction]
+}>()
 
-// const toast = useToast()
-// const description = ref('')
-// const amount = ref()
+const isModalOpen = ref(false)
+const togleModal = () => {
+  isModalOpen.value = !isModalOpen.value
+}
 
-// const isInvalid = () => {
-//   return !description.value || !amount.value
-// }
-
-// const clearInputs = () => {
-//   description.value = ''
-//   amount.value = null
-// }
-
-// const onSubmit = () => {
-//   if (isInvalid()) {
-//     toast.error('try not to sleep next time and fix these inputs u frkin dumbass')
-//     return
-//   }
-
-//   const transactionData: ITransaction = {
-//     id: new Date().getUTCMilliseconds(),
-//     amount: amount.value,
-//     isIncome: amount.value > 0,
-//     description: description.value,
-//   }
-
-//   emit('transactionAdded', transactionData)
-
-//   toast.success('slayyyy queeen thats just how ya do it')
-//   clearInputs()
-// }
+const handleNewTransaction = (transaction: ITransaction) => {
+  emit('addTransaction', transaction)
+}
 </script>
 
 <style scoped>
@@ -66,7 +34,7 @@
   height: 30px;
 
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: #1faf27;
 
   color: white;
