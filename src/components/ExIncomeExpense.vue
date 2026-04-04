@@ -1,10 +1,10 @@
 <template>
   <div class="inc-exp-container">
-    <div>
+    <div class="inc-exp-card">
       <h4>Entradas</h4>
       <p id="money-plus" class="money plus">{{ income }}</p>
     </div>
-    <div>
+    <div class="inc-exp-card">
       <h4>Saídas</h4>
       <p id="money-minus" class="money minus">{{ expense }}</p>
     </div>
@@ -36,3 +36,53 @@ const expense = computed(() => {
   return totalAmount(false)
 })
 </script>
+
+<style scoped>
+/* Mobile First - padrão para celular */
+.inc-exp-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  padding: .6rem;
+  margin-bottom: 1rem;
+
+  background-color: #fff;
+  border-radius: 1rem;
+}
+
+.inc-exp-card {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.inc-exp-card h4 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
+  color: #666;
+  font-weight: normal;
+}
+
+.money {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.money.plus {
+  color: #2ecc71;
+}
+
+.money.minus {
+  color: #e74c3c;
+}
+
+@media (min-width: 768px) {
+  .inc-exp-container {
+    flex-direction: row;
+  }
+}
+</style>
