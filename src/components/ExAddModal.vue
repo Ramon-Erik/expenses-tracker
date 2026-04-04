@@ -5,21 +5,29 @@
         <div class="modal" ref="modalRef">
           <h3>Nova movimentação</h3>
           <form id="form" @submit.prevent="onSubmit">
+            <div class="form-control amount">
+              <label for="amount">
+                <input
+                  class="bank-input"
+                  type="number"
+                  step=".01"
+                  v-model="amount"
+                  placeholder="0,00"
+                  id="amount"
+                />
+              </label>
+            </div>
             <div class="form-control">
               <label for="text">Descrição</label>
-              <input type="text" id="text" v-model="description" placeholder="Enter text..." />
-            </div>
-            <div class="form-control">
-              <label for="amount">Valor</label>
               <input
-                type="number"
-                step=".01"
-                v-model="amount"
-                id="amount"
-                placeholder="Enter amount..."
+                type="text"
+                id="text"
+                class="description-input"
+                v-model="description"
+                placeholder="O que é a movimentação"
               />
-              <button class="btn" :disabled="disabled"><span>Adicionar</span></button>
             </div>
+            <button class="btn" :disabled="disabled"><span>Adicionar</span></button>
           </form>
         </div>
       </div>
@@ -46,6 +54,7 @@ const toast = useToast()
 const modalTarget = useTemplateRef('modalRef')
 const closeModal = () => {
   emit('closeModal')
+  clearInputs()
 }
 onClickOutside(modalTarget, closeModal)
 
@@ -78,10 +87,9 @@ const onSubmit = () => {
   }
 
   emit('newTransaction', transactionData)
-  emit('closeModal')
+  closeModal()
 
   toast.success('Adicionado!')
-  clearInputs()
 }
 </script>
 
@@ -115,6 +123,7 @@ const onSubmit = () => {
 
   h3 {
     margin-top: 1rem;
+    text-align: center;
   }
 }
 
@@ -127,5 +136,107 @@ const onSubmit = () => {
 .modal-leave-to {
   opacity: 0;
   transform: scale(1.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.amount {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.amount::before {
+  content: 'R$';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: block;
+
+  font-size: 2rem;
+  font-weight: 400;
+  transform: translate(0, -50%);
+}
+
+.bank-input {
+  width: 200px;
+
+  padding: 16px;
+
+  background: #f5f5f5;
+
+  border: none;
+  border-radius: 12px;
+  outline: none;
+
+  font-family: monospace;
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.bank-input:focus {
+  background: white;
+  box-shadow: 0 0 0 2px #8257e5;
+}
+
+.bank-input::-webkit-outer-spin-button,
+.bank-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.description-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.description-input:focus {
+  border-color: #8257e5;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(130, 87, 229, 0.1);
+}
+
+.description-input::placeholder {
+  color: #bbb;
+  font-size: 14px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+
+  padding: 10px;
+  margin: 10px 0 30px;
+
+  background: #9c88ff;
+  box-shadow: var(--box-shadow);
+  border: 0;
+  border-radius: 0.5rem;
+
+  color: #fff;
+  font-size: 16px;
+
+  cursor: pointer;
+}
+
+.btn:focus,
+.delete-btn:focus {
+  outline: 0;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>
