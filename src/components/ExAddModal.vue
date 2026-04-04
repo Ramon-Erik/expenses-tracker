@@ -62,8 +62,9 @@ const description = ref('')
 const amount = ref()
 
 const disabled = computed(() => {
-  return isInvalid()
+  return isInvalid() || loading.value
 })
+const loading = ref(false)
 const isInvalid = () => {
   return !description.value || !amount.value
 }
@@ -74,6 +75,8 @@ const clearInputs = () => {
 }
 
 const onSubmit = () => {
+  loading.value = true
+
   if (isInvalid()) {
     toast.error('Inputs inválidas!')
     return
@@ -90,6 +93,7 @@ const onSubmit = () => {
   closeModal()
 
   toast.success('Adicionado!')
+  loading.value = false
 }
 </script>
 
@@ -145,15 +149,18 @@ form {
 }
 
 .amount {
-  position: relative;
   display: flex;
   justify-content: center;
 }
 
-.amount::before {
+.amount label {
+  position: relative;
+}
+
+.amount label::before {
   content: 'R$';
   position: absolute;
-  left: 0;
+  left: -20%;
   top: 50%;
   display: block;
 
