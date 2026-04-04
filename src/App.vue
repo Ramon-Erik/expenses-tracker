@@ -1,14 +1,17 @@
 <template>
-  <ExHeader />
-  <div class="container">
-    <ExBalance :total="total" />
-    <ExIncomeExpense :transaction-list="transactionsList" />
-    <ExTransactionList
-      :transactions-list="transactionsList"
-      @delete-transaction="deleteTransaction"
-      @add-transaction="onNewTransaction"
-    />
+  <div class="upper-part">
+    <ExHeader />
+    <div class="container">
+      <ExBalance :total="total" />
+      <ExIncomeExpense :transaction-list="transactionsList" />
+      <ExTransactionList
+        :transactions-list="transactionsList"
+        @delete-transaction="deleteTransaction"
+        @add-transaction="onNewTransaction"
+      />
+    </div>
   </div>
+  <ExFooter />
 </template>
 
 <script setup lang="ts">
@@ -16,6 +19,7 @@ import ExBalance from './components/ExBalance.vue'
 import ExHeader from './components/ExHeader.vue'
 import ExIncomeExpense from './components/ExIncomeExpense.vue'
 import ExTransactionList from './components/ExTransactionList.vue'
+import ExFooter from './components/ExFooter.vue'
 import type ITransaction from './interfaces/ITransaction.interface'
 
 import { computed, ref } from 'vue'
@@ -53,4 +57,6 @@ const deleteTransaction = (id: number) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
