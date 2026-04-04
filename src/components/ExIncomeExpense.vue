@@ -45,16 +45,16 @@ const expense = computed(() => {
   gap: 1rem;
   width: 100%;
 
-  padding: .6rem;
+  padding: 0.6rem;
   margin-bottom: 1rem;
 
-  background-color: #fff;
+  background: #fff;
   border-radius: 1rem;
 }
 
 .inc-exp-card {
   flex: 1;
-  background-color: #fff;
+  background: #fff;
   border-radius: 8px;
   text-align: center;
 }

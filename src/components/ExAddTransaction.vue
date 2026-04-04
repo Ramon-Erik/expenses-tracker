@@ -39,7 +39,7 @@ const handleNewTransaction = (transaction: ITransaction) => {
 
   border: none;
   border-radius: 0.5rem;
-  background-color: #1faf27;
+  background: #1faf27;
 
   color: white;
   font-size: 24px;
@@ -50,7 +50,7 @@ const handleNewTransaction = (transaction: ITransaction) => {
 }
 
 .plus-button:hover:not(:disabled) {
-  background-color: #198a1f;
+  background: #198a1f;
   transform: scale(1.05);
 }
 
@@ -59,7 +59,7 @@ const handleNewTransaction = (transaction: ITransaction) => {
 }
 
 .plus-button:disabled {
-  background-color: #ccc;
+  background: #ccc;
   cursor: not-allowed;
   opacity: 0.6;
 }

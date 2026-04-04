@@ -106,7 +106,7 @@ const onSubmit = () => {
   width: 100%;
   height: 100%;
 
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
 
@@ -117,7 +117,7 @@ const onSubmit = () => {
   padding: 1rem;
 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  background: white;
 
   border-radius: 8px;
 
@@ -196,14 +196,14 @@ form {
   font-size: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
   transition: all 0.2s ease;
   outline: none;
 }
 
 .description-input:focus {
-  border-color: #8257e5;
-  background-color: white;
+  border: #8257e5;
+  background: white;
   box-shadow: 0 0 0 3px rgba(130, 87, 229, 0.1);
 }
 
