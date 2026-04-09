@@ -3,12 +3,7 @@
     <ExHeader />
     <div class="container">
       <ExBalance :total="total" />
-      <ExIncomeExpense :transaction-list="transactionsList" />
-      <ExTransactionList
-        :transactions-list="transactionsList"
-        @delete-transaction="deleteTransaction"
-        @add-transaction="onNewTransaction"
-      />
+      <ExMenu />
     </div>
   </div>
   <ExFooter />
@@ -17,9 +12,8 @@
 <script setup lang="ts">
 import ExBalance from './components/ExBalance.vue'
 import ExHeader from './components/ExHeader.vue'
-import ExIncomeExpense from './components/ExIncomeExpense.vue'
-import ExTransactionList from './components/ExTransactionList.vue'
 import ExFooter from './components/ExFooter.vue'
+import ExMenu from './components/ExMenu.vue'
 import type ITransaction from './interfaces/ITransaction.interface'
 
 import { computed, ref } from 'vue'
@@ -32,31 +26,29 @@ const getLocalList = () => {
   return list as ITransaction[]
 }
 
-const updateLocalList = (callbackFn: () => void) => {
+/* const updateLocalList = (callbackFn: () => void) => {
   callbackFn()
   localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value))
-}
+} */
 
 const transactionsList = ref<ITransaction[]>(getLocalList())
 
-const onNewTransaction = (newTransaction: ITransaction) => {
+/* const onNewTransaction = (newTransaction: ITransaction) => {
   updateLocalList(() => {
     transactionsList.value.push(newTransaction)
   })
-}
+} */
 
 const total = computed(() => {
   const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount
   return transactionsList.value.reduce(reduceFn, 0)
 })
 
-const deleteTransaction = (id: number) => {
+/* const deleteTransaction = (id: number) => {
   updateLocalList(() => {
     transactionsList.value = transactionsList.value.filter((tr) => tr.id != id)
   })
-}
+} */
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
