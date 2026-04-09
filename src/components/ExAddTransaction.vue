@@ -7,6 +7,7 @@
     @close-modal="togleModal"
     @new-transaction="handleNewTransaction"
   />
+
 </template>
 
 <script setup lang="ts">

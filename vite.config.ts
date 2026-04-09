@@ -10,8 +10,12 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+<<<<<<< HEAD
   base: '/expenses-tracker'
   ,
+=======
+  base: '/expenses-tracker',
+>>>>>>> main
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

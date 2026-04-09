@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
 import currencyFormat from '@/utils/currency'
-import ExAddTransaction from './ExAddTransaction.vue'
 
 const emit = defineEmits<{
   deleteTransaction: [transactionId: number]
