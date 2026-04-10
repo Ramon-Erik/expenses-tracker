@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^14.2.1",
+    "pinia": "^3.0.4",
     "vue": "^3.5.31",
     "vue-router": "^4.6.4",
     "vue-toastification": "^2.0.0-rc.5"
