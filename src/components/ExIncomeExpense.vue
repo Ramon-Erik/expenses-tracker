@@ -48,13 +48,12 @@ const expense = computed(() => {
   padding: 0.6rem;
   margin-bottom: 1rem;
 
-  background: #fff;
+  background: var(--bg-secundary);
   border-radius: 1rem;
 }
 
 .inc-exp-card {
   flex: 1;
-  background: #fff;
   border-radius: 8px;
   text-align: center;
 }
@@ -62,7 +61,7 @@ const expense = computed(() => {
 .inc-exp-card h4 {
   font-size: 1rem;
   margin: 0 0 0.5rem 0;
-  color: #666;
+  color: var(--color-secundary);
   font-weight: normal;
 }
 
