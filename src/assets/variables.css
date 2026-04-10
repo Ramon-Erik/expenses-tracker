@@ -1,3 +1,9 @@
 :root {
+  /* Textos */
   --color-primary: #d4d4d4;
+  --color-secundary: #acacac;
+
+  /* Backgrounds */
+  --bg-primary: #001336;
+  --bg-secundary: #000e28;
 }
