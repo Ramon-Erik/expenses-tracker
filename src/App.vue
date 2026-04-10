@@ -3,6 +3,7 @@
     <ExHeader />
     <div class="container">
       <ExMenu />
+      <ExBalance :total="0" />
       <router-view />
     </div>
   </div>
@@ -13,6 +14,7 @@
 import ExHeader from './components/ExHeader.vue'
 import ExFooter from './components/ExFooter.vue'
 import ExMenu from './components/ExMenu.vue'
+import ExBalance from './components/ExBalance.vue';
 /*
 import type ITransaction from './interfaces/ITransaction.interface'
 
