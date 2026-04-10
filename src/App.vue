@@ -3,6 +3,7 @@
     <ExHeader />
     <div class="container">
       <ExMenu />
+      <router-view />
     </div>
   </div>
   <ExFooter />

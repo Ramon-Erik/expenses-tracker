@@ -1,7 +1,11 @@
 <template>
   <ul>
-    <li><a href="/wallet">Carteira</a></li>
-    <li><a href="/simulate">Simular</a></li>
+    <li>
+      <router-link active-class="active" to="/">Carteira</router-link>
+    </li>
+    <li>
+      <router-link active-class="active" to="/simulate">Simular</router-link>
+    </li>
   </ul>
 </template>
 
@@ -19,7 +23,12 @@ ul {
 ul a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: all .5s ease;
+  transition: all 0.5s ease;
+}
+
+ul a.active {
+  color: var(--color-primary);
+  text-decoration: underline;
 }
 
 ul a:hover {
