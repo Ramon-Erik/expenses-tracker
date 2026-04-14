@@ -40,7 +40,7 @@ const handleNewTransaction = (transaction: ITransaction) => {
 
   border: none;
   border-radius: 0.5rem;
-  background: #1faf27;
+  background: var(--bg-btn);
 
   color: white;
   font-size: 24px;

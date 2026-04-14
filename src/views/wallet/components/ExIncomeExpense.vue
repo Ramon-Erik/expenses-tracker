@@ -17,15 +17,15 @@ import currencyFormat from '@/utils/currency'
 import { computed } from 'vue'
 
 const props = defineProps<{
-  transactionList: ITransaction[]
+  transactionList?: ITransaction[]
 }>()
 
 function totalAmount(condition: boolean) {
-  const total = props.transactionList.reduce((acc, tr) => {
+  const total = props.transactionList?.reduce((acc, tr) => {
     return tr.isIncome == condition ? acc + tr.amount : acc
   }, 0)
 
-  return currencyFormat(total)
+  return currencyFormat(total || 0)
 }
 
 const income = computed(() => {

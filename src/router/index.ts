@@ -1,5 +1,5 @@
 import SimulateCartView from '@/views/SimulateCartView.vue'
-import WalletView from '@/views/WalletView.vue'
+import WalletView from '@/views/wallet/WalletView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({

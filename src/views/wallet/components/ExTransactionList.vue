@@ -3,7 +3,7 @@
     <h3>Movimentações</h3>
     <ExAddTransaction @add-transaction="emitNewTransaction" />
   </div>
-  <ul id="list" class="list" v-if="transactionsList.length">
+  <ul id="list" class="list" v-if="transactionsList?.length">
     <li
       v-for="transaction in transactionsList"
       :key="transaction.id"
@@ -13,7 +13,7 @@
       ><button class="delete-btn" @click="emitDeletion(transaction.id)">x</button>
     </li>
   </ul>
-  <p v-else>Nenhuma movimentação cadastrada.</p>
+  <p v-else class="warning">Nenhuma movimentação cadastrada.</p>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +27,7 @@ const emit = defineEmits<{
 }>()
 
 defineProps<{
-  transactionsList: ITransaction[]
+  transactionsList?: ITransaction[]
 }>()
 
 const emitDeletion = (id: number) => {
@@ -52,5 +52,55 @@ const emitNewTransaction = (transaction: ITransaction) => {
     margin: 0;
     padding: 0;
   }
+}
+
+.warning {
+  text-align: center;
+}
+
+.list {
+  max-height: 85vh;
+  overflow-y: scroll;
+  padding: 0;
+  margin-bottom: 40px;
+  list-style-type: none;
+}
+
+.list li {
+  background: var(--bg-secundary);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.list li.plus {
+  border-right: 5px solid #2ecc71;
+}
+
+.list li.minus {
+  border-right: 5px solid #c0392b;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  opacity: 0;
+  padding: 2px 5px;
+  cursor: pointer;
+  background: #e74c3c;
+  border: 0;
+  color: #fff;
+  font-size: 20px;
+  line-height: 20px;
+  transform: translate(-100%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+.list li:hover .delete-btn {
+  opacity: 1;
 }
 </style>
