@@ -37,12 +37,14 @@
 
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
+import { useTransactionsStore } from '@/stores/TransactionssStore'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
 
+const store = useTransactionsStore()
+
 const emit = defineEmits<{
-  newTransaction: [transactoin: ITransaction]
   closeModal: []
 }>()
 defineProps<{
@@ -89,7 +91,7 @@ const onSubmit = () => {
     description: description.value,
   }
 
-  emit('newTransaction', transactionData)
+  store.addTransaction(transactionData)
   closeModal()
 
   toast.success('Adicionado!')
@@ -121,7 +123,7 @@ const onSubmit = () => {
   padding: 1rem;
 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: var(--bg-secondary);
 
   border-radius: 8px;
 
@@ -174,8 +176,6 @@ form {
 
   padding: 16px;
 
-  background: #f5f5f5;
-
   border: none;
   border-radius: 12px;
   outline: none;
@@ -187,7 +187,6 @@ form {
 }
 
 .bank-input:focus {
-  background: white;
   box-shadow: 0 0 0 2px #8257e5;
 }
 
@@ -203,14 +202,12 @@ form {
   font-size: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background: #f9f9f9;
   transition: all 0.2s ease;
   outline: none;
 }
 
 .description-input:focus {
   border: #8257e5;
-  background: white;
   box-shadow: 0 0 0 3px rgba(130, 87, 229, 0.1);
 }
 

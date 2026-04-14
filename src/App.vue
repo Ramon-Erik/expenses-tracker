@@ -28,10 +28,7 @@ const getLocalList = () => {
   return list as ITransaction[]
 } */
 
-/* const updateLocalList = (callbackFn: () => void) => {
-  callbackFn()
-  localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value))
-} */
+
 
 // const transactionsList = ref<ITransaction[]>(getLocalList())
 
@@ -46,11 +43,7 @@ const getLocalList = () => {
   return transactionsList.value.reduce(reduceFn, 0)
 }) */
 
-/* const deleteTransaction = (id: number) => {
-  updateLocalList(() => {
-    transactionsList.value = transactionsList.value.filter((tr) => tr.id != id)
-  })
-} */
+
 </script>
 
 <style scoped></style>

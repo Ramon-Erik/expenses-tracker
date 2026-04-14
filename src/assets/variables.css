@@ -1,10 +1,16 @@
 :root {
   /* Textos */
   --color-primary: #d4d4d4;
-  --color-secundary: #acacac;
+  --color-secondary: #acacac;
 
   /* Backgrounds */
   --bg-primary: #001336;
-  --bg-secundary: #000e28;
-  --bg-btn: #00318a;
+  --bg-secondary: #000e28;
+
+    /* Buttons */
+    --bg-btn: #00318a;
+    --bg-btn-hover: #00256b;
+
+    /* Forms */
+    --bg-input: #00153b;
 }
