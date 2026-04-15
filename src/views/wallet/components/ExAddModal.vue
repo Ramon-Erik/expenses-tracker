@@ -4,14 +4,14 @@
       <div class="modal-bg" v-if="isModalOpen">
         <div class="modal" ref="modalRef">
           <h3>Nova movimentação</h3>
-          <form id="form" @submit.prevent="onSubmit">
+          <form id="form" @submit.prevent="onSubmit" autocomplete="off">
             <div class="form-control amount">
               <label for="amount">
                 <input
                   class="bank-input"
-                  type="number"
-                  step=".01"
+                  type="string"
                   v-model="amount"
+                  @input="amountInput"
                   placeholder="0,00"
                   id="amount"
                 />
@@ -25,7 +25,6 @@
                 class="description-input"
                 v-model="description"
                 placeholder="O que é a movimentação"
-                autocomplete="off"
               />
             </div>
             <button class="btn" :disabled="disabled"><span>Adicionar</span></button>
@@ -44,6 +43,7 @@ import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
 
 const store = useTransactionsStore()
+const maxDigits = 7
 
 const emit = defineEmits<{
   closeModal: []
@@ -62,7 +62,36 @@ const closeModal = () => {
 onClickOutside(modalTarget, closeModal)
 
 const description = ref('')
-const amount = ref()
+const amount = ref<string | undefined>()
+
+const amountInput = (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  let value = target.value
+  const isNegative = target.value.startsWith('-')
+
+  if (value == '0') {
+    amount.value = undefined
+    return
+  }
+
+  value = value
+    .replace(',', '')
+    .replace('.', '')
+    .replace('-', '')
+    .slice(0, maxDigits) || '0'
+
+  console.log(isNegative);
+
+  const floatValue = Number.parseFloat(value) / 100
+  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
+    floatValue,
+  )
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+  console.log('v', value, floatValue, amountDisplay);
+
+
+  amount.value = isNegative ? '-' + amountDisplay : amountDisplay
+}
 
 const disabled = computed(() => {
   return isInvalid() || loading.value
@@ -74,7 +103,7 @@ const isInvalid = () => {
 
 const clearInputs = () => {
   description.value = ''
-  amount.value = null
+  amount.value = undefined
 }
 
 const onSubmit = () => {
@@ -85,10 +114,12 @@ const onSubmit = () => {
     return
   }
 
+  const amountToStore = amount.value ? Number.parseFloat(amount.value) : 0
+
   const transactionData: ITransaction = {
     id: new Date().getUTCMilliseconds(),
-    amount: amount.value,
-    isIncome: amount.value > 0,
+    amount: amountToStore,
+    isIncome: amountToStore > 0,
     description: description.value,
   }
 
