@@ -23,8 +23,6 @@ export const useTransactionsStore = defineStore('transactions', () => {
 
   const deleteTransaction = (id: number) => {
     updateLocalList(() => {
-      console.log(id)
-
       _transactionsList.value = transactionsList.value.filter((tr) => tr.id != id)
     })
   }

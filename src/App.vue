@@ -14,7 +14,7 @@
 import ExHeader from './components/ExHeader.vue'
 import ExFooter from './components/ExFooter.vue'
 import ExMenu from './components/ExMenu.vue'
-import ExBalance from './components/ExBalance.vue';
+import ExBalance from './components/ExBalance.vue'
 /*
 import type ITransaction from './interfaces/ITransaction.interface'
 
@@ -28,8 +28,6 @@ const getLocalList = () => {
   return list as ITransaction[]
 } */
 
-
-
 // const transactionsList = ref<ITransaction[]>(getLocalList())
 
 /* const onNewTransaction = (newTransaction: ITransaction) => {
@@ -42,8 +40,6 @@ const getLocalList = () => {
   const reduceFn = (acc: number, tr: ITransaction) => acc + tr.amount
   return transactionsList.value.reduce(reduceFn, 0)
 }) */
-
-
 </script>
 
 <style scoped></style>

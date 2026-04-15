@@ -1,6 +1,3 @@
-<template>
-  olá
-</template>
+<template>olá</template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>

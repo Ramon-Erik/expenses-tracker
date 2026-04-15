@@ -74,21 +74,13 @@ const amountInput = (event: InputEvent) => {
     return
   }
 
-  value = value
-    .replace(',', '')
-    .replace('.', '')
-    .replace('-', '')
-    .slice(0, maxDigits) || '0'
-
-  console.log(isNegative);
+  value = value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
     floatValue,
   )
   amountDisplay = amountDisplay.slice(3, amountDisplay.length)
-  console.log('v', value, floatValue, amountDisplay);
-
 
   amount.value = isNegative ? '-' + amountDisplay : amountDisplay
 }
