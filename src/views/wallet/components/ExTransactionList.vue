@@ -32,14 +32,13 @@ const transactionsList = computed(() => store.transactionsList)
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid var(--color-muted);
+}
 
-  h3 {
-    margin: 0;
-    padding: 0;
-  }
+.title h3 {
+  margin: 0;
+  padding: 0;
 }
 
 .warning {
@@ -48,11 +47,9 @@ const transactionsList = computed(() => store.transactionsList)
 
 .list {
   max-height: 85vh;
-  overflow-y: scroll;
-
+  overflow-y: auto;
   padding: 0 0 1rem 0;
   margin-bottom: 40px;
-
   list-style-type: none;
 }
 
@@ -60,36 +57,30 @@ const transactionsList = computed(() => store.transactionsList)
   position: relative;
   padding: 10px;
   margin: 10px 0;
-
   display: flex;
   justify-content: space-between;
-
   background: var(--bg-secondary);
   box-shadow: var(--box-shadow);
 }
 
 .list li.plus {
-  border-right: 5px solid #2ecc71;
+  border-right: 5px solid var(--color-success);
 }
 
 .list li.minus {
-  border-right: 5px solid #c0392b;
+  border-right: 5px solid var(--color-danger-dark);
 }
 
 .delete-btn {
   position: absolute;
   bottom: -76%;
   right: -1rem;
-
   opacity: 0;
-
   padding: 2px 5px;
   cursor: pointer;
-
-  background: #e74c3c;
+  background: var(--color-danger);
   border: 0;
-  color: #fff;
-
+  color: var(--btn-text);
   font-size: 20px;
   line-height: 20px;
   transform: translate(-100%, -50%);

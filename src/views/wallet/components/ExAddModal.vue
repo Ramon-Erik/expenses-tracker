@@ -25,6 +25,7 @@
                 class="description-input"
                 v-model="description"
                 placeholder="O que é a movimentação"
+                autocomplete="off"
               />
             </div>
             <button class="btn" :disabled="disabled"><span>Adicionar</span></button>
@@ -104,25 +105,20 @@ const onSubmit = () => {
   position: fixed;
   top: 0;
   left: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 100%;
   height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
   z-index: 1000;
 }
 
 .modal {
   width: calc(100% - 60px);
   max-width: 500px;
-
   padding: 1rem;
-
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-soft);
   background: var(--bg-secondary);
 
   border-radius: 8px;
@@ -162,7 +158,7 @@ form {
 .amount label::before {
   content: 'R$';
   position: absolute;
-  left: -20%;
+  left: -25%;
   top: 50%;
   display: block;
 
@@ -173,13 +169,12 @@ form {
 
 .bank-input {
   width: 200px;
-
   padding: 16px;
-
-  border: none;
+  border: 1px solid var(--input-border);
   border-radius: 12px;
+  background: var(--bg-input);
+  color: var(--color-text);
   outline: none;
-
   font-family: monospace;
   font-size: 32px;
   font-weight: 600;
@@ -187,7 +182,7 @@ form {
 }
 
 .bank-input:focus {
-  box-shadow: 0 0 0 2px #8257e5;
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
 .bank-input::-webkit-outer-spin-button,
@@ -200,37 +195,35 @@ form {
   width: 100%;
   padding: 12px 16px;
   font-size: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   transition: all 0.2s ease;
+  background: var(--bg-input);
+  color: var(--color-text);
   outline: none;
 }
 
 .description-input:focus {
-  border: #8257e5;
-  box-shadow: 0 0 0 3px rgba(130, 87, 229, 0.1);
+  border-color: var(--bg-btn);
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
 .description-input::placeholder {
-  color: #bbb;
+  color: var(--input-placeholder);
   font-size: 14px;
 }
 
 .btn {
   display: block;
   width: 100%;
-
   padding: 10px;
   margin: 10px 0 30px;
-
-  background: #9c88ff;
+  background: var(--bg-btn);
   box-shadow: var(--box-shadow);
   border: 0;
   border-radius: 0.5rem;
-
-  color: #fff;
+  color: var(--btn-text);
   font-size: 16px;
-
   cursor: pointer;
 }
 

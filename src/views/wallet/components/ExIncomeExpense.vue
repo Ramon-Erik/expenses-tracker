@@ -72,11 +72,11 @@ const expense = computed(() => {
 }
 
 .money.plus {
-  color: #2ecc71;
+  color: var(--color-success);
 }
 
 .money.minus {
-  color: #e74c3c;
+  color: var(--color-danger);
 }
 
 @media (min-width: 768px) {

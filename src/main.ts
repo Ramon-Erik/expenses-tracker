@@ -4,7 +4,6 @@ import App from './App.vue'
 import Toast from 'vue-toastification'
 import type { PluginOptions } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
-import '@/assets/variables.css'
 import router from './router'
 import { createPinia } from 'pinia'
 

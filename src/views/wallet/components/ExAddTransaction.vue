@@ -2,11 +2,7 @@
   <button class="plus-button" @click="toggleModal">
     <span class="plus-icon">+</span>
   </button>
-  <ExAddModal
-    :is-modal-open="isModalOpen"
-    @close-modal="toggleModal"
-  />
-
+  <ExAddModal :is-modal-open="isModalOpen" @close-modal="toggleModal" />
 </template>
 
 <script setup lang="ts">
@@ -24,18 +20,14 @@ const toggleModal = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 30px;
   height: 30px;
-
   border: none;
   border-radius: 0.5rem;
   background: var(--bg-btn);
-
-  color: white;
+  color: var(--btn-text);
   font-size: 24px;
   font-weight: bold;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -50,7 +42,7 @@ const toggleModal = () => {
 }
 
 .plus-button:disabled {
-  background: #ccc;
+  background: var(--color-muted);
   cursor: not-allowed;
   opacity: 0.6;
 }
