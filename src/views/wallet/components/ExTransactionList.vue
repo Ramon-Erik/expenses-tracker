@@ -20,10 +20,11 @@
 import currencyFormat from '@/utils/currency'
 import ExAddTransaction from './ExAddTransaction.vue'
 import { useTransactionsStore } from '@/stores/TransactionssStore'
+import { computed } from 'vue'
 
 const store = useTransactionsStore()
 
-const transactionsList = store.transactionsList
+const transactionsList = computed(() => store.transactionsList)
 </script>
 
 <style scoped>
