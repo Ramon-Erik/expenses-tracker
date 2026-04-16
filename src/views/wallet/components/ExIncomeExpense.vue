@@ -12,16 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import type ITransaction from '@/interfaces/ITransaction.interface'
+import { useTransactionsStore } from '@/stores/TransactionssStore'
 import currencyFormat from '@/utils/currency'
 import { computed } from 'vue'
 
-const props = defineProps<{
-  transactionList?: ITransaction[]
-}>()
+const store = useTransactionsStore()
 
 function totalAmount(condition: boolean) {
-  const total = props.transactionList?.reduce((acc, tr) => {
+  const total = store.transactionsList.reduce((acc, tr) => {
     return tr.isIncome == condition ? acc + tr.amount : acc
   }, 0)
 
@@ -38,7 +36,6 @@ const expense = computed(() => {
 </script>
 
 <style scoped>
-/* Mobile First - padrão para celular */
 .inc-exp-container {
   display: flex;
   flex-direction: column;

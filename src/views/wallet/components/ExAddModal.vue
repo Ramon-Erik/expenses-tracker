@@ -110,7 +110,9 @@ const onSubmit = () => {
     return
   }
 
-  const amountToStore = Number.parseFloat(formatAmountToDecimal(amount.value!)) / 100
+  const amountValue = Number.parseFloat(formatAmountToDecimal(amount.value!)) / 100
+
+  const amountToStore = amount.value!.startsWith('-') ? amountValue * -1 : amountValue
 
   const transactionData: ITransaction = {
     id: new Date().getUTCMilliseconds(),
