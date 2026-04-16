@@ -9,7 +9,8 @@
               <label for="amount">
                 <input
                   class="bank-input"
-                  type="string"
+                  type="text"
+                  inputmode="decimal"
                   v-model="amount"
                   @input="amountInput"
                   placeholder="0,00"
