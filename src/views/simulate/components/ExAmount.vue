@@ -6,15 +6,55 @@
         type="text"
         class="bank-input"
         id="cartAmount"
+        v-model="productPrice"
         autocomplete="off"
         placeholder="500,00"
+        @input="priceInput"
       />
     </label>
   </div>
-  <p>Sobra: R$ 0,00</p>
+  <p>Sobra: {{ currencyFormat(total) }}</p>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCart } from '@/stores/CartStore'
+import { currencyFormat, formatPriceToDecimal } from '@/utils/currency'
+import { computed, ref } from 'vue'
+
+const store = useCart()
+
+const maxDigits = 6
+
+const productPrice = ref<string | undefined>()
+
+const total = computed(() => {
+  if (productPrice.value) {
+    const value = Number.parseFloat(formatPriceToDecimal(productPrice.value, maxDigits)) / 100
+    return value > 0 ? value - store.total : 0
+  }
+  return 0
+})
+
+const priceInput = (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  let value = target.value
+
+  value = formatPriceToDecimal(value, maxDigits)
+
+  if (value == '0' || isNaN(Number.parseFloat(value))) {
+    productPrice.value = undefined
+    return
+  }
+
+  const floatValue = Number.parseFloat(value) / 100
+  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
+    floatValue,
+  )
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+
+  productPrice.value = amountDisplay
+}
+</script>
 
 <style scoped>
 label,

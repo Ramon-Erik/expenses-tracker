@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import type IProduct from '@/interfaces/IProduct.interface'
 import { useCart } from '@/stores/CartStore'
+import { formatPriceToDecimal } from '@/utils/currency'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 
@@ -52,23 +53,16 @@ const clearInputs = () => {
   productPrice.value = undefined
 }
 
-const formatPriceToDecimal = (value: string) => {
-  return value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
-}
-
 const priceInput = (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let value = target.value
 
-  console.log('value')
-  console.log(value)
-  value = formatPriceToDecimal(value)
+  value = formatPriceToDecimal(value, maxDigits)
 
   if (value == '0' || isNaN(Number.parseFloat(value))) {
     productPrice.value = undefined
     return
   }
-  console.log(value, productPrice.value)
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
@@ -96,7 +90,7 @@ const areInfoInvalid = () => {
 }
 
 const getFormatedProduct: () => IProduct = () => {
-  const price = Number.parseFloat(formatPriceToDecimal(productPrice.value!)) / 100
+  const price = Number.parseFloat(formatPriceToDecimal(productPrice.value!, maxDigits)) / 100
   return {
     id: new Date().getMilliseconds(),
     name: productName.value!,
