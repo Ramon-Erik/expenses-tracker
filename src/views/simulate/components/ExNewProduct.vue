@@ -74,7 +74,7 @@ const priceInput = (event: InputEvent) => {
 }
 
 const areInfoInvalid = () => {
-  if (!productName.value) {
+  if (!productName.value?.trim()) {
     toast.error('O nome é obrigatório!')
     return true
   }
@@ -84,15 +84,15 @@ const areInfoInvalid = () => {
   }
   if (!productAmount.value) {
     toast.warning('Apenas uma unidade adicionada!')
-    return false
   }
   return false
 }
 
 const getFormatedProduct: () => IProduct = () => {
+  const id = Date.now()
   const price = Number.parseFloat(formatPriceToDecimal(productPrice.value!, maxDigits)) / 100
   return {
-    id: new Date().getMilliseconds(),
+    id,
     name: productName.value!,
     price,
     amount: productAmount.value || 1,
