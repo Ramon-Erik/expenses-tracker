@@ -204,7 +204,6 @@ form {
   background: var(--bg-input);
   color: var(--color-text);
   outline: none;
-  font-family: monospace;
   font-size: 32px;
   font-weight: 600;
   text-align: center;
