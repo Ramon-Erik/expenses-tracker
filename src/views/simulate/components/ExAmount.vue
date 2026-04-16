@@ -30,7 +30,7 @@ const productPrice = ref<string | undefined>()
 const total = computed(() => {
   if (productPrice.value) {
     const value = Number.parseFloat(formatPriceToDecimal(productPrice.value, maxDigits)) / 100
-    return value > 0 ? value - store.total : 0
+    return value - store.total > 0 ? value - store.total : 0
   }
   return 0
 })

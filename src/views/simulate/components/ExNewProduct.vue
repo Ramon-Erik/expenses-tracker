@@ -16,6 +16,7 @@
       placeholder="Produto"
       autocomplete="off"
       autocapitalize="true"
+      @keyup.enter="handleAddItem"
     />
     <label for="price" class="product-price">
       <input
@@ -24,6 +25,7 @@
         v-model="productPrice"
         placeholder="R$ 0,00"
         autocomplete="off"
+        @keyup.enter="handleAddItem"
         @focusout="handleAddItem"
         @input="priceInput"
       />
