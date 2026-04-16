@@ -73,12 +73,13 @@ const amountInput = (event: InputEvent) => {
   let value = target.value
   const isNegative = target.value.startsWith('-')
 
-  if (value == '0') {
+  value = formatAmountToDecimal(value)
+
+  if (value == '0' || isNaN(Number.parseFloat(value))) {
     amount.value = undefined
     return
   }
 
-  value = formatAmountToDecimal(value)
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
