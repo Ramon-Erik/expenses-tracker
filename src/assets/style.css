@@ -59,6 +59,7 @@ textarea,
 select {
   width: 100%;
   padding: 0.85rem 1rem;
+  margin: 0.7rem 0;
   border: 1px solid var(--input-border);
   border-radius: var(--border-radius-sm);
   background: var(--bg-input);

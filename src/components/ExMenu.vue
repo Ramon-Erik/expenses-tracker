@@ -17,6 +17,7 @@ ul {
   justify-content: center;
   gap: 1rem;
   padding: 0;
+  margin-bottom: 1rem;
   list-style-type: none;
 }
 

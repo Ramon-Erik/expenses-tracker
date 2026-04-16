@@ -1,4 +1,4 @@
-import SimulateCartView from '@/views/SimulateCartView.vue'
+import SimulateCartView from '@/views/simulate/SimulateCartView.vue'
 import WalletView from '@/views/wallet/WalletView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
