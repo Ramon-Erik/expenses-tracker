@@ -80,7 +80,6 @@ const amountInput = (event: InputEvent) => {
     return
   }
 
-
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
     floatValue,

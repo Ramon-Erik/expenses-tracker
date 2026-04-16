@@ -1,6 +1,6 @@
-import type IProduct from "@/interfaces/IProduct.interface";
-import { defineStore } from "pinia";
-import { readonly, ref } from "vue";
+import type IProduct from '@/interfaces/IProduct.interface'
+import { defineStore } from 'pinia'
+import { readonly, ref } from 'vue'
 
 export const useCart = defineStore('cart', () => {
   const _cart = ref<IProduct[]>([])
@@ -14,6 +14,6 @@ export const useCart = defineStore('cart', () => {
   return {
     cart,
     addProduct,
-    removeProduct
+    removeProduct,
   }
 })

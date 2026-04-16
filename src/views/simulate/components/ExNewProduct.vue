@@ -60,16 +60,15 @@ const priceInput = (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let value = target.value
 
-  console.log('value');
-  console.log(value);
+  console.log('value')
+  console.log(value)
   value = formatPriceToDecimal(value)
 
   if (value == '0' || isNaN(Number.parseFloat(value))) {
-
     productPrice.value = undefined
     return
   }
-  console.log(value, productPrice.value);
+  console.log(value, productPrice.value)
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(

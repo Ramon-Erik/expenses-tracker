@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { useCart } from '@/stores/CartStore'
 import ExNewProduct from './ExNewProduct.vue'
-import currencyFormat from '@/utils/currency';
+import currencyFormat from '@/utils/currency'
 
 const store = useCart()
 </script>
