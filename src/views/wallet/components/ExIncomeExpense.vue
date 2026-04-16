@@ -12,20 +12,18 @@
 </template>
 
 <script setup lang="ts">
-import type ITransaction from '@/interfaces/ITransaction.interface'
-import currencyFormat from '@/utils/currency'
+import { useTransactionsStore } from '@/stores/TransactionsStore'
+import { currencyFormat } from '@/utils/currency'
 import { computed } from 'vue'
 
-const props = defineProps<{
-  transactionList: ITransaction[]
-}>()
+const store = useTransactionsStore()
 
 function totalAmount(condition: boolean) {
-  const total = props.transactionList.reduce((acc, tr) => {
+  const total = store.transactionsList.reduce((acc, tr) => {
     return tr.isIncome == condition ? acc + tr.amount : acc
   }, 0)
 
-  return currencyFormat(total)
+  return currencyFormat(total || 0)
 }
 
 const income = computed(() => {
@@ -38,7 +36,6 @@ const expense = computed(() => {
 </script>
 
 <style scoped>
-/* Mobile First - padrão para celular */
 .inc-exp-container {
   display: flex;
   flex-direction: column;
@@ -48,13 +45,12 @@ const expense = computed(() => {
   padding: 0.6rem;
   margin-bottom: 1rem;
 
-  background: #fff;
+  background: var(--bg-secondary);
   border-radius: 1rem;
 }
 
 .inc-exp-card {
   flex: 1;
-  background: #fff;
   border-radius: 8px;
   text-align: center;
 }
@@ -62,7 +58,7 @@ const expense = computed(() => {
 .inc-exp-card h4 {
   font-size: 1rem;
   margin: 0 0 0.5rem 0;
-  color: #666;
+  color: var(--color-secondary);
   font-weight: normal;
 }
 
@@ -73,11 +69,11 @@ const expense = computed(() => {
 }
 
 .money.plus {
-  color: #2ecc71;
+  color: var(--color-success);
 }
 
 .money.minus {
-  color: #e74c3c;
+  color: var(--color-danger);
 }
 
 @media (min-width: 768px) {

@@ -4,14 +4,14 @@
       <div class="modal-bg" v-if="isModalOpen">
         <div class="modal" ref="modalRef">
           <h3>Nova movimentação</h3>
-          <form id="form" @submit.prevent="onSubmit">
+          <form id="form" @submit.prevent="onSubmit" autocomplete="off">
             <div class="form-control amount">
               <label for="amount">
                 <input
                   class="bank-input"
-                  type="number"
-                  step=".01"
+                  type="string"
                   v-model="amount"
+                  @input="amountInput"
                   placeholder="0,00"
                   id="amount"
                 />
@@ -37,12 +37,16 @@
 
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
+import { useTransactionsStore } from '@/stores/TransactionsStore'
+import { formatPriceToDecimal } from '@/utils/currency'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
 
+const store = useTransactionsStore()
+const maxDigits = 7
+
 const emit = defineEmits<{
-  newTransaction: [transactoin: ITransaction]
   closeModal: []
 }>()
 defineProps<{
@@ -59,7 +63,28 @@ const closeModal = () => {
 onClickOutside(modalTarget, closeModal)
 
 const description = ref('')
-const amount = ref()
+const amount = ref<string | undefined>()
+
+const amountInput = (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  let value = target.value
+  const isNegative = target.value.startsWith('-')
+
+  value = formatPriceToDecimal(value, maxDigits)
+
+  if (value == '0' || isNaN(Number.parseFloat(value))) {
+    amount.value = undefined
+    return
+  }
+
+  const floatValue = Number.parseFloat(value) / 100
+  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
+    floatValue,
+  )
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+
+  amount.value = isNegative ? '-' + amountDisplay : amountDisplay
+}
 
 const disabled = computed(() => {
   return isInvalid() || loading.value
@@ -71,7 +96,7 @@ const isInvalid = () => {
 
 const clearInputs = () => {
   description.value = ''
-  amount.value = null
+  amount.value = undefined
 }
 
 const onSubmit = () => {
@@ -82,14 +107,18 @@ const onSubmit = () => {
     return
   }
 
+  const amountValue = Number.parseFloat(formatPriceToDecimal(amount.value!, maxDigits)) / 100
+
+  const amountToStore = amount.value!.startsWith('-') ? amountValue * -1 : amountValue
+
   const transactionData: ITransaction = {
-    id: new Date().getUTCMilliseconds(),
-    amount: amount.value,
-    isIncome: amount.value > 0,
+    id: Date.now(),
+    amount: amountToStore,
+    isIncome: amountToStore > 0,
     description: description.value,
   }
 
-  emit('newTransaction', transactionData)
+  store.addTransaction(transactionData)
   closeModal()
 
   toast.success('Adicionado!')
@@ -102,26 +131,21 @@ const onSubmit = () => {
   position: fixed;
   top: 0;
   left: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 100%;
   height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
   z-index: 1000;
 }
 
 .modal {
   width: calc(100% - 60px);
   max-width: 500px;
-
   padding: 1rem;
-
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background: white;
+  box-shadow: var(--shadow-soft);
+  background: var(--bg-secondary);
 
   border-radius: 8px;
 
@@ -160,7 +184,7 @@ form {
 .amount label::before {
   content: 'R$';
   position: absolute;
-  left: -20%;
+  left: -25%;
   top: 50%;
   display: block;
 
@@ -171,24 +195,19 @@ form {
 
 .bank-input {
   width: 200px;
-
   padding: 16px;
-
-  background: #f5f5f5;
-
-  border: none;
+  border: 1px solid var(--input-border);
   border-radius: 12px;
+  background: var(--bg-input);
+  color: var(--color-text);
   outline: none;
-
-  font-family: monospace;
   font-size: 32px;
   font-weight: 600;
   text-align: center;
 }
 
 .bank-input:focus {
-  background: white;
-  box-shadow: 0 0 0 2px #8257e5;
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
 .bank-input::-webkit-outer-spin-button,
@@ -201,39 +220,35 @@ form {
   width: 100%;
   padding: 12px 16px;
   font-size: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background: #f9f9f9;
   transition: all 0.2s ease;
+  background: var(--bg-input);
+  color: var(--color-text);
   outline: none;
 }
 
 .description-input:focus {
-  border: #8257e5;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(130, 87, 229, 0.1);
+  border-color: var(--bg-btn);
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
 .description-input::placeholder {
-  color: #bbb;
+  color: var(--input-placeholder);
   font-size: 14px;
 }
 
 .btn {
   display: block;
   width: 100%;
-
   padding: 10px;
   margin: 10px 0 30px;
-
-  background: #9c88ff;
+  background: var(--bg-btn);
   box-shadow: var(--box-shadow);
   border: 0;
   border-radius: 0.5rem;
-
-  color: #fff;
+  color: var(--btn-text);
   font-size: 16px;
-
   cursor: pointer;
 }
 

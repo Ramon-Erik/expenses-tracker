@@ -1,31 +1,17 @@
 <template>
-  <button class="plus-button" @click="togleModal">
+  <button class="plus-button" @click="toggleModal">
     <span class="plus-icon">+</span>
   </button>
-  <ExAddModal
-    :is-modal-open="isModalOpen"
-    @close-modal="togleModal"
-    @new-transaction="handleNewTransaction"
-  />
-
+  <ExAddModal :is-modal-open="isModalOpen" @close-modal="toggleModal" />
 </template>
 
 <script setup lang="ts">
-import type ITransaction from '@/interfaces/ITransaction.interface'
 import ExAddModal from './ExAddModal.vue'
 import { ref } from 'vue'
 
-const emit = defineEmits<{
-  addTransaction: [transaction: ITransaction]
-}>()
-
 const isModalOpen = ref(false)
-const togleModal = () => {
+const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value
-}
-
-const handleNewTransaction = (transaction: ITransaction) => {
-  emit('addTransaction', transaction)
 }
 </script>
 
@@ -34,24 +20,20 @@ const handleNewTransaction = (transaction: ITransaction) => {
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 30px;
   height: 30px;
-
   border: none;
   border-radius: 0.5rem;
-  background: #1faf27;
-
-  color: white;
+  background: var(--bg-btn);
+  color: var(--btn-text);
   font-size: 24px;
   font-weight: bold;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .plus-button:hover:not(:disabled) {
-  background: #198a1f;
+  background: var(--bg-btn-hover);
   transform: scale(1.05);
 }
 
@@ -60,7 +42,7 @@ const handleNewTransaction = (transaction: ITransaction) => {
 }
 
 .plus-button:disabled {
-  background: #ccc;
+  background: var(--color-muted);
   cursor: not-allowed;
   opacity: 0.6;
 }
