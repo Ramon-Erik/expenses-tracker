@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
 import { useTransactionsStore } from '@/stores/TransactionsStore'
+import { formatPriceToDecimal } from '@/utils/currency'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -64,16 +65,12 @@ onClickOutside(modalTarget, closeModal)
 const description = ref('')
 const amount = ref<string | undefined>()
 
-const formatAmountToDecimal = (value: string) => {
-  return value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
-}
-
 const amountInput = (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let value = target.value
   const isNegative = target.value.startsWith('-')
 
-  value = formatAmountToDecimal(value)
+  value = formatPriceToDecimal(value, maxDigits)
 
   if (value == '0' || isNaN(Number.parseFloat(value))) {
     amount.value = undefined
@@ -110,7 +107,7 @@ const onSubmit = () => {
     return
   }
 
-  const amountValue = Number.parseFloat(formatAmountToDecimal(amount.value!)) / 100
+  const amountValue = Number.parseFloat(formatPriceToDecimal(amount.value!, maxDigits)) / 100
 
   const amountToStore = amount.value!.startsWith('-') ? amountValue * -1 : amountValue
 

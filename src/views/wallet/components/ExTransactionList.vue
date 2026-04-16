@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import currencyFormat from '@/utils/currency'
+import { currencyFormat } from '@/utils/currency'
 import ExAddTransaction from './ExAddTransaction.vue'
 import { useTransactionsStore } from '@/stores/TransactionsStore'
 import { computed } from 'vue'

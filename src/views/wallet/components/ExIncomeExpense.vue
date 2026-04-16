@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { useTransactionsStore } from '@/stores/TransactionsStore'
-import currencyFormat from '@/utils/currency'
+import { currencyFormat } from '@/utils/currency'
 import { computed } from 'vue'
 
 const store = useTransactionsStore()
