@@ -1,18 +1,122 @@
 <template>
   <div class="product-info">
-    <input type="number" id="productAmount" class="product-amount" placeholder="Qtd." min="0" />
+    <input
+      type="number"
+      id="productAmount"
+      class="product-amount"
+      v-model="productAmount"
+      placeholder="Qtd."
+      min="0"
+    />
     <input
       type="text"
       id="productName"
       class="product-name"
+      v-model="productName"
       placeholder="Produto"
+      autocomplete="off"
       autocapitalize="true"
     />
     <label for="price" class="product-price">
-      <input type="text" id="price" placeholder="R$ 0,00" />
+      <input
+        type="text"
+        id="price"
+        v-model="productPrice"
+        placeholder="R$ 0,00"
+        autocomplete="off"
+        @focusout="handleAddItem"
+        @input="priceInput"
+      />
     </label>
   </div>
 </template>
+
+<script setup lang="ts">
+import type IProduct from '@/interfaces/IProduct.interface'
+import { useCart } from '@/stores/CartStore'
+import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
+
+const store = useCart()
+const toast = useToast()
+
+const maxDigits = 6
+
+const productAmount = ref<number | undefined>()
+const productName = ref<string | undefined>()
+const productPrice = ref<string | undefined>()
+
+const clearInputs = () => {
+  productAmount.value = undefined
+  productName.value = undefined
+  productPrice.value = undefined
+}
+
+const formatPriceToDecimal = (value: string) => {
+  return value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
+}
+
+const priceInput = (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  let value = target.value
+
+  console.log('value');
+  console.log(value);
+  value = formatPriceToDecimal(value)
+
+  if (value == '0' || isNaN(Number.parseFloat(value))) {
+
+    productPrice.value = undefined
+    return
+  }
+  console.log(value, productPrice.value);
+
+  const floatValue = Number.parseFloat(value) / 100
+  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
+    floatValue,
+  )
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+
+  productPrice.value = amountDisplay
+}
+
+const areInfoInvalid = () => {
+  if (!productName.value) {
+    toast.error('O nome é obrigatório!')
+    return true
+  }
+  if (!productPrice.value) {
+    toast.error('O preço é obrigatório!')
+    return true
+  }
+  if (!productAmount.value) {
+    toast.warning('Apenas uma unidade adicionada!')
+    return false
+  }
+  return false
+}
+
+const getFormatedProduct: () => IProduct = () => {
+  const price = Number.parseFloat(formatPriceToDecimal(productPrice.value!)) / 100
+  return {
+    id: new Date().getMilliseconds(),
+    name: productName.value!,
+    price,
+    amount: productAmount.value || 1,
+  }
+}
+
+const handleAddItem = () => {
+  if (areInfoInvalid()) {
+    return
+  }
+
+  const productInfo: IProduct = getFormatedProduct()
+
+  store.addProduct(productInfo)
+  clearInputs()
+}
+</script>
 
 <style scoped>
 .product-info {
@@ -22,7 +126,7 @@
 }
 
 input {
-  padding: .8rem;
+  padding: 0.8rem;
 }
 
 .product-amount {

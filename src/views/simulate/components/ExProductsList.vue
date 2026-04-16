@@ -2,17 +2,21 @@
   <div class="cart-container">
     <ExNewProduct />
     <ul class="cart-list">
-      <div class="cart-item">
-        <span class="item-amount">3x</span>
-        <span class="item-name">Feijão</span>
-        <span class="item-price">R$ 6,76</span>
-      </div>
+      <li class="cart-item" v-for="product in store.cart" :key="product.id">
+        <span class="item-amount">{{ product.amount }}x</span>
+        <span class="item-name">{{ product.name }}</span>
+        <span class="item-price">{{ currencyFormat(product.price) }}</span>
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useCart } from '@/stores/CartStore'
 import ExNewProduct from './ExNewProduct.vue'
+import currencyFormat from '@/utils/currency';
+
+const store = useCart()
 </script>
 
 <style scoped>
@@ -35,7 +39,6 @@ import ExNewProduct from './ExNewProduct.vue'
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid var(--color-secondary-light, #e0e0e0);
 }
 
 .cart-item:last-child {
