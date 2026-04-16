@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import currencyFormat from '@/utils/currency'
 import ExAddTransaction from './ExAddTransaction.vue'
-import { useTransactionsStore } from '@/stores/TransactionssStore'
+import { useTransactionsStore } from '@/stores/TransactionsStore'
 import { computed } from 'vue'
 
 const store = useTransactionsStore()

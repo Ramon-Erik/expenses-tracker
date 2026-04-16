@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTransactionsStore } from '@/stores/TransactionssStore'
+import { useTransactionsStore } from '@/stores/TransactionsStore'
 import currencyFormat from '@/utils/currency'
 import { computed } from 'vue'
 

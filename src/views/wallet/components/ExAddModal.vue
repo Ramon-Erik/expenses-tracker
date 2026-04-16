@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type ITransaction from '@/interfaces/ITransaction.interface'
-import { useTransactionsStore } from '@/stores/TransactionssStore'
+import { useTransactionsStore } from '@/stores/TransactionsStore'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { useToast } from 'vue-toastification'
