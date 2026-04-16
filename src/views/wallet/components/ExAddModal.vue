@@ -112,7 +112,7 @@ const onSubmit = () => {
   const amountToStore = amount.value!.startsWith('-') ? amountValue * -1 : amountValue
 
   const transactionData: ITransaction = {
-    id: new Date().getUTCMilliseconds(),
+    id: Date.now(),
     amount: amountToStore,
     isIncome: amountToStore > 0,
     description: description.value,
