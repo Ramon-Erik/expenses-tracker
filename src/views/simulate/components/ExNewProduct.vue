@@ -21,6 +21,7 @@
     <label for="price" class="product-price">
       <input
         type="text"
+        inputmode="decimal"
         id="price"
         v-model="productPrice"
         placeholder="R$ 0,00"

@@ -4,6 +4,7 @@
       <span>Quanto você tem?</span>
       <input
         type="text"
+        inputmode="decimal"
         class="bank-input"
         id="cartAmount"
         v-model="productPrice"
