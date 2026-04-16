@@ -64,6 +64,10 @@ onClickOutside(modalTarget, closeModal)
 const description = ref('')
 const amount = ref<string | undefined>()
 
+const formatAmountToDecimal = (value: string) => {
+  return value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
+}
+
 const amountInput = (event: InputEvent) => {
   const target = event.target as HTMLInputElement
   let value = target.value
@@ -74,7 +78,7 @@ const amountInput = (event: InputEvent) => {
     return
   }
 
-  value = value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
+  value = formatAmountToDecimal(value)
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
@@ -106,7 +110,7 @@ const onSubmit = () => {
     return
   }
 
-  const amountToStore = amount.value ? Number.parseFloat(amount.value) : 0
+  const amountToStore = Number.parseFloat(formatAmountToDecimal(amount.value!)) / 100
 
   const transactionData: ITransaction = {
     id: new Date().getUTCMilliseconds(),
