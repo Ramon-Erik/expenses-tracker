@@ -13,6 +13,7 @@
       id="productName"
       class="product-name"
       v-model="productName"
+      ref="inputNome"
       placeholder="Produto"
       autocomplete="off"
       autocapitalize="true"
@@ -27,7 +28,6 @@
         placeholder="R$ 0,00"
         autocomplete="off"
         @keyup.enter="handleAddItem"
-        @focusout="handleAddItem"
         @input="priceInput"
       />
     </label>
@@ -45,6 +45,8 @@ const store = useCart()
 const toast = useToast()
 
 const maxDigits = 6
+
+const inputNome = ref<HTMLInputElement | null>()
 
 const productAmount = ref<number | undefined>()
 const productName = ref<string | undefined>()
@@ -111,6 +113,7 @@ const handleAddItem = () => {
 
   store.addProduct(productInfo)
   clearInputs()
+  inputNome.value?.focus()
 }
 </script>
 
@@ -122,7 +125,8 @@ const handleAddItem = () => {
 }
 
 input {
-  padding: 0.8rem;
+  padding: 0.7rem;
+  font-size: .95rem;
 }
 
 .product-amount {

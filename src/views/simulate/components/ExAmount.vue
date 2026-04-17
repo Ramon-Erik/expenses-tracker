@@ -1,13 +1,19 @@
 <template>
   <div class="cart-limit">
-    <label for="cartAmount">
+    <label
+      for="cartAmount"
+      :class="{
+        warn: isPriceMissing,
+        overbudget: isOverBudget,
+      }"
+    >
       <span>Quanto você tem?</span>
       <input
         type="text"
         inputmode="decimal"
         class="bank-input"
         id="cartAmount"
-        v-model="productPrice"
+        v-model="totalToExpend"
         autocomplete="off"
         placeholder="500,00"
         @input="priceInput"
@@ -20,32 +26,41 @@
 <script setup lang="ts">
 import { useCart } from '@/stores/CartStore'
 import { currencyFormat, formatPriceToDecimal } from '@/utils/currency'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const store = useCart()
 
 const maxDigits = 6
 
-const productPrice = ref<string | undefined>()
+const totalToExpend = ref<string | undefined>()
+
+const inputValue = computed(() => {
+  if (totalToExpend.value) {
+    const value = String(totalToExpend.value)
+    return Number.parseFloat(formatPriceToDecimal(value, maxDigits)) / 100
+  }
+  return 0
+})
 
 const total = computed(() => {
-  if (productPrice.value) {
-    const value = Number.parseFloat(formatPriceToDecimal(productPrice.value, maxDigits)) / 100
+  if (totalToExpend.value) {
+    const totalString = String(totalToExpend.value)
+    const value = Number.parseFloat(formatPriceToDecimal(totalString, maxDigits)) / 100
     return value - store.total > 0 ? value - store.total : 0
   }
   return 0
 })
 
-const priceInput = (event: InputEvent) => {
-  const target = event.target as HTMLInputElement
-  let value = target.value
+const isPriceMissing = computed(() => {
+  return store.cart.length > 0 && (!totalToExpend.value || totalToExpend.value == undefined)
+})
 
-  value = formatPriceToDecimal(value, maxDigits)
+const isOverBudget = computed(() => {
+  return totalToExpend.value && inputValue.value < store.total
+})
 
-  if (value == '0' || isNaN(Number.parseFloat(value))) {
-    productPrice.value = undefined
-    return
-  }
+const formatToBRL = (price: string) => {
+  const value = formatPriceToDecimal(price, maxDigits)
 
   const floatValue = Number.parseFloat(value) / 100
   let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
@@ -53,14 +68,64 @@ const priceInput = (event: InputEvent) => {
   )
   amountDisplay = amountDisplay.slice(3, amountDisplay.length)
 
-  productPrice.value = amountDisplay
+  return amountDisplay
 }
+
+const priceInput = (event: InputEvent) => {
+  const target = event.target as HTMLInputElement
+  const value = target.value
+
+  if (value == '0' || isNaN(Number.parseFloat(value))) {
+    totalToExpend.value = undefined
+    return
+  }
+
+  totalToExpend.value = formatToBRL(value)
+  store.updateMaxValue(String(value))
+}
+
+onMounted(() => {
+  if (store.max) {
+    totalToExpend.value = formatToBRL(String(store.max))
+  }
+})
 </script>
 
 <style scoped>
 label,
 p {
   text-align: center;
+}
+
+.warn {
+  input[type='text'] {
+    border: 2px solid var(--warn-border-color);
+    background-color: var(--warn-bg-color);
+  }
+
+  &::before {
+    color: var(--warn-border-color);
+  }
+
+  .bank-input::placeholder {
+    color: var(--warn-border-color-placeholder);
+  }
+}
+
+.overbudget {
+  input[type='text'] {
+    border: 2px solid var(--overbudget-border-color);
+    color: var(--overbudget-border-color);
+    background-color: var(--overbudget-bg-color);
+  }
+
+  &::before {
+    color: var(--overbudget-border-color);
+  }
+
+  .bank-input::placeholder {
+    color: var(--overbudget-border-color-placeholder);
+  }
 }
 
 .cart-limit {
@@ -95,9 +160,13 @@ p {
   background: var(--bg-input);
   color: var(--color-text);
   outline: none;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 600;
   text-align: center;
+}
+
+.bank-input::placeholder {
+  color: var(--input-placeholder);
 }
 
 .bank-input:focus {
