@@ -15,6 +15,10 @@ const router = createRouter({
       name: 'Simular',
       component: SimulateCartView,
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
 })
 
