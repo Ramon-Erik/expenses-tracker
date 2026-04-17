@@ -126,7 +126,7 @@ const handleAddItem = () => {
 
 input {
   padding: 0.7rem;
-  font-size: .95rem;
+  font-size: 0.95rem;
 }
 
 .product-amount {
