@@ -2,24 +2,28 @@ import SimulateCartView from '@/views/simulate/SimulateCartView.vue'
 import WalletView from '@/views/wallet/WalletView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
+const routes = [
+  {
+    path: '/',
+    name: 'Carteira',
+    component: WalletView,
+  },
+  {
+    path: '/simulate',
+    name: 'Simular',
+    component: SimulateCartView,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/',
+  },
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'Carteira',
-      component: WalletView,
-    },
-    {
-      path: '/simulate',
-      name: 'Simular',
-      component: SimulateCartView,
-    },
-    {
-      path: '/:pathMatch(.*)*',
-      redirect: '/',
-    },
-  ],
+  routes,
 })
+
+export { routes }
 
 export default router
