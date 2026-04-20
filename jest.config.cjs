@@ -15,4 +15,11 @@ module.exports = {
   },
   testMatch: ['**/tests/unit/**/*.spec.(js|ts)'],
   moduleFileExtensions: ['json', 'js', 'ts', 'vue'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "src/**/*.{js,ts,vue}",
+    "!src/main.ts",
+    "!src/**/*.d.ts",
+    "!**/node_modules/**"
+  ],
 }
