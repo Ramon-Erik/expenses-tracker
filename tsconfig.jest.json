@@ -9,9 +9,10 @@
       "@/*": ["./src/*"]
     },
     "types": ["jest", "node"],
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "verbatimModuleSyntax": false, // <--- DESATIVE ISSO
+    "verbatimModuleSyntax": false,
     "allowJs": true,
     "noEmit": true
   },
