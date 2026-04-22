@@ -22,4 +22,7 @@ module.exports = {
     "!src/**/*.d.ts",
     "!**/node_modules/**"
   ],
+  transformIgnorePatterns: [
+    "src/router/index.ts"
+  ],
 }
