@@ -47,7 +47,6 @@ describe('Menu', () => {
     await wrapper.vm.$nextTick()
 
     const unactivetedLink = wrapper.find('a[href="/simulate"]')
-    console.log(unactivetedLink.classes())
 
     expect(unactivetedLink.classes()).toStrictEqual([])
   })
