@@ -38,4 +38,17 @@ describe('Menu', () => {
 
     expect(activetedLink.classes()).toContain('active')
   })
+
+  it('classes array should be empty if not active', async () => {
+    const wrapper = mount(ExMenu, {
+      global: { plugins: [router] },
+    })
+
+    await wrapper.vm.$nextTick()
+
+    const unactivetedLink = wrapper.find('a[href="/simulate"]')
+    console.log(unactivetedLink.classes())
+
+    expect(unactivetedLink.classes()).toStrictEqual([])
+  })
 })
