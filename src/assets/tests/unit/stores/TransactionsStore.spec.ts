@@ -67,6 +67,14 @@ describe('TransactionsStore', () => {
     expect(() => transactions.addTransaction(transaction)).toThrow('Transação com mesmo ID!')
   })
 
+  it('should throw an error on adding invalid transaction', () => {
+    const transaction = {} as ITransaction
+
+    expect(() => transactions.addTransaction(transaction)).toThrow(
+      'Transação com informações incompletas!',
+    )
+  })
+
   it('Should decrement transactions length when an item is removed', () => {
     const transaction = transactionsList[0] as ITransaction
 

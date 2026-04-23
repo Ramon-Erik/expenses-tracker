@@ -15,11 +15,28 @@ export const useTransactionsStore = defineStore('transactions', () => {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(_transactionsList.value))
   }
 
+  const isInvalidTransaction = (tr: ITransaction) => {
+    if (
+      tr.id >= 0 &&
+      tr.amount >= 0 == tr.isIncome &&
+      tr.description.length >= 3 &&
+      !isNaN(tr.amount)
+    ) {
+      return false
+    }
+    return true
+  }
+
   const addTransaction = (newTransaction: ITransaction) => {
     const searchTransaction = _transactionsList.value.findIndex((tr) => tr.id == newTransaction.id)
     if (searchTransaction >= 0) {
       throw new Error('Transação com mesmo ID!')
     }
+
+    if (isInvalidTransaction(newTransaction)) {
+      throw new Error('Transação com informações incompletas!')
+    }
+
     updateLocalList(() => {
       _transactionsList.value.push(newTransaction)
     })
