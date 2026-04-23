@@ -47,7 +47,27 @@ describe('TransactionsStore', () => {
     expect(transactions.transactionsList.length).toBe(1)
   })
 
-  it('Should dencrement transactions length when an item is removed', () => {
+  it('The new transaction should be strictly equal to the added transaction', () => {
+    const transaction = transactionsList[0] as ITransaction
+
+    expect(transactions.transactionsList.length).toBe(0)
+
+    transactions.addTransaction(transaction)
+
+    expect(transactions.transactionsList.length).toBe(1)
+
+    expect(transactions.transactionsList[0]).toStrictEqual(transaction)
+  })
+
+  it('should throw an error on adding same id', () => {
+    const transaction = transactionsList[0] as ITransaction
+
+    transactions.addTransaction(transaction)
+
+    expect(() => transactions.addTransaction(transaction)).toThrow('Transação com mesmo ID!')
+  })
+
+  it('Should decrement transactions length when an item is removed', () => {
     const transaction = transactionsList[0] as ITransaction
 
     expect(transactions.transactionsList.length).toBe(0)

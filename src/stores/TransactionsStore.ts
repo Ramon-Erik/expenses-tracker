@@ -16,6 +16,10 @@ export const useTransactionsStore = defineStore('transactions', () => {
   }
 
   const addTransaction = (newTransaction: ITransaction) => {
+    const searchTransaction = _transactionsList.value.findIndex((tr) => tr.id == newTransaction.id)
+    if (searchTransaction >= 0) {
+      throw new Error('Transação com mesmo ID!')
+    }
     updateLocalList(() => {
       _transactionsList.value.push(newTransaction)
     })
