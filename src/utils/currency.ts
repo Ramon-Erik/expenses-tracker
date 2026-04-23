@@ -1,10 +1,11 @@
 export function currencyFormat(value: number) {
+  const strictNumber = isNaN(value) || value == Infinity ? 0 : value
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
-  }).format(value)
+  }).format(strictNumber)
 }
 
 export const formatPriceToDecimal = (value: string, maxDigits: number) => {
-  return value.replace(',', '').replace('.', '').replace('-', '').slice(0, maxDigits) || '0'
+  return value.replace(/\D/g, '').slice(0, maxDigits) || '0'
 }
