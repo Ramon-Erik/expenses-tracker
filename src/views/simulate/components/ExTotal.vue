@@ -1,6 +1,10 @@
 <template>
-  <p class="clear-cart" @click="store.clearCart">Limpar carrinho</p>
-  <p>Total gasto: {{ currencyFormat(store.total) }}</p>
+  <p data-test-id="clearParagraph" class="clear-cart" @click="store.clearCart">
+    Limpar carrinho
+  </p>
+  <p data-test-id="totalParagraph">
+    Total gasto: {{ currencyFormat(store.total) }}
+  </p>
 </template>
 
 <script setup lang="ts">
