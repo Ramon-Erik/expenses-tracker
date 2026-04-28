@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "vue-cli-service test:unit",
-    "test:w": "vue-cli-service test:unit",
-    "test:wAll": "vue-cli-service test:unit",
+    "test:w": "vue-cli-service test:unit --watch",
+    "test:wAll": "vue-cli-service test:unit --watchAll",
     "lint": "vue-cli-service lint",
     "format": "vue-cli-service lint --fix"
   },
@@ -20,6 +20,7 @@
     "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
+    "@pinia/testing": "^1.0.3",
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
