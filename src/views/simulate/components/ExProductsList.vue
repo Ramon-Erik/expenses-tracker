@@ -1,6 +1,5 @@
 <template>
   <div class="cart-container">
-    <ExNewProduct />
     <ul class="cart-list">
       <li
         class="cart-item"
@@ -18,7 +17,6 @@
 
 <script setup lang="ts">
 import { useCart } from "@/stores/CartStore";
-import ExNewProduct from "./ExNewProduct.vue";
 import { currencyFormat } from "@/utils/currency";
 
 const store = useCart();
@@ -26,11 +24,8 @@ const store = useCart();
 
 <style scoped>
 .cart-container {
-  padding: 1rem 0;
   margin: 1.5rem 0;
-  border: 1px solid var(--color-secondary);
-  border-left: none;
-  border-right: none;
+  border-bottom: 1px solid var(--color-secondary);
 }
 
 .cart-list {
