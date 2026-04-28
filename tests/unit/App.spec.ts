@@ -2,19 +2,32 @@ import App from "@/App.vue";
 import { shallowMount } from "@vue/test-utils";
 
 describe("App", () => {
-  it("should render its components", () => {
-    const wrapper = shallowMount(App, {
-      global: {
-        stubs: {
-          ExHeader: true,
-          ExFooter: true,
-          ExMenu: true,
-          "router-view": true,
-        },
-      },
-    });
+  const stubs = {
+    ExHeader: true,
+    ExMenu: true,
+    ExFooter: true,
+    "router-view": true,
+  };
+
+  const wrapper = shallowMount(App, {
+    global: {
+      stubs,
+    },
+  });
+
+  it("should render header", () => {
     expect(wrapper.findComponent({ name: "ExHeader" }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: "ExFooter" }).exists()).toBe(true);
+  });
+
+  it("should render menu", () => {
     expect(wrapper.findComponent({ name: "ExMenu" }).exists()).toBe(true);
+  });
+
+  it("should render footer", () => {
+    expect(wrapper.findComponent({ name: "ExFooter" }).exists()).toBe(true);
+  });
+
+  it("should render router-view", () => {
+    expect(wrapper.findComponent({ name: "router-view" }).exists()).toBe(true);
   });
 });
