@@ -10,9 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import ExHeader from './components/ExHeader.vue'
-import ExFooter from './components/ExFooter.vue'
-import ExMenu from './components/ExMenu.vue'
+import ExHeader from "./components/ExHeader.vue";
+import ExFooter from "./components/ExFooter.vue";
+import ExMenu from "./components/ExMenu.vue";
 </script>
-
-<style scoped></style>

@@ -24,71 +24,76 @@
 </template>
 
 <script setup lang="ts">
-import { useCart } from '@/stores/CartStore'
-import { currencyFormat, formatPriceToDecimal } from '@/utils/currency'
-import { computed, onMounted, ref } from 'vue'
+import { useCart } from "@/stores/CartStore";
+import { currencyFormat, formatPriceToDecimal } from "@/utils/currency";
+import { computed, onMounted, ref } from "vue";
 
-const store = useCart()
+const store = useCart();
 
-const maxDigits = 6
+const maxDigits = 6;
 
-const totalToExpend = ref<string | undefined>()
+const totalToExpend = ref<string | undefined>();
 
 const inputValue = computed(() => {
   if (totalToExpend.value) {
-    const value = String(totalToExpend.value)
-    return Number.parseFloat(formatPriceToDecimal(value, maxDigits)) / 100
+    const value = String(totalToExpend.value);
+    return Number.parseFloat(formatPriceToDecimal(value, maxDigits)) / 100;
   }
-  return 0
-})
+  return 0;
+});
 
 const total = computed(() => {
   if (totalToExpend.value) {
-    const totalString = String(totalToExpend.value)
-    const value = Number.parseFloat(formatPriceToDecimal(totalString, maxDigits)) / 100
-    return value - store.total > 0 ? value - store.total : 0
+    const totalString = String(totalToExpend.value);
+    const value =
+      Number.parseFloat(formatPriceToDecimal(totalString, maxDigits)) / 100;
+    return value - store.total > 0 ? value - store.total : 0;
   }
-  return 0
-})
+  return 0;
+});
 
 const isPriceMissing = computed(() => {
-  return store.cart.length > 0 && (!totalToExpend.value || totalToExpend.value == undefined)
-})
+  return (
+    store.cart.length > 0 &&
+    (!totalToExpend.value || totalToExpend.value == undefined)
+  );
+});
 
 const isOverBudget = computed(() => {
-  return totalToExpend.value && inputValue.value < store.total
-})
+  return totalToExpend.value && inputValue.value < store.total;
+});
 
 const formatToBRL = (price: string) => {
-  const value = formatPriceToDecimal(price, maxDigits)
+  const value = formatPriceToDecimal(price, maxDigits);
 
-  const floatValue = Number.parseFloat(value) / 100
-  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
-    floatValue,
-  )
-  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+  const floatValue = Number.parseFloat(value) / 100;
+  let amountDisplay = Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  }).format(floatValue);
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length);
 
-  return amountDisplay
-}
+  return amountDisplay;
+};
 
 const priceInput = (event: InputEvent) => {
-  const target = event.target as HTMLInputElement
-  const value = target.value
+  const target = event.target as HTMLInputElement;
+  const value = target.value;
 
-  if (value == '0' || isNaN(Number.parseFloat(value))) {
-    totalToExpend.value = undefined
-    return
+  if (value == "0" || isNaN(Number.parseFloat(value))) {
+    totalToExpend.value = undefined;
+    return;
   }
 
-  totalToExpend.value = formatToBRL(value)
-  store.updateMaxValue(String(value))
-}
+  totalToExpend.value = formatToBRL(value);
+  store.updateMaxValue(String(value));
+};
 
 onMounted(() => {
   if (store.max) {
-    totalToExpend.value = formatToBRL(String(store.max))
+    totalToExpend.value = formatToBRL(String(store.max));
   }
-})
+});
 </script>
 
 <style scoped>
@@ -98,7 +103,7 @@ p {
 }
 
 .warn {
-  input[type='text'] {
+  input[type="text"] {
     border: 2px solid var(--warn-border-color);
     background-color: var(--warn-bg-color);
   }
@@ -113,7 +118,7 @@ p {
 }
 
 .overbudget {
-  input[type='text'] {
+  input[type="text"] {
     border: 2px solid var(--overbudget-border-color);
     color: var(--overbudget-border-color);
     background-color: var(--overbudget-bg-color);
@@ -141,7 +146,7 @@ p {
 }
 
 .cart-limit label::before {
-  content: 'R$';
+  content: "R$";
   position: absolute;
   left: -25%;
   top: 55%;

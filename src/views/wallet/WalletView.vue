@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import ExBalance from './components/ExBalance.vue'
-import ExIncomeExpense from './components/ExIncomeExpense.vue'
-import ExTransactionList from './components/ExTransactionList.vue'
+import ExBalance from "./components/ExBalance.vue";
+import ExIncomeExpense from "./components/ExIncomeExpense.vue";
+import ExTransactionList from "./components/ExTransactionList.vue";
 </script>

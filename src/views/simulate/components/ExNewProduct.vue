@@ -35,86 +35,89 @@
 </template>
 
 <script setup lang="ts">
-import type IProduct from '@/interfaces/IProduct.interface'
-import { useCart } from '@/stores/CartStore'
-import { formatPriceToDecimal } from '@/utils/currency'
-import { ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import type IProduct from "@/interfaces/IProduct.interface";
+import { useCart } from "@/stores/CartStore";
+import { formatPriceToDecimal } from "@/utils/currency";
+import { ref } from "vue";
+import { useToast } from "vue-toastification";
 
-const store = useCart()
-const toast = useToast()
+const store = useCart();
+const toast = useToast();
 
-const maxDigits = 6
+const maxDigits = 6;
 
-const inputNome = ref<HTMLInputElement | null>()
+const inputNome = ref<HTMLInputElement | null>();
 
-const productAmount = ref<number | undefined>()
-const productName = ref<string | undefined>()
-const productPrice = ref<string | undefined>()
+const productAmount = ref<number | undefined>();
+const productName = ref<string | undefined>();
+const productPrice = ref<string | undefined>();
 
 const clearInputs = () => {
-  productAmount.value = undefined
-  productName.value = undefined
-  productPrice.value = undefined
-}
+  productAmount.value = undefined;
+  productName.value = undefined;
+  productPrice.value = undefined;
+};
 
 const priceInput = (event: InputEvent) => {
-  const target = event.target as HTMLInputElement
-  let value = target.value
+  const target = event.target as HTMLInputElement;
+  let value = target.value;
 
-  value = formatPriceToDecimal(value, maxDigits)
+  value = formatPriceToDecimal(value, maxDigits);
 
-  if (value == '0' || isNaN(Number.parseFloat(value))) {
-    productPrice.value = undefined
-    return
+  if (value == "0" || isNaN(Number.parseFloat(value))) {
+    productPrice.value = undefined;
+    return;
   }
 
-  const floatValue = Number.parseFloat(value) / 100
-  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
-    floatValue,
-  )
-  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+  const floatValue = Number.parseFloat(value) / 100;
+  let amountDisplay = Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  }).format(floatValue);
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length);
 
-  productPrice.value = amountDisplay
-}
+  productPrice.value = amountDisplay;
+};
 
 const areInfoInvalid = () => {
   if (!productName.value?.trim()) {
-    toast.error('O nome é obrigatório!')
-    return true
+    toast.error("O nome é obrigatório!");
+    return true;
   }
   if (!productPrice.value) {
-    toast.error('O preço é obrigatório!')
-    return true
+    toast.error("O preço é obrigatório!");
+    return true;
   }
   if (!productAmount.value) {
-    toast.warning('Apenas uma unidade adicionada!')
+    toast.warning("Apenas uma unidade adicionada!");
   }
-  return false
-}
+  return false;
+};
 
 const getFormatedProduct: () => IProduct = () => {
-  const id = Date.now()
-  const price = Number.parseFloat(formatPriceToDecimal(productPrice.value!, maxDigits)) / 100
+  const id = Date.now();
+  const price =
+    Number.parseFloat(formatPriceToDecimal(productPrice.value!, maxDigits)) /
+    100;
   return {
     id,
     name: productName.value!,
     price,
     amount: productAmount.value || 1,
-  }
-}
+  };
+};
 
 const handleAddItem = () => {
   if (areInfoInvalid()) {
-    return
+    return;
   }
 
-  const productInfo: IProduct = getFormatedProduct()
+  const productInfo: IProduct = getFormatedProduct();
 
-  store.addProduct(productInfo)
-  clearInputs()
-  inputNome.value?.focus()
-}
+  store.addProduct(productInfo);
+  clearInputs();
+  inputNome.value?.focus();
+};
 </script>
 
 <style scoped>

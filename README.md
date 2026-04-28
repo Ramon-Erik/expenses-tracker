@@ -1,13 +1,29 @@
-# expenses-tracker
+# meu-novo-projeto
 
-## Funcionalidades para adicionar
+## Project setup
+```
+npm install
+```
 
-- editar movimentação via deslize para o lado
-- datas e hora nas movimentações
-- apagar todas as movimentações
-- filtrar por:
-  - é entrada
-	- é saída
-	- labels repetidas
-	- data
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your unit tests
+```
+npm run test:unit
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -9,22 +9,28 @@
       :key="transaction.id"
       :class="transaction.isIncome ? 'plus' : 'minus'"
     >
-      {{ transaction.description }} <span>{{ currencyFormat(transaction.amount) }}</span
-      ><button class="delete-btn" @click="store.deleteTransaction(transaction.id)">x</button>
+      {{ transaction.description }}
+      <span>{{ currencyFormat(transaction.amount) }}</span
+      ><button
+        class="delete-btn"
+        @click="store.deleteTransaction(transaction.id)"
+      >
+        x
+      </button>
     </li>
   </ul>
   <p v-else class="warning">Nenhuma movimentação cadastrada.</p>
 </template>
 
 <script setup lang="ts">
-import { currencyFormat } from '@/utils/currency'
-import ExAddTransaction from './ExAddTransaction.vue'
-import { useTransactionsStore } from '@/stores/TransactionsStore'
-import { computed } from 'vue'
+import { currencyFormat } from "@/utils/currency";
+import ExAddTransaction from "./ExAddTransaction.vue";
+import { useTransactionsStore } from "@/stores/TransactionsStore";
+import { computed } from "vue";
 
-const store = useTransactionsStore()
+const store = useTransactionsStore();
 
-const transactionsList = computed(() => store.transactionsList)
+const transactionsList = computed(() => store.transactionsList);
 </script>
 
 <style scoped>

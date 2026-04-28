@@ -28,7 +28,9 @@
                 placeholder="O que é a movimentação"
               />
             </div>
-            <button class="btn" :disabled="disabled"><span>Adicionar</span></button>
+            <button class="btn" :disabled="disabled">
+              <span>Adicionar</span>
+            </button>
           </form>
         </div>
       </div>
@@ -37,94 +39,99 @@
 </template>
 
 <script setup lang="ts">
-import type ITransaction from '@/interfaces/ITransaction.interface'
-import { useTransactionsStore } from '@/stores/TransactionsStore'
-import { formatPriceToDecimal } from '@/utils/currency'
-import { onClickOutside } from '@vueuse/core'
-import { computed, ref, useTemplateRef } from 'vue'
-import { useToast } from 'vue-toastification'
+import type ITransaction from "@/interfaces/ITransaction.interface";
+import { useTransactionsStore } from "@/stores/TransactionsStore";
+import { formatPriceToDecimal } from "@/utils/currency";
+import { onClickOutside } from "@vueuse/core";
+import { computed, ref, useTemplateRef } from "vue";
+import { useToast } from "vue-toastification";
 
-const store = useTransactionsStore()
-const maxDigits = 7
+const store = useTransactionsStore();
+const maxDigits = 7;
 
 const emit = defineEmits<{
-  closeModal: []
-}>()
+  closeModal: [];
+}>();
+
 defineProps<{
-  isModalOpen: boolean
-}>()
+  isModalOpen: boolean;
+}>();
 
-const toast = useToast()
+const toast = useToast();
 
-const modalTarget = useTemplateRef('modalRef')
+const modalTarget = useTemplateRef("modalRef");
 const closeModal = () => {
-  emit('closeModal')
-  clearInputs()
-}
-onClickOutside(modalTarget, closeModal)
+  emit("closeModal");
+  clearInputs();
+};
+onClickOutside(modalTarget, closeModal);
 
-const description = ref('')
-const amount = ref<string | undefined>()
+const description = ref("");
+const amount = ref<string | undefined>();
 
 const amountInput = (event: InputEvent) => {
-  const target = event.target as HTMLInputElement
-  let value = target.value
-  const isNegative = target.value.startsWith('-')
+  const target = event.target as HTMLInputElement;
+  let value = target.value;
+  const isNegative = target.value.startsWith("-");
 
-  value = formatPriceToDecimal(value, maxDigits)
+  value = formatPriceToDecimal(value, maxDigits);
 
-  if (value == '0' || isNaN(Number.parseFloat(value))) {
-    amount.value = undefined
-    return
+  if (value == "0" || isNaN(Number.parseFloat(value))) {
+    amount.value = undefined;
+    return;
   }
 
-  const floatValue = Number.parseFloat(value) / 100
-  let amountDisplay = Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL' }).format(
-    floatValue,
-  )
-  amountDisplay = amountDisplay.slice(3, amountDisplay.length)
+  const floatValue = Number.parseFloat(value) / 100;
+  let amountDisplay = Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  }).format(floatValue);
+  amountDisplay = amountDisplay.slice(3, amountDisplay.length);
 
-  amount.value = isNegative ? '-' + amountDisplay : amountDisplay
-}
+  amount.value = isNegative ? "-" + amountDisplay : amountDisplay;
+};
 
 const disabled = computed(() => {
-  return isInvalid() || loading.value
-})
-const loading = ref(false)
+  return isInvalid() || loading.value;
+});
+const loading = ref(false);
 const isInvalid = () => {
-  return !description.value || !amount.value
-}
+  return !description.value || !amount.value;
+};
 
 const clearInputs = () => {
-  description.value = ''
-  amount.value = undefined
-}
+  description.value = "";
+  amount.value = undefined;
+};
 
 const onSubmit = () => {
-  loading.value = true
+  loading.value = true;
 
   if (isInvalid()) {
-    toast.error('Inputs inválidas!')
-    return
+    toast.error("Inputs inválidas!");
+    return;
   }
 
-  const amountValue = Number.parseFloat(formatPriceToDecimal(amount.value!, maxDigits)) / 100
+  const amountValue =
+    Number.parseFloat(formatPriceToDecimal(amount.value!, maxDigits)) / 100;
 
-  const amountToStore = amount.value!.startsWith('-') ? amountValue * -1 : amountValue
+  const amountToStore = amount.value!.startsWith("-")
+    ? amountValue * -1
+    : amountValue;
 
   const transactionData: ITransaction = {
     id: Date.now(),
     amount: amountToStore,
     isIncome: amountToStore > 0,
     description: description.value,
-  }
+  };
 
-  store.addTransaction(transactionData)
-  closeModal()
+  store.addTransaction(transactionData);
+  closeModal();
 
-  toast.success('Adicionado!')
-  loading.value = false
-}
+  toast.success("Adicionado!");
+  loading.value = false;
+};
 </script>
 
 <style scoped>
@@ -183,7 +190,7 @@ form {
 }
 
 .amount label::before {
-  content: 'R$';
+  content: "R$";
   position: absolute;
   left: -25%;
   top: 50%;

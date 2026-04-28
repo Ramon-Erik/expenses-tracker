@@ -3,15 +3,18 @@
 </template>
 
 <script setup lang="ts">
-import { useTransactionsStore } from '@/stores/TransactionsStore'
-import { currencyFormat } from '@/utils/currency'
-import { computed } from 'vue'
+import { useTransactionsStore } from "@/stores/TransactionsStore";
+import { currencyFormat } from "@/utils/currency";
+import { computed } from "vue";
 
-const store = useTransactionsStore()
+const store = useTransactionsStore();
 
 const total = computed(() =>
-  store.transactionsList.reduce((acc, nextTransaction) => acc + nextTransaction.amount, 0),
-)
+  store.transactionsList.reduce(
+    (acc, nextTransaction) => acc + nextTransaction.amount,
+    0
+  )
+);
 </script>
 
 <style scoped>

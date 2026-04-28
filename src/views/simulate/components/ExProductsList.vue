@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCart } from '@/stores/CartStore'
-import ExNewProduct from './ExNewProduct.vue'
-import { currencyFormat } from '@/utils/currency'
+import { useCart } from "@/stores/CartStore";
+import ExNewProduct from "./ExNewProduct.vue";
+import { currencyFormat } from "@/utils/currency";
 
-const store = useCart()
+const store = useCart();
 </script>
 
 <style scoped>

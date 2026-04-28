@@ -6,13 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import ExAddModal from './ExAddModal.vue'
-import { ref } from 'vue'
+import ExAddModal from "./ExAddModal.vue";
+import { ref } from "vue";
 
-const isModalOpen = ref(false)
+const isModalOpen = ref(false);
 const toggleModal = () => {
-  isModalOpen.value = !isModalOpen.value
-}
+  isModalOpen.value = !isModalOpen.value;
+};
 </script>
 
 <style scoped>

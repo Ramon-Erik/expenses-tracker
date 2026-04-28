@@ -12,27 +12,27 @@
 </template>
 
 <script setup lang="ts">
-import { useTransactionsStore } from '@/stores/TransactionsStore'
-import { currencyFormat } from '@/utils/currency'
-import { computed } from 'vue'
+import { useTransactionsStore } from "@/stores/TransactionsStore";
+import { currencyFormat } from "@/utils/currency";
+import { computed } from "vue";
 
-const store = useTransactionsStore()
+const store = useTransactionsStore();
 
 function totalAmount(condition: boolean) {
   const total = store.transactionsList.reduce((acc, tr) => {
-    return tr.isIncome == condition ? acc + tr.amount : acc
-  }, 0)
+    return tr.isIncome == condition ? acc + tr.amount : acc;
+  }, 0);
 
-  return currencyFormat(total || 0)
+  return currencyFormat(total || 0);
 }
 
 const income = computed(() => {
-  return totalAmount(true)
-})
+  return totalAmount(true);
+});
 
 const expense = computed(() => {
-  return totalAmount(false)
-})
+  return totalAmount(false);
+});
 </script>
 
 <style scoped>
