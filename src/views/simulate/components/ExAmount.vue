@@ -20,7 +20,7 @@
       />
     </label>
   </div>
-  <p>Sobra: {{ currencyFormat(total) }}</p>
+  <p data-test-id="totalParagraph">Sobra: {{ currencyFormat(total) }}</p>
 </template>
 
 <script setup lang="ts">
