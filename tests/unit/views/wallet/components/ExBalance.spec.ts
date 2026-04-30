@@ -1,3 +1,4 @@
+import ITransaction from "@/interfaces/ITransaction.interface";
 import { useTransactionsStore } from "@/stores/TransactionsStore";
 import { currencyFormat } from "@/utils/currency";
 import ExBalance from "@/views/wallet/components/ExBalance.vue";
@@ -23,11 +24,7 @@ describe("ExBalance", () => {
       mountComponent();
     const store = useTransactionsStore();
 
-    beforeEach(() => {
-      createTestingPinia();
-    });
-
-    const expenses = [
+    const expenses: ITransaction[] = [
       {
         id: 1,
         description: "string",
@@ -35,12 +32,13 @@ describe("ExBalance", () => {
         isIncome: true,
       },
       {
-        id: 2,
+        id: 22,
         description: "mock",
-        amount: 10,
+        amount: -10,
         isIncome: false,
       },
     ];
+
     const totalMoney = expenses.reduce(
       (acc, nextTransaction) => acc + nextTransaction.amount,
       0
@@ -50,6 +48,8 @@ describe("ExBalance", () => {
 
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find("p#balance")).toContain(currencyFormat(totalMoney));
+    expect(wrapper.find("p#balance").text()).toContain(
+      currencyFormat(totalMoney)
+    );
   });
 });
