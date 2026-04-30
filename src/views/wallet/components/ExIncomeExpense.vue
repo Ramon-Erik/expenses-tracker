@@ -2,11 +2,15 @@
   <div class="inc-exp-container">
     <div class="inc-exp-card">
       <h4>Entradas</h4>
-      <p id="money-plus" class="money plus">{{ income }}</p>
+      <p data-test-id="incomes" id="money-plus" class="money plus">
+        {{ income }}
+      </p>
     </div>
     <div class="inc-exp-card">
       <h4>Saídas</h4>
-      <p id="money-minus" class="money minus">{{ expense }}</p>
+      <p data-test-id="outcomes" id="money-minus" class="money minus">
+        {{ expense }}
+      </p>
     </div>
   </div>
 </template>
