@@ -5,24 +5,29 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
-    "test:w": "vue-cli-service test:unit --watch",
-    "test:c": "vue-cli-service test:unit --coverage",
-    "test:wAll": "vue-cli-service test:unit --watchAll",
     "lint": "vue-cli-service lint",
-    "format": "vue-cli-service lint --fix"
+    "format": "vue-cli-service lint --fix",
+    "test": "vue-cli-service test:unit",
+    "test:c": "vue-cli-service test:unit --coverage",
+    "test:w": "vue-cli-service test:unit --watch",
+    "test:wAll": "vue-cli-service test:unit --watchAll"
   },
   "dependencies": {
+    "@mdi/font": "5.9.55",
     "@vueuse/core": "^14.2.1",
     "core-js": "^3.8.3",
     "pinia": "^2.3.1",
+    "roboto-fontface": "*",
     "vue": "^3.5.33",
     "vue-router": "^4.6.4",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-toastification": "^2.0.0-rc.5",
+    "vuetify": "^3.0.0-beta.0",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@pinia/testing": "^1.0.3",
     "@types/jest": "^27.0.1",
+    "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -42,6 +47,8 @@
     "jest": "^27.0.5",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.4",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "webpack-plugin-vuetify": "^2.0.0-alpha.0"
   }
 }

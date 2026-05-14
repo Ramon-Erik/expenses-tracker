@@ -1,5 +1,5 @@
 <template>
-  <footer>Desenvolvido por Ramon</footer>
+  <footer>Desenvolvido por Ramon &copy;</footer>
 </template>
 
 <style scoped>

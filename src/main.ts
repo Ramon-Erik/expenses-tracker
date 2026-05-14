@@ -1,18 +1,10 @@
 import { createApp } from "vue";
-import { PluginOptions } from "vue-toastification";
-import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
-import "@/assets/style.css";
-
 import App from "./App.vue";
 import router from "./router/index";
+import vuetify from "./plugins/vuetify";
+import { loadFonts } from "./plugins/webfontloader";
 import { createPinia } from "pinia";
 
+loadFonts();
 const app = createApp(App);
-const toastOptions: PluginOptions = {};
-
-app.use(Toast, toastOptions);
-app.use(createPinia());
-app.use(router);
-
-app.mount("#app");
+app.use(router).use(createPinia()).use(vuetify).mount("#app");

@@ -14,7 +14,7 @@ describe("SimulateCartView", () => {
 
   it("should render ProductsList component", () => {
     expect(wrapper.findComponent({ name: "ExProductsList" }).exists()).toBe(
-      true,
+      true
     );
   });
 
