@@ -1,13 +1,11 @@
 <template>
-  <div class="container">
-    <ExBalance />
-    <ExIncomeExpense />
-    <ExTransactionList />
-  </div>
+  <v-container>
+    <v-container>
+      <ex-new-transaction> </ex-new-transaction>
+    </v-container>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import ExBalance from "./components/ExBalance.vue";
-import ExIncomeExpense from "./components/ExIncomeExpense.vue";
-import ExTransactionList from "./components/ExTransactionList.vue";
+import ExNewTransaction from "./new-transaction/ExNewTransaction.vue";
 </script>
