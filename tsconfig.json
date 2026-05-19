@@ -13,24 +13,14 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "baseUrl": ".",
-    "types": [ 
-      "node",
-      "webpack-env",
-      "jest",
-    ],
+    "types": ["node", "webpack-env", "jest"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
+    "auto-imports.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.d.ts",
@@ -38,7 +28,5 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
