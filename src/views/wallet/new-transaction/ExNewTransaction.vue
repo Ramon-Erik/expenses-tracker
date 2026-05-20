@@ -13,7 +13,7 @@
         clearable
       ></v-text-field>
       <v-expand-transition mode="out-in">
-        <div v-show="form.description" class="transaction-info pt-3">
+        <div v-show="showForm" class="transaction-info pt-3">
           <v-row>
             <v-col cols="6">
               <v-number-input
@@ -134,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const tags = ref([
   { text: "estágio - ida", value: 0 },
@@ -154,7 +154,19 @@ const formDefault = {
 };
 
 const form = ref({ ...formDefault });
+const showForm = ref(false);
+
+watch(
+  () => form.value.description,
+  (newDescription) => {
+    if (newDescription && newDescription.length) {
+      showForm.value = true;
+    }
+  }
+);
+
 const clearForm = () => {
   form.value = { ...formDefault };
+  showForm.value = false;
 };
 </script>
