@@ -69,14 +69,7 @@
                   v-model="form.values.category"
                   variant="outlined"
                   label="Categoria"
-                  :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
-                  ]"
+                  :items="categories"
                   :rules="[rules.required]"
                 ></v-select>
               </v-col>
@@ -85,14 +78,7 @@
                   v-model="form.values.paymentMethod"
                   variant="outlined"
                   label="Método de pagamento"
-                  :items="[
-                    'California',
-                    'Colorado',
-                    'Florida',
-                    'Georgia',
-                    'Texas',
-                    'Wyoming',
-                  ]"
+                  :items="paymentMethods"
                   :rules="[rules.required]"
                 ></v-select>
               </v-col>
@@ -100,29 +86,33 @@
             <v-row>
               <v-col cols="12">
                 <p>Tags (escolha pelo menos uma)</p>
-                <v-chip-group
+                <v-input
                   v-model="form.values.tags"
-                  selected-class="text-primary"
-                  multiple
-                  column
-                  mandatory
+                  :rules="[rules.minElements(1)]"
                 >
-                  <v-chip
-                    v-for="tag in tags"
-                    :key="tag.value"
-                    class="text-capitalize"
-                    :value="tag.value"
-                    :text="tag.text"
-                    filter
-                  ></v-chip>
-                  <v-btn
-                    class="ma-auto ml-0 text-capitalize"
-                    density="comfortable"
-                    rounded="xl"
-                    prepend-icon="mdi-plus"
-                    >Nova Tag</v-btn
+                  <v-chip-group
+                    v-model="form.values.tags"
+                    selected-class="text-primary"
+                    multiple
+                    column
                   >
-                </v-chip-group>
+                    <v-chip
+                      v-for="tag in tags"
+                      :key="tag.value"
+                      class="text-capitalize"
+                      :value="tag.value"
+                      :text="tag.text"
+                      filter
+                    ></v-chip>
+                    <v-btn
+                      class="ma-auto ml-0 text-capitalize"
+                      density="comfortable"
+                      rounded="xl"
+                      prepend-icon="mdi-plus"
+                      >Nova Tag</v-btn
+                    >
+                  </v-chip-group>
+                </v-input>
               </v-col>
             </v-row>
             <v-row class="justify-space-between">
@@ -163,6 +153,28 @@ const tags = ref([
   { text: "comida", value: 2 },
 ]);
 
+const categories = [
+  "Salário",
+  "Extra",
+  "Alimentação",
+  "Transporte",
+  "Moradia",
+  "Saúde",
+  "Educação",
+  "Lazer",
+  "Compras",
+  "Outros",
+];
+
+const paymentMethods = [
+  "Dinheiro",
+  "PIX",
+  "Cartão Crédito",
+  "Cartão Débito",
+  "Transferência",
+  "Outros",
+];
+
 const formDefault = {
   description: "",
   amount: null,
@@ -183,6 +195,10 @@ const showForm = ref(false);
 
 const rules = {
   required: (v: unknown) => !!v || "Este campo é obrigatório",
+  minElements: (min: number) => {
+    return (v: number[]) =>
+      v.length >= min || `Selecione pelo menos ${min} tag${min > 1 ? "s" : ""}`;
+  },
   minValue: (min: number) => {
     return (v: number) => v > min || `Valores a partir de ${min}`;
   },
