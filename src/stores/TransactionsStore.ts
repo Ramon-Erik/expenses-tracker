@@ -1,61 +1,65 @@
-import type ITransaction from "@/interfaces/ITransaction.interface";
+import type {
+  IRawTransaction,
+  ITransaction,
+} from "@/interfaces/ITransaction.interface";
+import { currencyFormat } from "@/utils/currency";
 import { defineStore } from "pinia";
-import { readonly, ref } from "vue";
+import { computed, ref } from "vue";
 
-export const useTransactionsStore = defineStore("transactions", () => {
-  const LOCAL_KEY = "exp-tracker";
+export const useTransactions = defineStore("transactions", () => {
+  const LOCAL_KEY = "ex-transactions";
 
   const storedTransactions: ITransaction[] = JSON.parse(
-    localStorage.getItem(LOCAL_KEY) || "[]"
+    localStorage.getItem(LOCAL_KEY) || "[ ]"
   );
 
-  const _transactionsList = ref(storedTransactions);
-  const transactionsList = readonly(_transactionsList);
+  const transactionsList = ref(storedTransactions);
+  transactionsList.value.push({
+    description: "string",
+    amount: 100,
+    isIncoming: true,
+    inicialDate: new Date(),
+    finalDate: null,
+    category: "0",
+    paymentMethod: "1",
+    tags: ["oo"],
+    id: 123435678,
+  });
+  const monthBalance = computed(() => {
+    const balance = {
+      incomes: currencyFormat(0),
+      outcomes: currencyFormat(0),
+      balance: currencyFormat(0),
+    };
+    return balance;
+  });
 
   const updateLocalList = (callbackFn: () => void) => {
     callbackFn();
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(_transactionsList.value));
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value));
   };
 
-  const isInvalidTransaction = (tr: ITransaction) => {
-    if (
-      tr.id >= 0 &&
-      tr.amount >= 0 == tr.isIncome &&
-      tr.description.length >= 3 &&
-      !isNaN(tr.amount)
-    ) {
-      return false;
-    }
-    return true;
-  };
-
-  const addTransaction = (newTransaction: ITransaction) => {
-    const searchTransaction = _transactionsList.value.findIndex(
-      (tr) => tr.id == newTransaction.id
-    );
-    if (searchTransaction >= 0) {
-      throw new Error("Transação com mesmo ID!");
-    }
-
-    if (isInvalidTransaction(newTransaction)) {
-      throw new Error("Transação com informações incompletas!");
-    }
-
+  const addTransaction = (newTransaction: IRawTransaction) => {
+    const transaction = {
+      id: Date.now(),
+      ...newTransaction,
+    } as ITransaction;
     updateLocalList(() => {
-      _transactionsList.value.push(newTransaction);
+      transactionsList.value.push(transaction);
     });
   };
 
-  const deleteTransaction = (id: number) => {
-    updateLocalList(() => {
-      _transactionsList.value = transactionsList.value.filter(
-        (tr) => tr.id != id
-      );
-    });
-  };
+  // const deleteTransaction = (id: number) => {
+  //   updateLocalList(() => {
+  //     transactionsList.value = transactionsList.value.filter(
+  //       (tr) => tr.id != id
+  //     );
+  //   });
+  // };
   return {
     transactionsList,
+    monthBalance,
     addTransaction,
-    deleteTransaction,
+    // deleteTransaction,
   };
 });

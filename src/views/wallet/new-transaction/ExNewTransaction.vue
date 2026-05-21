@@ -183,7 +183,7 @@ const formDefault = {
   finalDate: null,
   category: null,
   paymentMethod: null,
-  tags: [],
+  tags: [] as string[],
 };
 
 const form = ref({
@@ -229,7 +229,7 @@ const clearForm = () => {
 };
 
 const handleSubmit = () => {
-  console.log(form.value);
+  console.log(form.value.values);
 };
 
 watch(
