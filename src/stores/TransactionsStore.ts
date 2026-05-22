@@ -16,10 +16,24 @@ export const useTransactions = defineStore("transactions", () => {
   const transactionsList = ref(storedTransactions);
 
   const monthBalance = computed(() => {
+    const data = transactionsList.value.reduce(
+      (acc, tr) => {
+        return {
+          balance: (tr.isIncoming ? tr.amount : tr.amount * -1) + acc.balance,
+          outcomes: (tr.isIncoming ? 0 : tr.amount * -1) + acc.outcomes,
+          incomes: (tr.isIncoming ? tr.amount : 0) + acc.incomes,
+        };
+      },
+      {
+        incomes: 0,
+        outcomes: 0,
+        balance: 0,
+      }
+    );
     const balance = {
-      incomes: currencyFormat(0),
-      outcomes: currencyFormat(0),
-      balance: currencyFormat(0),
+      incomes: currencyFormat(data.incomes),
+      outcomes: currencyFormat(data.outcomes),
+      balance: currencyFormat(data.balance),
     };
     return balance;
   });
