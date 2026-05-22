@@ -4,7 +4,7 @@ export interface ITransaction {
   amount: number;
   isIncoming: boolean;
   inicialDate: Date;
-  finalDate: null | Date;
+  finalDate: Date | null;
   category: string;
   paymentMethod: string;
   tags: string[];
