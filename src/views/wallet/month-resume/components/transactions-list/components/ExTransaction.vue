@@ -1,63 +1,92 @@
 <template>
-  <v-container class="d-flex align-center ga-3 border rounded-lg pa-4">
-    <div class="d-flex align-center">
-      <v-icon
-        icon="mdi-arrow-up-bold-circle-outline"
-        color="green"
-        size="28"
-      ></v-icon>
-    </div>
-
-    <div class="flex-grow-1 d-flex flex-column ga-1">
-      <div class="d-flex justify-space-between align-center">
-        <span
-          class="text-h6 font-weight-bold text-truncate"
-          style="max-width: 200px"
-        >
-          {{ tr.description }}
-        </span>
-
-        <span class="text-h6 font-weight-bold text-green">
-          + R$ 43.334.345,60
-        </span>
-      </div>
-
-      <div class="text-body-2 text-medium-emphasis">
-        <span>20 de mai.</span>
-        <span class="mx-1">•</span>
-        <span>Alimentação</span>
-      </div>
-
-      <div class="text-body-2 text-medium-emphasis font-weight-medium">PIX</div>
-
-      <div class="mt-1">
-        <v-chip
-          color="blue"
-          size="small"
-          variant="flat"
-          class="rounded-lg text-white font-weight-bold px-3"
-        >
-          fixo
-        </v-chip>
-      </div>
-    </div>
-
-    <div class="d-flex align-center">
-      <v-btn
-        color="grey-lighten-1"
-        icon="mdi-trash-can-outline"
-        variant="text"
-        density="comfortable"
+  <v-card class="my-2 pb-2 border-md">
+    <v-card-text class="d-flex ga-4 justify-space-between">
+      <v-avatar
+        :color="
+          tr.isIncoming ? 'rgba(76, 175, 80, 0.15)' : 'rgba(244, 67, 54, 0.15)'
+        "
+        size="40"
       >
-      </v-btn>
-    </div>
-  </v-container>
+        <v-icon
+          :icon="
+            tr.isIncoming ? 'mdi-arrow-up-circle' : 'mdi-arrow-down-circle'
+          "
+          :color="tr.isIncoming ? 'green-accent-3' : 'red-accent-3'"
+          size="28"
+        />
+      </v-avatar>
+
+      <div class="flex-grow-1">
+        <div class="w-100 pr-1">
+          <span
+            class="text-subtitle-1 font-weight-bold text-wrap line-clamp-2 pr-2"
+          >
+            {{ tr.description }}
+          </span>
+        </div>
+        <div class="mt-1">
+          <div
+            class="d-flex flex-wrap align-center text-caption text-grey-darken-1 gap-1"
+          >
+            <span>{{ formatDate(tr.inicialDate) }}</span>
+            <v-icon icon="mdi-circle" size="4" class="mx-1" />
+            <span>{{ tr.paymentMethod }}</span>
+            <v-icon icon="mdi-circle" size="4" class="mx-1" />
+            <span>{{ tr.category }}</span>
+          </div>
+          <div>
+            <span
+              :class="[
+                'text-h6 font-weight-bold ml-auto',
+                tr.isIncoming ? 'text-green-accent-3' : 'text-red-accent-3',
+              ]"
+            >
+              {{ formatCurrency(tr.amount) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <v-btn
+        icon="mdi-delete-outline"
+        variant="text"
+        color="grey-lighten-1"
+        size="small"
+        @click="store.deleteTransaction(tr.id)"
+      />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup lang="ts">
 import { ITransaction } from "@/interfaces/ITransaction.interface";
+import { useTransactions } from "@/stores/TransactionsStore";
 
-defineProps<{
+const props = defineProps<{
   tr: ITransaction;
 }>();
+
+const store = useTransactions();
+
+// Auxiliares de formatação
+const formatCurrency = (value: number) => {
+  const sign = props.tr.isIncoming ? "+ " : "- ";
+
+  return (
+    sign +
+    new Intl.NumberFormat("pt-BR", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+      currency: "BRL",
+      style: "currency",
+    }).format(value)
+  );
+};
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+  }).format(new Date(date));
+};
 </script>

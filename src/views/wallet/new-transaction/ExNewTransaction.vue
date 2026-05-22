@@ -4,11 +4,7 @@
       <h2>Nova movimentação</h2>
     </v-card-title>
     <v-card-text>
-      <v-form
-        v-model="form.valid"
-        :ref="(el: VFormRef) => form.ref = el"
-        @submit.prevent="handleSubmit"
-      >
+      <v-form v-model="form.valid" ref="formRef" @submit.prevent="handleSubmit">
         <v-text-field
           v-model="form.values.description"
           label="Descrição"
@@ -19,7 +15,7 @@
           clearable
         ></v-text-field>
         <v-expand-transition mode="out-in">
-          <div v-show="showForm" class="transaction-info pt-3">
+          <div v-if="showForm" class="transaction-info pt-3">
             <v-row>
               <v-col cols="6">
                 <v-number-input
@@ -142,10 +138,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { IRawTransaction } from "@/interfaces/ITransaction.interface";
+import { useTransactions } from "@/stores/TransactionsStore";
+import { ComponentPublicInstance, nextTick, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
 
-type VFormRef = InstanceType<typeof VForm>;
+const store = useTransactions();
+
+type VFormRef = ComponentPublicInstance & InstanceType<typeof VForm>;
 
 const tags = ref([
   { text: "estágio - ida", value: 0 },
@@ -183,14 +183,14 @@ const formDefault = {
   finalDate: null,
   category: null,
   paymentMethod: null,
-  tags: [] as string[],
+  tags: [] as number[],
 };
 
 const form = ref({
   values: { ...formDefault },
   valid: null as boolean | null,
-  ref: null as VFormRef | null,
 });
+const formRef = ref<null | VFormRef>(null);
 const showForm = ref(false);
 
 const rules = {
@@ -221,20 +221,51 @@ const rules = {
   },
 };
 
-const clearForm = () => {
-  if (form.value.ref) form.value.ref.reset();
+const clearForm = async () => {
+  form.value.values.description = "";
+  form.value.values.amount = formDefault.amount;
+  form.value.values.isIncoming = formDefault.isIncoming;
+  form.value.values.inicialDate = new Date();
+  form.value.values.finalDate = formDefault.finalDate;
+  form.value.values.category = formDefault.category;
+  form.value.values.paymentMethod = formDefault.paymentMethod;
+  form.value.values.tags = [];
 
-  form.value.values = { ...formDefault };
+  form.value.valid = null;
+
+  await nextTick();
+  if (formRef.value) formRef.value.resetValidation();
+
   showForm.value = false;
 };
 
+const getTags = (selectedTags: number[]) => {
+  return tags.value
+    .filter((t) => selectedTags.includes(t.value))
+    .map((f) => f.text);
+};
+
+const formValueProcessor = (): IRawTransaction => ({
+  description: form.value.values.description || "",
+  amount: form.value.values.amount || 0,
+  category: form.value.values.category || "",
+  finalDate: form.value.values.finalDate || null,
+  inicialDate: form.value.values.inicialDate || "",
+  isIncoming: form.value.values.isIncoming || false,
+  paymentMethod: form.value.values.paymentMethod || "",
+  tags: getTags(form.value.values.tags),
+});
+
 const handleSubmit = () => {
+  if (!form.value.valid) return;
   console.log(form.value.values);
+  store.addTransaction(formValueProcessor());
+  clearForm();
 };
 
 watch(
   () => form.value.values.description,
-  (newDescription) => {
+  async (newDescription) => {
     if (newDescription && newDescription.length) {
       showForm.value = true;
     }

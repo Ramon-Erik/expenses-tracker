@@ -14,17 +14,7 @@ export const useTransactions = defineStore("transactions", () => {
   );
 
   const transactionsList = ref(storedTransactions);
-  transactionsList.value.push({
-    description: "string",
-    amount: 100,
-    isIncoming: true,
-    inicialDate: new Date(),
-    finalDate: null,
-    category: "0",
-    paymentMethod: "1",
-    tags: ["oo"],
-    id: 123435678,
-  });
+
   const monthBalance = computed(() => {
     const balance = {
       incomes: currencyFormat(0),
@@ -49,17 +39,17 @@ export const useTransactions = defineStore("transactions", () => {
     });
   };
 
-  // const deleteTransaction = (id: number) => {
-  //   updateLocalList(() => {
-  //     transactionsList.value = transactionsList.value.filter(
-  //       (tr) => tr.id != id
-  //     );
-  //   });
-  // };
+  const deleteTransaction = (id: number) => {
+    updateLocalList(() => {
+      transactionsList.value = transactionsList.value.filter(
+        (tr) => tr.id != id
+      );
+    });
+  };
   return {
     transactionsList,
     monthBalance,
     addTransaction,
-    // deleteTransaction,
+    deleteTransaction,
   };
 });
