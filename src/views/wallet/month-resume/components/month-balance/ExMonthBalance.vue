@@ -18,7 +18,9 @@
       <ex-template
         :title="'Saldo'"
         :text="store.monthBalance.balance"
-        color=""
+        :color="
+          store.monthBalance.balance.includes('-') ? 'text-red' : 'text-green'
+        "
       ></ex-template>
     </v-col>
   </v-row>
