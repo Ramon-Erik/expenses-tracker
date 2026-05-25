@@ -6,6 +6,6 @@ describe("WalletView", () => {
     const wrapper = shallowMount(WalletView, { shallow: true });
     const components = wrapper.findAll(".container > *");
 
-    expect(components.length).toBe(3);
+    expect(components.length).toBe(2);
   });
 });
