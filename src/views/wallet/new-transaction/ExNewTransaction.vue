@@ -15,7 +15,7 @@
           clearable
         ></v-text-field>
         <v-expand-transition mode="out-in">
-          <div v-if="showForm" class="transaction-info pt-3">
+          <div v-if="true" class="transaction-info pt-3">
             <v-row>
               <v-col cols="6">
                 <v-number-input
@@ -105,6 +105,7 @@
                       density="comfortable"
                       rounded="xl"
                       prepend-icon="mdi-plus"
+                      @click="isNewTagDialogOpen = true"
                       >Nova Tag</v-btn
                     >
                   </v-chip-group>
@@ -135,6 +136,7 @@
       </v-form>
     </v-card-text>
   </v-card>
+  <ex-new-tag-dialog v-model:isOpen="isNewTagDialogOpen"></ex-new-tag-dialog>
 </template>
 
 <script setup lang="ts">
@@ -142,16 +144,17 @@ import { IRawTransaction } from "@/interfaces/ITransaction.interface";
 import { useTransactions } from "@/stores/TransactionsStore";
 import { ComponentPublicInstance, nextTick, ref, watch } from "vue";
 import type { VForm } from "vuetify/components";
-
-const store = useTransactions();
+import ExNewTagDialog from "./components/ExNewTagDialog.vue";
 
 type VFormRef = ComponentPublicInstance & InstanceType<typeof VForm>;
 
-const tags = ref([
-  { text: "estágio - ida", value: 0 },
-  { text: "estágio - volta", value: 1 },
-  { text: "comida", value: 2 },
-]);
+const store = useTransactions();
+
+const isNewTagDialogOpen = ref(false);
+
+const tags = store.tagList;
+
+console.log(tags);
 
 const categories = [
   "Salário",
@@ -240,9 +243,7 @@ const clearForm = async () => {
 };
 
 const getTags = (selectedTags: number[]) => {
-  return tags.value
-    .filter((t) => selectedTags.includes(t.value))
-    .map((f) => f.text);
+  return tags.filter((t) => selectedTags.includes(t.value)).map((f) => f.text);
 };
 
 const formValueProcessor = (): IRawTransaction => ({

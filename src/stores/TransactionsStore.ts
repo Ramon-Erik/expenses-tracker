@@ -7,13 +7,19 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 export const useTransactions = defineStore("transactions", () => {
-  const LOCAL_KEY = "ex-transactions";
+  const LOCAL_KEY_TRANSACTION = "ex-transactions";
+  const LOCAL_KEY_TAGS = "ex-tags";
 
   const storedTransactions: ITransaction[] = JSON.parse(
-    localStorage.getItem(LOCAL_KEY) || "[ ]"
+    localStorage.getItem(LOCAL_KEY_TRANSACTION) || "[ ]"
+  );
+
+  const storedTags: { text: string; value: number }[] = JSON.parse(
+    localStorage.getItem(LOCAL_KEY_TAGS) || "[ ]"
   );
 
   const transactionsList = ref(storedTransactions);
+  const tagList = ref(storedTags);
 
   const monthBalance = computed(() => {
     const data = transactionsList.value.reduce(
@@ -38,9 +44,13 @@ export const useTransactions = defineStore("transactions", () => {
     return balance;
   });
 
-  const updateLocalList = (callbackFn: () => void) => {
+  const updateLocalList = (
+    key: string,
+    list: unknown[],
+    callbackFn: () => void
+  ) => {
     callbackFn();
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(transactionsList.value));
+    localStorage.setItem(key, JSON.stringify(list));
   };
 
   const addTransaction = (newTransaction: IRawTransaction) => {
@@ -48,21 +58,34 @@ export const useTransactions = defineStore("transactions", () => {
       id: Date.now(),
       ...newTransaction,
     } as ITransaction;
-    updateLocalList(() => {
+    updateLocalList(LOCAL_KEY_TRANSACTION, transactionsList.value, () => {
       transactionsList.value.push(transaction);
     });
   };
 
   const deleteTransaction = (id: number) => {
-    updateLocalList(() => {
+    updateLocalList(LOCAL_KEY_TRANSACTION, transactionsList.value, () => {
       transactionsList.value = transactionsList.value.filter(
         (tr) => tr.id != id
       );
     });
   };
+
+  const addTag = (tagName: string) => {
+    const tag = {
+      text: tagName,
+      value: Date.now(),
+    };
+    updateLocalList(LOCAL_KEY_TAGS, tagList.value, () => {
+      tagList.value.push(tag);
+    });
+  };
+
   return {
     transactionsList,
+    tagList,
     monthBalance,
+    addTag,
     addTransaction,
     deleteTransaction,
   };
