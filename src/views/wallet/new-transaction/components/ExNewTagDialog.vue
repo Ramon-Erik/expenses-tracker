@@ -7,16 +7,16 @@
           label="Nome da tag"
           variant="outlined"
           placeholder="Ex: Salário, Transporte"
+          :rules="[rules.required, rules.maxWords]"
           persistent-placeholder
           clearable
         >
-          <!-- :rules="[rules.required, rules.minLength(3), rules.maxLength(30)]" -->
         </v-text-field>
       </v-card-text>
       <v-card-actions>
         <v-btn text="fechar" @click="close"></v-btn>
         <v-spacer></v-spacer>
-        <v-btn text="salvar" @click="addNewTag"></v-btn>
+        <v-btn text="salvar" @click="addNewTag" color="green"></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -45,5 +45,11 @@ const newTag = ref("");
 const addNewTag = () => {
   store.addTag(newTag.value);
   close();
+};
+
+const rules = {
+  required: (v: string) => !!v || "Adicione o nome da tag.",
+  maxWords: (v: string) =>
+    v.trim().split(" ").length > 2 ? "Use apenas duas palavras." : true,
 };
 </script>

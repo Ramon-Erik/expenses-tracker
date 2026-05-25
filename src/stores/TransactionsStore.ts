@@ -4,7 +4,7 @@ import type {
 } from "@/interfaces/ITransaction.interface";
 import { currencyFormat } from "@/utils/currency";
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 export const useTransactions = defineStore("transactions", () => {
   const LOCAL_KEY_TRANSACTION = "ex-transactions";
@@ -24,11 +24,14 @@ export const useTransactions = defineStore("transactions", () => {
   const monthBalance = computed(() => {
     const data = transactionsList.value.reduce(
       (acc, tr) => {
-        return {
-          balance: (tr.isIncoming ? tr.amount : tr.amount * -1) + acc.balance,
-          outcomes: (tr.isIncoming ? 0 : tr.amount * -1) + acc.outcomes,
-          incomes: (tr.isIncoming ? tr.amount : 0) + acc.incomes,
-        };
+        if (tr.isIncoming) {
+          acc.incomes += tr.amount;
+          acc.balance += tr.amount;
+        } else {
+          acc.outcomes -= tr.amount;
+          acc.balance -= tr.amount;
+        }
+        return acc;
       },
       {
         incomes: 0,
@@ -44,31 +47,17 @@ export const useTransactions = defineStore("transactions", () => {
     return balance;
   });
 
-  const updateLocalList = (
-    key: string,
-    list: unknown[],
-    callbackFn: () => void
-  ) => {
-    callbackFn();
-    localStorage.setItem(key, JSON.stringify(list));
-  };
-
   const addTransaction = (newTransaction: IRawTransaction) => {
     const transaction = {
       id: Date.now(),
       ...newTransaction,
     } as ITransaction;
-    updateLocalList(LOCAL_KEY_TRANSACTION, transactionsList.value, () => {
-      transactionsList.value.push(transaction);
-    });
+
+    transactionsList.value.push(transaction);
   };
 
   const deleteTransaction = (id: number) => {
-    updateLocalList(LOCAL_KEY_TRANSACTION, transactionsList.value, () => {
-      transactionsList.value = transactionsList.value.filter(
-        (tr) => tr.id != id
-      );
-    });
+    transactionsList.value = transactionsList.value.filter((tr) => tr.id != id);
   };
 
   const addTag = (tagName: string) => {
@@ -76,16 +65,40 @@ export const useTransactions = defineStore("transactions", () => {
       text: tagName,
       value: Date.now(),
     };
-    updateLocalList(LOCAL_KEY_TAGS, tagList.value, () => {
-      tagList.value.push(tag);
-    });
+    tagList.value.push(tag);
   };
+
+  const deleteTag = (id: number) => {
+    console.log(id);
+
+    tagList.value = tagList.value.filter((tag) => tag.value != id);
+  };
+
+  watch(
+    transactionsList,
+    () => {
+      localStorage.setItem(
+        LOCAL_KEY_TRANSACTION,
+        JSON.stringify(transactionsList.value)
+      );
+    },
+    { deep: true }
+  );
+
+  watch(
+    tagList,
+    () => {
+      localStorage.setItem(LOCAL_KEY_TAGS, JSON.stringify(tagList.value));
+    },
+    { deep: true }
+  );
 
   return {
     transactionsList,
     tagList,
     monthBalance,
     addTag,
+    deleteTag,
     addTransaction,
     deleteTransaction,
   };

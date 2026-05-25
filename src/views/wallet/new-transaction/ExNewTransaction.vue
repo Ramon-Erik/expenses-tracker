@@ -11,11 +11,12 @@
           variant="outlined"
           placeholder="Ex: Salário, Transporte"
           :rules="[rules.required, rules.minLength(3), rules.maxLength(30)]"
+          validate-on="submit"
           persistent-placeholder
           clearable
         ></v-text-field>
         <v-expand-transition mode="out-in">
-          <div v-if="true" class="transaction-info pt-3">
+          <div v-if="showForm" class="transaction-info pt-3">
             <v-row>
               <v-col cols="6">
                 <v-number-input
@@ -23,6 +24,7 @@
                   variant="outlined"
                   label="Valor total (R$)"
                   placeholder="0.00"
+                  :precision="2"
                   control-variant="hidden"
                   :rules="[rules.required, rules.minValue(0)]"
                   persistent-placeholder
@@ -67,6 +69,7 @@
                   label="Categoria"
                   :items="categories"
                   :rules="[rules.required]"
+                  validate-on="submit"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
@@ -76,6 +79,7 @@
                   label="Método de pagamento"
                   :items="paymentMethods"
                   :rules="[rules.required]"
+                  validate-on="submit"
                 ></v-select>
               </v-col>
             </v-row>
@@ -93,8 +97,9 @@
                     column
                   >
                     <v-chip
-                      v-for="tag in tags"
+                      v-for="tag in store.tagList"
                       :key="tag.value"
+                      @dblclick="store.deleteTag(tag.value)"
                       class="text-capitalize"
                       :value="tag.value"
                       :text="tag.text"
@@ -152,10 +157,6 @@ const store = useTransactions();
 
 const isNewTagDialogOpen = ref(false);
 
-const tags = store.tagList;
-
-console.log(tags);
-
 const categories = [
   "Salário",
   "Extra",
@@ -197,7 +198,8 @@ const formRef = ref<null | VFormRef>(null);
 const showForm = ref(false);
 
 const rules = {
-  required: (v: unknown) => !!v || "Este campo é obrigatório",
+  required: (v: unknown) =>
+    (!!v && showForm.value) || "Este campo é obrigatório",
   minElements: (min: number) => {
     return (v: number[]) =>
       v.length >= min || `Selecione pelo menos ${min} tag${min > 1 ? "s" : ""}`;
@@ -243,7 +245,9 @@ const clearForm = async () => {
 };
 
 const getTags = (selectedTags: number[]) => {
-  return tags.filter((t) => selectedTags.includes(t.value)).map((f) => f.text);
+  return store.tagList
+    .filter((t) => selectedTags.includes(t.value))
+    .map((f) => f.text);
 };
 
 const formValueProcessor = (): IRawTransaction => ({
