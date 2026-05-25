@@ -1,5 +1,5 @@
 <template>
-  <v-card class="my-2 pb-2 border-md">
+  <v-card class="pb-2 border-md">
     <v-card-text class="d-flex ga-4 justify-space-between">
       <v-avatar
         :color="

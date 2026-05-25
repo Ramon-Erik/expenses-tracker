@@ -1,11 +1,14 @@
 <template>
   <v-container class="pa-0 mt-6">
     <h3 class="text-title-medium mb-4">Movimentações</h3>
-    <ex-transaction
-      v-for="tr in store.transactionsList"
-      :key="tr.id"
-      :tr="tr"
-    ></ex-transaction>
+
+    <div class="transactions-list d-flex flex-column ga-4">
+      <ex-transaction
+        v-for="tr in store.transactionsList"
+        :key="tr.id"
+        :tr="tr"
+      ></ex-transaction>
+    </div>
   </v-container>
 </template>
 
