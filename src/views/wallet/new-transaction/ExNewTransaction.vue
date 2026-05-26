@@ -11,7 +11,6 @@
           variant="outlined"
           placeholder="Ex: Salário, Transporte"
           :rules="[rules.required, rules.minLength(3), rules.maxLength(30)]"
-          validate-on="submit"
           persistent-placeholder
           clearable
         ></v-text-field>
@@ -69,7 +68,6 @@
                   label="Categoria"
                   :items="categories"
                   :rules="[rules.required]"
-                  validate-on="submit"
                 ></v-select>
               </v-col>
               <v-col cols="12" sm="6">
@@ -79,7 +77,6 @@
                   label="Método de pagamento"
                   :items="paymentMethods"
                   :rules="[rules.required]"
-                  validate-on="submit"
                 ></v-select>
               </v-col>
             </v-row>
