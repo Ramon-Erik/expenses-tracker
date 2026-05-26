@@ -11,6 +11,7 @@
           variant="outlined"
           placeholder="Ex: Salário, Transporte"
           :rules="[rules.required, rules.minLength(3), rules.maxLength(30)]"
+          :validate-on="showForm ? 'input' : 'submit'"
           persistent-placeholder
           clearable
         ></v-text-field>
