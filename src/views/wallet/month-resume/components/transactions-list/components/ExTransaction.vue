@@ -35,6 +35,11 @@
             <span>{{ tr.category }}</span>
           </div>
           <div>
+            <div class="tags d-flex flex-wrap ga-2 mt-4">
+              <v-chip v-for="(tag, i) in tr.tags" :key="i" size="small">
+                {{ tag }}
+              </v-chip>
+            </div>
             <span
               :class="[
                 'text-h6 font-weight-bold ml-auto',

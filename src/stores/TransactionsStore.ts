@@ -1,5 +1,6 @@
 import type {
   IRawTransaction,
+  ITag,
   ITransaction,
 } from "@/interfaces/ITransaction.interface";
 import { currencyFormat } from "@/utils/currency";
@@ -14,7 +15,7 @@ export const useTransactions = defineStore("transactions", () => {
     localStorage.getItem(LOCAL_KEY_TRANSACTION) || "[ ]"
   );
 
-  const storedTags: { text: string; value: number }[] = JSON.parse(
+  const storedTags: ITag[] = JSON.parse(
     localStorage.getItem(LOCAL_KEY_TAGS) || "[ ]"
   );
 

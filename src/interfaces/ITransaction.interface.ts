@@ -19,3 +19,8 @@ export interface IRawTransaction {
   paymentMethod: null | string;
   tags: string[];
 }
+
+export interface ITag {
+  text: string;
+  value: number;
+}
