@@ -16,7 +16,7 @@
         />
       </v-avatar>
 
-      <div class="flex-grow-1">
+      <div class="transaction-info flex-grow-1">
         <div class="w-100 pr-1">
           <span
             class="text-subtitle-1 font-weight-bold text-wrap line-clamp-2 pr-2"
@@ -42,7 +42,7 @@
             </div>
             <span
               :class="[
-                'text-h6 font-weight-bold ml-auto',
+                'd-inline-block text-h6 font-weight-bold mt-4 ml-auto',
                 tr.isIncoming ? 'text-green-accent-3' : 'text-red-accent-3',
               ]"
             >
@@ -52,18 +52,37 @@
         </div>
       </div>
 
-      <v-btn
-        icon="mdi-delete-outline"
-        variant="text"
-        color="grey-lighten-1"
-        size="small"
-        @click="store.deleteTransaction(tr.id)"
-      />
+      <v-btn icon="mdi-dots-vertical" size="small" variant="text" @click="show">
+      </v-btn>
     </v-card-text>
   </v-card>
+
+  <v-menu
+    v-model="showMenu"
+    :offset="[-8, -12]"
+    :target="menuTarget"
+    location="bottom end"
+    scroll-strategy="close"
+  >
+    <v-list class="py-0" density="compact" item-value="code" item-props slim>
+      <v-list-item
+        @click="store.deleteTransaction(tr.id)"
+        prepend-icon="mdi-delete-outline"
+      >
+        <v-list-item-title> Apagar </v-list-item-title>
+      </v-list-item>
+      <v-list-item
+        @click="store.deleteTransaction(tr.id)"
+        prepend-icon="mdi-pencil-outline"
+      >
+        <v-list-item-title> Editar </v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import { ITransaction } from "@/interfaces/ITransaction.interface";
 import { useTransactions } from "@/stores/TransactionsStore";
 
@@ -94,4 +113,16 @@ const formatDate = (date: Date) => {
     month: "2-digit",
   }).format(new Date(date));
 };
+
+const showMenu = ref(false);
+const menuTarget = ref<HTMLElement | null>(null);
+
+async function show(evt: MouseEvent) {
+  if (showMenu.value) {
+    showMenu.value = false;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  menuTarget.value = (evt.target as HTMLElement).closest(".v-btn");
+  showMenu.value = true;
+}
 </script>
