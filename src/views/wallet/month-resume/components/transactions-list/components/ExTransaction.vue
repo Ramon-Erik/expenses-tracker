@@ -1,17 +1,10 @@
 <template>
   <v-card class="pb-2 border-md">
     <v-card-text class="d-flex ga-4 justify-space-between">
-      <v-avatar
-        :color="
-          tr.isIncoming ? 'rgba(76, 175, 80, 0.15)' : 'rgba(244, 67, 54, 0.15)'
-        "
-        size="40"
-      >
+      <v-avatar :color="transaction.color" size="40">
         <v-icon
-          :icon="
-            tr.isIncoming ? 'mdi-arrow-up-circle' : 'mdi-arrow-down-circle'
-          "
-          :color="tr.isIncoming ? 'green-accent-3' : 'red-accent-3'"
+          :icon="transaction.icon"
+          :color="transaction.iconColor"
           size="28"
         />
       </v-avatar>
@@ -43,7 +36,7 @@
             <span
               :class="[
                 'd-inline-block text-h6 font-weight-bold mt-4 ml-auto',
-                tr.isIncoming ? 'text-green-accent-3' : 'text-red-accent-3',
+                transaction.type,
               ]"
             >
               {{ formatCurrency(tr.amount) }}
@@ -92,6 +85,15 @@ const props = defineProps<{
 
 const store = useTransactions();
 
+const transaction = ref({
+  color: props.tr.isIncoming
+    ? "rgba(76, 175, 80, 0.15)"
+    : "rgba(244, 67, 54, 0.15)",
+  icon: props.tr.isIncoming ? "mdi-arrow-up-circle" : "mdi-arrow-down-circle",
+  iconColor: props.tr.isIncoming ? "green-accent-3" : "red-accent-3",
+  type: props.tr.isIncoming ? "text-green-accent-3" : "text-red-accent-3",
+});
+
 // Auxiliares de formatação
 const formatCurrency = (value: number) => {
   const sign = props.tr.isIncoming ? "+ " : "- ";
@@ -117,12 +119,12 @@ const formatDate = (date: Date) => {
 const showMenu = ref(false);
 const menuTarget = ref<HTMLElement | null>(null);
 
-async function show(evt: MouseEvent) {
+const show = async (evt: MouseEvent) => {
   if (showMenu.value) {
     showMenu.value = false;
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   menuTarget.value = (evt.target as HTMLElement).closest(".v-btn");
   showMenu.value = true;
-}
+};
 </script>
