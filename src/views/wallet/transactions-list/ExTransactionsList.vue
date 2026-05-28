@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 mt-6">
+  <v-card-text>
     <h3 class="text-title-medium mb-4">Movimentações</h3>
 
     <div class="transactions-list d-flex flex-column ga-4">
@@ -9,7 +9,7 @@
         :tr="tr"
       ></ex-transaction>
     </div>
-  </v-container>
+  </v-card-text>
 </template>
 
 <script setup lang="ts">
