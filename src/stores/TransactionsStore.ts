@@ -7,6 +7,8 @@ import { currencyFormat } from "@/utils/currency";
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 
+export type Visualization = "transactions" | "tags" | "day";
+
 export const useTransactions = defineStore("transactions", () => {
   const LOCAL_KEY_TRANSACTION = "ex-transactions";
   const LOCAL_KEY_TAGS = "ex-tags";
@@ -21,6 +23,7 @@ export const useTransactions = defineStore("transactions", () => {
 
   const transactionsList = ref(storedTransactions);
   const tagList = ref(storedTags);
+  const visualization = ref<Visualization>("transactions");
 
   const monthBalance = computed(() => {
     const data = transactionsList.value.reduce(
@@ -75,6 +78,10 @@ export const useTransactions = defineStore("transactions", () => {
     tagList.value = tagList.value.filter((tag) => tag.value != id);
   };
 
+  const changeVisualization = (newV: Visualization) => {
+    visualization.value = newV;
+  };
+
   watch(
     transactionsList,
     () => {
@@ -97,10 +104,12 @@ export const useTransactions = defineStore("transactions", () => {
   return {
     transactionsList,
     tagList,
+    visualization,
     monthBalance,
     addTag,
     deleteTag,
     addTransaction,
     deleteTransaction,
+    changeVisualization,
   };
 });
