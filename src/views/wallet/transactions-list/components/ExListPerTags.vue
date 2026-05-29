@@ -28,14 +28,14 @@
         <div v-if="tagGroup.incomingTotal > 0" class="d-flex flex-column">
           <span class="text-caption text-grey">Entradas</span>
           <span class="text-body-2 font-weight-bold text-green-accent-3">
-            + {{ formatMoney(tagGroup.incomingTotal) }}
+            + {{ currencyFormat(tagGroup.incomingTotal) }}
           </span>
         </div>
 
         <div v-if="tagGroup.outgoingTotal > 0" class="d-flex flex-column">
           <span class="text-caption text-grey">Saídas</span>
           <span class="text-body-2 font-weight-bold text-red-accent-3">
-            - {{ formatMoney(tagGroup.outgoingTotal) }}
+            - {{ currencyFormat(tagGroup.outgoingTotal) }}
           </span>
         </div>
       </v-card-text>
@@ -73,10 +73,10 @@
 
         <v-card-actions class="justify-space-between px-4 py-2 text-subtitle-2">
           <span class="text-green-accent-3"
-            >Entradas: {{ formatMoney(selectedTag.incomingTotal) }}</span
+            >Entradas: {{ currencyFormat(selectedTag.incomingTotal) }}</span
           >
           <span class="text-red-accent-3"
-            >Saídas: {{ formatMoney(selectedTag.outgoingTotal) }}</span
+            >Saídas: {{ currencyFormat(selectedTag.outgoingTotal) }}</span
           >
         </v-card-actions>
       </v-card>
@@ -89,6 +89,7 @@ import { ref, computed } from "vue";
 import { useTransactions } from "@/stores/TransactionsStore";
 import { ITagGroup } from "@/interfaces/ITagsGroup.interface";
 import ExTransaction from "./ExTransaction.vue";
+import { currencyFormat } from "@/utils/currency";
 
 const store = useTransactions();
 
@@ -149,13 +150,6 @@ const transactionsByTag = computed<ITagGroup[]>(() => {
 const openTagDetails = (tagGroup: ITagGroup) => {
   selectedTag.value = tagGroup;
   isModalOpen.value = true;
-};
-
-const formatMoney = (value: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
 };
 </script>
 

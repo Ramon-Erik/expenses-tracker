@@ -21,14 +21,14 @@
         <div v-if="day.incomingTotal > 0" class="d-flex flex-column">
           <span class="text-caption text-grey">Entradas</span>
           <span class="text-body-2 font-weight-bold text-green-accent-3">
-            + {{ formatMoney(day.incomingTotal) }}
+            + {{ currencyFormat(day.incomingTotal) }}
           </span>
         </div>
 
         <div v-if="day.outgoingTotal > 0" class="d-flex flex-column">
           <span class="text-caption text-grey">Saídas</span>
           <span class="text-body-2 font-weight-bold text-red-accent-3">
-            - {{ formatMoney(day.outgoingTotal) }}
+            - {{ currencyFormat(day.outgoingTotal) }}
           </span>
         </div>
       </div>
@@ -62,10 +62,10 @@
 
       <v-card-actions class="justify-space-between px-4 py-2 text-subtitle-2">
         <span class="text-green-accent-3"
-          >Entradas: {{ formatMoney(selectedDay.incomingTotal) }}</span
+          >Entradas: {{ currencyFormat(selectedDay.incomingTotal) }}</span
         >
         <span class="text-red-accent-3"
-          >Saídas: {{ formatMoney(selectedDay.outgoingTotal) }}</span
+          >Saídas: {{ currencyFormat(selectedDay.outgoingTotal) }}</span
         >
       </v-card-actions>
     </v-card>
@@ -77,6 +77,7 @@ import { ref, computed } from "vue";
 import { useTransactions } from "@/stores/TransactionsStore";
 import { IDayGroup } from "@/interfaces/IDayGroup.interface";
 import ExTransaction from "./ExTransaction.vue"; // Reaproveita seu card
+import { currencyFormat } from "@/utils/currency";
 
 const store = useTransactions();
 
@@ -128,12 +129,5 @@ const transactionsByDay = computed<IDayGroup[]>(() => {
 const openDayDetails = (day: IDayGroup) => {
   selectedDay.value = day;
   isModalOpen.value = true;
-};
-
-const formatMoney = (value: number) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
 };
 </script>
