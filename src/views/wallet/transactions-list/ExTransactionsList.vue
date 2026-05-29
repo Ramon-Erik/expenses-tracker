@@ -15,7 +15,7 @@
       </template>
 
       <template v-else-if="store.visualization === 'tags'">
-        <div>Visualização por tags em andamento...</div>
+        <ex-list-per-tags></ex-list-per-tags>
       </template>
 
       <template v-else-if="store.visualization === 'day'">
@@ -29,6 +29,7 @@
 import { useTransactions } from "@/stores/TransactionsStore";
 import ExListConfig from "./components/ExListConfig.vue";
 import ExListPerDay from "./components/ExListPerDay.vue";
+import ExListPerTags from "./components/ExListPerTags.vue";
 import ExTransaction from "./components/ExTransaction.vue";
 
 const store = useTransactions();
