@@ -80,11 +80,10 @@ import ExTransaction from "./ExTransaction.vue"; // Reaproveita seu card
 
 const store = useTransactions();
 
-// Estado do Modal
 const isModalOpen = ref(false);
 const selectedDay = ref<IDayGroup | null>(null);
 
-// Função auxiliar para formatar a data como chave (DD/MM/AAAA)
+// formatar a data como chave (DD/MM/AAAA)
 const formatDateKey = (dateInput: Date | string) => {
   return new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -93,7 +92,6 @@ const formatDateKey = (dateInput: Date | string) => {
   }).format(new Date(dateInput));
 };
 
-// 🌟 A Mágica: Agrupa as transações por dia
 const transactionsByDay = computed<IDayGroup[]>(() => {
   const groups: Record<string, IDayGroup> = {};
 
@@ -114,7 +112,6 @@ const transactionsByDay = computed<IDayGroup[]>(() => {
     // Adiciona a transação ao dia
     groups[dayKey].transactions.push(tr);
 
-    // Calcula os totais do dia
     if (tr.isIncoming) {
       groups[dayKey].incomingTotal += tr.amount;
     } else {
@@ -128,13 +125,11 @@ const transactionsByDay = computed<IDayGroup[]>(() => {
   );
 });
 
-// Abre o modal injetando o dia clicado
 const openDayDetails = (day: IDayGroup) => {
   selectedDay.value = day;
   isModalOpen.value = true;
 };
 
-// Auxiliar para os totais gerais do modal
 const formatMoney = (value: number) => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
