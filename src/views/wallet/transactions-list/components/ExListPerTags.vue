@@ -7,7 +7,9 @@
       variant="outlined"
       class="hover-card cursor-pointer flex-grow-1"
     >
-      <v-card-text class="d-flex justify-space-between align-center py-3">
+      <v-card-text
+        class="d-flex flex-wrap ga-4 justify-space-between align-center py-3"
+      >
         <div class="d-flex align-center ga-2">
           <v-chip
             :color="colorTags[index % colorTags.length]"
@@ -23,20 +25,18 @@
           </span>
         </div>
 
-        <div class="d-flex ga-4 text-right">
-          <div v-if="tagGroup.incomingTotal > 0" class="d-flex flex-column">
-            <span class="text-caption text-grey">Entradas</span>
-            <span class="text-body-2 font-weight-bold text-green-accent-3">
-              + {{ formatMoney(tagGroup.incomingTotal) }}
-            </span>
-          </div>
+        <div v-if="tagGroup.incomingTotal > 0" class="d-flex flex-column">
+          <span class="text-caption text-grey">Entradas</span>
+          <span class="text-body-2 font-weight-bold text-green-accent-3">
+            + {{ formatMoney(tagGroup.incomingTotal) }}
+          </span>
+        </div>
 
-          <div v-if="tagGroup.outgoingTotal > 0" class="d-flex flex-column">
-            <span class="text-caption text-grey">Saídas</span>
-            <span class="text-body-2 font-weight-bold text-red-accent-3">
-              - {{ formatMoney(tagGroup.outgoingTotal) }}
-            </span>
-          </div>
+        <div v-if="tagGroup.outgoingTotal > 0" class="d-flex flex-column">
+          <span class="text-caption text-grey">Saídas</span>
+          <span class="text-body-2 font-weight-bold text-red-accent-3">
+            - {{ formatMoney(tagGroup.outgoingTotal) }}
+          </span>
         </div>
       </v-card-text>
     </v-card>
