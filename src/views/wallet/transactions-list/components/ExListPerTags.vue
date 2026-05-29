@@ -3,7 +3,7 @@
     <v-card
       v-for="(tagGroup, index) in transactionsByTag"
       :key="tagGroup.tagName"
-      @click="openTagDetails(tagGroup)"
+      @click="openTagDetails(tagGroup, index)"
       variant="outlined"
       class="hover-card cursor-pointer flex-grow-1"
     >
@@ -46,7 +46,7 @@
         <v-card-title class="d-flex justify-space-between align-center">
           <div class="d-flex align-center ga-2">
             <span>Transações com</span>
-            <v-chip color="orange" size="small"
+            <v-chip :color="selectedTagColor" size="small"
               ># {{ selectedTag.tagName }}</v-chip
             >
           </div>
@@ -95,6 +95,7 @@ const store = useTransactions();
 
 const isModalOpen = ref(false);
 const selectedTag = ref<ITagGroup | null>(null);
+const selectedTagColor = ref<string>();
 
 const colorTags = [
   "indigo",
@@ -147,7 +148,8 @@ const transactionsByTag = computed<ITagGroup[]>(() => {
   );
 });
 
-const openTagDetails = (tagGroup: ITagGroup) => {
+const openTagDetails = (tagGroup: ITagGroup, index: number) => {
+  selectedTagColor.value = colorTags[index % colorTags.length];
   selectedTag.value = tagGroup;
   isModalOpen.value = true;
 };
