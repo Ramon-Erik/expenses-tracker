@@ -1,91 +1,160 @@
-// import type ITransaction from "@/interfaces/ITransaction.interface";
-// import { useTransactionsStore } from "@/stores/TransactionsStore";
-// import { createPinia, setActivePinia } from "pinia";
+import { createPinia, setActivePinia } from "pinia";
+import type {
+  IRawTransaction,
+  ITransaction,
+} from "@/interfaces/ITransaction.interface";
+import { useTransactions } from "@/stores/TransactionsStore";
 
-// describe("TransactionsStore", () => {
-//   let transactions: ReturnType<typeof useTransactionsStore>;
+jest.mock("@/utils/currency", () => ({
+  currencyFormat: (val: number) => `R$ ${val.toFixed(2)}`,
+}));
 
-//   const transactionsList = [
-//     {
-//       id: 1,
-//       description: "teste 1",
-//       amount: 10,
-//       isIncome: true,
-//     },
-//     {
-//       id: 2,
-//       description: "teste 2",
-//       amount: 10,
-//       isIncome: true,
-//     },
-//     {
-//       id: 3,
-//       description: "teste 3",
-//       amount: -5,
-//       isIncome: false,
-//     },
-//   ];
+describe("Transactions Pinia Store", () => {
+  const LOCAL_KEY_TRANSACTION = "ex-transactions";
+  const LOCAL_KEY_TAGS = "ex-tags";
 
-//   beforeEach(() => {
-//     setActivePinia(createPinia());
-//     localStorage.clear();
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    localStorage.clear();
+    jest.clearAllMocks();
+  });
 
-//     transactions = useTransactionsStore();
-//   });
+  it("should initialize with empty arrays if localStorage is empty", () => {
+    const store = useTransactions();
 
-//   it("Should start with an empty list", () => {
-//     expect(transactions.transactionsList.length).toBe(0);
-//   });
+    expect(store.transactionsList).toEqual([]);
+    expect(store.tagList).toEqual([]);
+    expect(store.visualization).toBe("transactions");
+  });
 
-//   it("Should increment transactions length when a new item is added", () => {
-//     const transaction = transactionsList[0] as ITransaction;
+  it("should initialize with values from localStorage if they exist", () => {
+    const mockStoredTransactions = [
+      { id: 123, description: "Test", amount: 10, isIncoming: true },
+    ];
+    const mockStoredTags = [{ text: "Trabalho", value: 456 }];
 
-//     expect(transactions.transactionsList.length).toBe(0);
+    localStorage.setItem(
+      LOCAL_KEY_TRANSACTION,
+      JSON.stringify(mockStoredTransactions)
+    );
+    localStorage.setItem(LOCAL_KEY_TAGS, JSON.stringify(mockStoredTags));
 
-//     transactions.addTransaction(transaction);
+    const store = useTransactions();
 
-//     expect(transactions.transactionsList.length).toBe(1);
-//   });
+    expect(store.transactionsList).toHaveLength(1);
+    expect(store.transactionsList[0].description).toBe("Test");
+    expect(store.tagList).toHaveLength(1);
+    expect(store.tagList[0].text).toBe("Trabalho");
+  });
 
-//   it("The new transaction should be strictly equal to the added transaction", () => {
-//     const transaction = transactionsList[0] as ITransaction;
+  it("should add a new transaction and update localStorage via watch", async () => {
+    const store = useTransactions();
 
-//     expect(transactions.transactionsList.length).toBe(0);
+    const setItemSpy = jest.spyOn(Storage.prototype, "setItem");
 
-//     transactions.addTransaction(transaction);
+    const rawTransaction: IRawTransaction = {
+      description: "Freelance Vue",
+      amount: 1500,
+      isIncoming: true,
+      inicialDate: new Date(),
+      finalDate: null,
+      category: "Trabalho",
+      paymentMethod: "Pix",
+      tags: ["vue", "freelance"],
+    };
 
-//     expect(transactions.transactionsList.length).toBe(1);
+    store.addTransaction(rawTransaction);
 
-//     expect(transactions.transactionsList[0]).toStrictEqual(transaction);
-//   });
+    expect(store.transactionsList).toHaveLength(1);
+    expect(store.transactionsList[0].description).toBe("Freelance Vue");
+    expect(store.transactionsList[0].id).toBeDefined();
 
-//   it("should throw an error on adding same id", () => {
-//     const transaction = transactionsList[0] as ITransaction;
+    // Como o watch é assíncrono, aguardamos o próximo tick para validar o localStorage
+    await Promise.resolve();
+    expect(setItemSpy).toHaveBeenCalledWith(
+      LOCAL_KEY_TRANSACTION,
+      expect.any(String)
+    );
+  });
 
-//     transactions.addTransaction(transaction);
+  it("should delete a transaction by id and sync with localStorage", async () => {
+    const store = useTransactions();
+    store.transactionsList = [
+      { id: 111, description: "Conta de Luz", amount: 150 } as ITransaction,
+      { id: 222, description: "Mercado", amount: 300 } as ITransaction,
+    ];
 
-//     expect(() => transactions.addTransaction(transaction)).toThrow(
-//       "Transação com mesmo ID!"
-//     );
-//   });
+    store.deleteTransaction(111);
 
-//   it("should throw an error on adding invalid transaction", () => {
-//     const transaction = {} as ITransaction;
+    expect(store.transactionsList).toHaveLength(1);
+    expect(store.transactionsList[0].id).toBe(222);
+  });
 
-//     expect(() => transactions.addTransaction(transaction)).toThrow();
-//   });
+  it("should add a new tag and update localStorage via watch", async () => {
+    const store = useTransactions();
+    const setItemSpy = jest.spyOn(Storage.prototype, "setItem");
 
-//   it("Should decrement transactions length when an item is removed", () => {
-//     const transaction = transactionsList[0] as ITransaction;
+    store.addTag("Investimentos");
 
-//     expect(transactions.transactionsList.length).toBe(0);
+    expect(store.tagList).toHaveLength(1);
+    expect(store.tagList[0].text).toBe("Investimentos");
+    expect(store.tagList[0].value).toBeDefined();
 
-//     transactions.addTransaction(transaction);
+    await Promise.resolve();
+    expect(setItemSpy).toHaveBeenCalledWith(LOCAL_KEY_TAGS, expect.any(String));
+  });
 
-//     expect(transactions.transactionsList.length).toBe(1);
+  it("should delete a tag by value (id)", () => {
+    const store = useTransactions();
+    store.tagList = [
+      { text: "Lazer", value: 999 },
+      { text: "Fixa", value: 888 },
+    ];
 
-//     transactions.deleteTransaction(transaction.id);
+    store.deleteTag(999);
 
-//     expect(transactions.transactionsList.length).toBe(0);
-//   });
-// });
+    expect(store.tagList).toHaveLength(1);
+    expect(store.tagList[0].value).toBe(888);
+  });
+
+  it("should change visualization mode", () => {
+    const store = useTransactions();
+
+    store.changeVisualization("day");
+    expect(store.visualization).toBe("day");
+
+    store.changeVisualization("tags");
+    expect(store.visualization).toBe("tags");
+  });
+
+  it("should calculate monthBalance correctly for incomes and outcomes", () => {
+    const store = useTransactions();
+
+    store.transactionsList = [
+      {
+        id: 1,
+        description: "Salário",
+        amount: 3000,
+        isIncoming: true,
+      } as ITransaction,
+      {
+        id: 2,
+        description: "Aluguel",
+        amount: 1200,
+        isIncoming: false,
+      } as ITransaction,
+      {
+        id: 3,
+        description: "Internet",
+        amount: 100,
+        isIncoming: false,
+      } as ITransaction,
+    ];
+
+    expect(store.monthBalance).toEqual({
+      incomes: "R$ 3000.00",
+      outcomes: "R$ -1300.00",
+      balance: "R$ 1700.00",
+    });
+  });
+});
