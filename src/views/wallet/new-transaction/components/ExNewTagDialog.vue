@@ -38,6 +38,7 @@ const emit = defineEmits<{
 
 const close = () => {
   emit("update:isOpen", false);
+  newTag.value = "";
 };
 
 const newTag = ref("");
