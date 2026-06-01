@@ -9,8 +9,18 @@ import { VDateInput } from "vuetify/labs/VDateInput";
 const darkTheme = {
   dark: true,
   colors: {
-    background: "#0D1117",
-    surface: "#161B22",
+    background: "#1b232f",
+    surface: "#222a34",
+
+    primary: "#238636",
+  },
+};
+
+const lightTheme = {
+  dark: false,
+  colors: {
+    background: "#f3f3f3",
+    surface: "#eee",
 
     primary: "#238636",
   },
@@ -24,6 +34,7 @@ export default createVuetify({
     defaultTheme: "darkTheme",
     themes: {
       darkTheme,
+      lightTheme,
     },
   },
 });

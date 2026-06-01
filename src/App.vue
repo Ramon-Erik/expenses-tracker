@@ -5,6 +5,7 @@
         <router-view></router-view>
         <v-container class="mt-auto pa-0">
           <ex-menu></ex-menu>
+          <ex-toggle-theme></ex-toggle-theme>
           <ex-footer></ex-footer>
         </v-container>
       </v-container>
@@ -15,4 +16,5 @@
 <script setup lang="ts">
 import ExMenu from "./components/ExMenu.vue";
 import ExFooter from "./components/ExFooter.vue";
+import ExToggleTheme from "./components/ExToggleTheme.vue";
 </script>

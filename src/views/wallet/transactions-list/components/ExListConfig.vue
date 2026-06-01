@@ -1,5 +1,10 @@
 <template>
-  <v-btn icon="mdi-cog-outline" @click="dialog = true"></v-btn>
+  <v-btn
+    icon="mdi-cog-outline"
+    variant="text"
+    class="ml-2"
+    @click="dialog = true"
+  ></v-btn>
 
   <v-dialog v-model="dialog" width="auto">
     <v-card
