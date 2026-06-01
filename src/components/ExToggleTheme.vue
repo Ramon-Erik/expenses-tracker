@@ -10,11 +10,12 @@ const localKey = "ex-local-th";
 const theme = useTheme();
 
 const localTheme = localStorage.getItem(localKey) || "darkTheme";
-theme.global.name.value = localTheme;
+theme.change(localTheme);
 
 const toggleTheme = () => {
-  theme.global.name.value =
-    theme.global.name.value == "lightTheme" ? "darkTheme" : "lightTheme";
+  theme.change(
+    theme.global.name.value == "lightTheme" ? "darkTheme" : "lightTheme"
+  );
   localStorage.setItem(localKey, theme.global.name.value);
 };
 </script>
