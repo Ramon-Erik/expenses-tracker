@@ -9,17 +9,15 @@ export const useCart = defineStore("cart", () => {
   const storedCart = JSON.parse(localStorage.getItem(LOCAL_CART_KEY) || "[]");
 
   const storedMaxValue = localStorage.getItem(LOCAL_MAX_KEY);
-  const storedMax = storedMaxValue ?? "";
 
-  const _max = ref<string>(storedMax);
-  const max = readonly(_max);
+  const max = ref(storedMaxValue ? Number.parseFloat(storedCart) : 0);
 
   const _cart = ref<IProduct[]>(storedCart);
   const cart = readonly(_cart);
 
-  const updateMaxValue = (value: string) => {
-    _max.value = value;
-    localStorage.setItem(LOCAL_MAX_KEY, value);
+  const updateMaxValue = (value: number) => {
+    max.value = value;
+    localStorage.setItem(LOCAL_MAX_KEY, String(value));
   };
 
   const total = computed(() => {
