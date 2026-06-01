@@ -1,148 +1,86 @@
 <template>
-  <div class="product-info">
-    <input
-      type="number"
-      id="productAmount"
-      class="product-amount"
-      v-model="productAmount"
-      placeholder="Qtd."
-      min="0"
-    />
-    <input
-      type="text"
+  <p class="text-h6 mt-6 text-center">Novo produto</p>
+  <div class="new-item mt-2 d-flex flex-column flex-wrap ga-4">
+    <v-text-field
+      v-model="product.name"
+      variant="outlined"
+      clearable
+      hide-details
+      label="Item"
+      density="compact"
       id="productName"
-      class="product-name"
-      v-model="productName"
-      ref="inputNome"
-      placeholder="Produto"
       autocomplete="off"
-      autocapitalize="true"
+      autocapitalize="sentences"
       @keyup.enter="handleAddItem"
-    />
-    <label for="price" class="product-price">
-      <input
-        type="text"
-        inputmode="decimal"
-        id="price"
-        v-model="productPrice"
+    ></v-text-field>
+
+    <div class="price-number d-flex ga-4">
+      <v-number-input
+        v-model="product.amount"
+        placeholder="Qtd."
+        variant="outlined"
+        control-variant="hidden"
+        hide-details
+        density="compact"
+        id="productAmount"
+      ></v-number-input>
+
+      <v-number-input
+        v-model="product.price"
         placeholder="R$ 0,00"
+        variant="outlined"
+        :precision="2"
+        control-variant="hidden"
+        hide-details
+        density="compact"
+        id="price"
         autocomplete="off"
         @keyup.enter="handleAddItem"
-        @input="priceInput"
-      />
-    </label>
+      ></v-number-input>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type IProduct from "@/interfaces/IProduct.interface";
 import { useCart } from "@/stores/CartStore";
-import { formatPriceToDecimal } from "@/utils/currency";
 import { ref } from "vue";
-import { useToast } from "vue-toastification";
 
 const store = useCart();
-const toast = useToast();
 
-const maxDigits = 6;
-
-const inputNome = ref<HTMLInputElement | null>();
-
-const productAmount = ref<number | undefined>();
-const productName = ref<string | undefined>();
-const productPrice = ref<string | undefined>();
+const product = ref({
+  amount: 1,
+  name: "",
+  price: 0,
+});
 
 const clearInputs = () => {
-  productAmount.value = undefined;
-  productName.value = undefined;
-  productPrice.value = undefined;
-};
-
-const priceInput = (event: InputEvent) => {
-  const target = event.target as HTMLInputElement;
-  let value = target.value;
-
-  value = formatPriceToDecimal(value, maxDigits);
-
-  if (value == "0" || isNaN(Number.parseFloat(value))) {
-    productPrice.value = undefined;
-    return;
-  }
-
-  const floatValue = Number.parseFloat(value) / 100;
-  let amountDisplay = Intl.NumberFormat("pt-br", {
-    style: "currency",
-    currency: "BRL",
-  }).format(floatValue);
-  amountDisplay = amountDisplay.slice(3, amountDisplay.length);
-
-  productPrice.value = amountDisplay;
-};
-
-const areInfoInvalid = () => {
-  if (!productName.value?.trim()) {
-    toast.error("O nome é obrigatório!");
-    return true;
-  }
-  if (!productPrice.value) {
-    toast.error("O preço é obrigatório!");
-    return true;
-  }
-  if (!productAmount.value) {
-    toast.warning("Apenas uma unidade adicionada!");
-  }
-  return false;
+  product.value = {
+    amount: 1,
+    name: "",
+    price: 0,
+  };
 };
 
 const getFormatedProduct: () => IProduct = () => {
   const id = Date.now();
-  const price =
-    Number.parseFloat(formatPriceToDecimal(productPrice.value!, maxDigits)) /
-    100;
   return {
     id,
-    name: productName.value!,
-    price,
-    amount: productAmount.value || 1,
+    name: product.value.name,
+    price: product.value.price,
+    amount: product.value.amount,
   };
 };
 
 const handleAddItem = () => {
-  if (areInfoInvalid()) {
-    return;
-  }
-
-  const productInfo: IProduct = getFormatedProduct();
-
+  const productInfo = getFormatedProduct();
   store.addProduct(productInfo);
   clearInputs();
-  inputNome.value?.focus();
 };
 </script>
 
 <style scoped>
-.product-info {
-  display: flex;
-  gap: 1rem;
-  padding: 1rem 0;
-  margin: 1rem 0;
-  border-top: 1px solid var(--color-secondary);
-}
-
-input {
-  padding: 0.7rem;
-  font-size: 0.95rem;
-}
-
-.product-amount {
-  flex: 1;
-}
-
-.product-name {
-  flex: 3;
-}
-
-.product-price {
-  flex: 2;
+.gap-1 {
+  gap: 4px;
 }
 </style>
