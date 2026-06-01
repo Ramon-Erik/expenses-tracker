@@ -1,10 +1,17 @@
 <template>
-  <p data-test-id="clearParagraph" class="clear-cart" @click="store.clearCart">
-    Limpar carrinho
-  </p>
-  <p data-test-id="totalParagraph">
-    Total gasto: {{ currencyFormat(store.total) }}
-  </p>
+  <div class="cart-full" v-if="store.cart.length">
+    <p
+      data-test-id="clearParagraph"
+      class="clear-cart"
+      @click="store.clearCart"
+    >
+      Limpar carrinho
+    </p>
+    <p data-test-id="totalParagraph">
+      Total gasto: {{ currencyFormat(store.total) }}
+    </p>
+  </div>
+  <p v-else>Adicione um item à lista</p>
 </template>
 
 <script setup lang="ts">
