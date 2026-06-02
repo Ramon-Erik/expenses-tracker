@@ -7,18 +7,41 @@ import * as directives from "vuetify/dist/vuetify";
 
 globalThis.ResizeObserver = require("resize-observer-polyfill");
 
-const vuetify = createVuetify({ components, directives });
+const darkTheme = {
+  dark: true,
+  colors: {
+    background: "#1b232f",
+    surface: "#222a34",
 
-export const mountComponentWithVuetify = (
-  component: unknown,
-  options?: ComponentMountingOptions<Record<string, unknown>>
-) => {
+    primary: "#238636",
+  },
+};
+
+const light = {
+  dark: false,
+  colors: {
+    background: "#f0f0f0",
+    surface: "#e6e6e6",
+  },
+};
+
+const vuetify = createVuetify({
+  components,
+  directives,
+  theme: {
+    defaultTheme: "darkTheme",
+    themes: {
+      darkTheme,
+      light,
+    },
+  },
+});
+
+export const mountComponentWithVuetify = (component: unknown) => {
   return mount(component, {
-    ...options,
     global: {
       plugins: [vuetify],
-      components: (component as any).components,
-      ...options?.global,
+      components: components.components,
     },
   });
 };
