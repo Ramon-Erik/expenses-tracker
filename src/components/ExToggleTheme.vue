@@ -13,9 +13,7 @@ const localTheme = localStorage.getItem(localKey) || "darkTheme";
 theme.change(localTheme);
 
 const toggleTheme = () => {
-  theme.change(
-    theme.global.name.value == "lightTheme" ? "darkTheme" : "lightTheme"
-  );
+  theme.change(theme.global.name.value == "light" ? "darkTheme" : "light");
   localStorage.setItem(localKey, theme.global.name.value);
 };
 </script>

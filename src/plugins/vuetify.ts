@@ -16,13 +16,11 @@ const darkTheme = {
   },
 };
 
-const lightTheme = {
+const light = {
   dark: false,
   colors: {
-    background: "#f3f3f3",
-    surface: "#eee",
-
-    primary: "#238636",
+    background: "#f0f0f0",
+    surface: "#e6e6e6",
   },
 };
 
@@ -34,7 +32,7 @@ export default createVuetify({
     defaultTheme: "darkTheme",
     themes: {
       darkTheme,
-      lightTheme,
+      light,
     },
   },
 });
