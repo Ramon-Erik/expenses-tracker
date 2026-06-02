@@ -1,5 +1,5 @@
 import ExFooter from "@/components/ExFooter.vue";
-import { mountComponent } from "tests/test-utils/mountComponent";
+import { mountComponent } from "../../test-utils/mountComponent";
 
 describe("Footer", () => {
   it('Should render "Desenvolvido por Ramon ©"', () => {
