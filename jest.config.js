@@ -23,6 +23,8 @@ module.exports = {
     "!src/shims-vue.d.ts",
     "!node_modules/**",
     "!src/**/index.ts",
+    "!src/plugins/**",
+    "!src/interfaces/**",
   ],
 
   coverageReporters: ["text", "lcov", "clover"],
