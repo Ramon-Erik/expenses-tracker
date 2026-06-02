@@ -1,7 +1,7 @@
 import App from "@/App.vue";
 import { mountComponentWithVuetify } from "../test-utils/mountComponent";
 
-describe.only("App", () => {
+describe("App", () => {
   const wrapper = mountComponentWithVuetify(App, {
     global: {
       stubs: {
