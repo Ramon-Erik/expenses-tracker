@@ -37,11 +37,16 @@ const vuetify = createVuetify({
   },
 });
 
-export const mountComponentWithVuetify = (component: unknown) => {
+export const mountComponentWithVuetify = (
+  component: unknown,
+  options?: ComponentMountingOptions<Record<string, unknown>>
+) => {
   return mount(component, {
+    ...options,
     global: {
       plugins: [vuetify],
       components: components.components,
+      ...options?.global,
     },
   });
 };

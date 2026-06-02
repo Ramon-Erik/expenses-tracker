@@ -1,22 +1,16 @@
 import App from "@/App.vue";
-import { shallowMount } from "@vue/test-utils";
+import { mountComponentWithVuetify } from "../test-utils/mountComponent";
 
-describe("App", () => {
-  const stubs = {
-    ExHeader: true,
-    ExMenu: true,
-    ExFooter: true,
-    "router-view": true,
-  };
-
-  const wrapper = shallowMount(App, {
+describe.only("App", () => {
+  const wrapper = mountComponentWithVuetify(App, {
     global: {
-      stubs,
+      stubs: {
+        ExMenu: true,
+        ExFooter: true,
+        ExToggleTheme: true,
+        "router-view": true,
+      },
     },
-  });
-
-  it("should render header", () => {
-    expect(wrapper.findComponent({ name: "ExHeader" }).exists()).toBe(true);
   });
 
   it("should render menu", () => {
@@ -25,6 +19,12 @@ describe("App", () => {
 
   it("should render footer", () => {
     expect(wrapper.findComponent({ name: "ExFooter" }).exists()).toBe(true);
+  });
+
+  it("should render toggle theme", () => {
+    expect(wrapper.findComponent({ name: "ExToggleTheme" }).exists()).toBe(
+      true
+    );
   });
 
   it("should render router-view", () => {
