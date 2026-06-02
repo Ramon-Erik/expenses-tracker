@@ -14,6 +14,7 @@ module.exports = {
   moduleFileExtensions: ["js", "ts", "json", "vue", "mjs"],
 
   collectCoverage: true,
+  coverageProvider: "v8",
   collectCoverageFrom: [
     "src/**/*.{ts,vue}",
     "!src/main.ts",
