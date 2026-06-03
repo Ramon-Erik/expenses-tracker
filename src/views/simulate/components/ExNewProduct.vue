@@ -1,6 +1,9 @@
 <template>
   <p class="text-h6 mt-6 text-center">Novo produto</p>
-  <div class="new-item mt-2 d-flex flex-column flex-wrap ga-4">
+  <div
+    class="new-item w-100 mx-auto mt-2 d-flex flex-column flex-wrap ga-4"
+    style="max-width: 290px"
+  >
     <v-text-field
       v-model="product.name"
       variant="outlined"
