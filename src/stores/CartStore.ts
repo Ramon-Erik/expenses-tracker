@@ -10,7 +10,7 @@ export const useCart = defineStore("cart", () => {
 
   const storedMaxValue = localStorage.getItem(LOCAL_MAX_KEY);
 
-  const max = ref(storedMaxValue ? Number.parseFloat(storedCart) : 0);
+  const max = ref(storedMaxValue ? Number.parseFloat(storedMaxValue) : 0);
 
   const _cart = ref<IProduct[]>(storedCart);
   const cart = readonly(_cart);
