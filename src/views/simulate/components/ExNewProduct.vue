@@ -72,7 +72,15 @@ const getFormatedProduct: () => IProduct = () => {
   };
 };
 
+const isProductValid = () => {
+  const prod = product.value;
+  if (prod.amount < 1 || prod.name.trim().length < 3 || prod.price > 0)
+    return false;
+  return true;
+};
+
 const handleAddItem = () => {
+  if (isProductValid()) return;
   const productInfo = getFormatedProduct();
   store.addProduct(productInfo);
   clearInputs();
