@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { TestingPinia } from "@pinia/testing";
 import { ComponentMountingOptions, mount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/dist/vuetify";
@@ -45,6 +46,21 @@ export const mountComponentWithVuetify = (
     ...options,
     global: {
       plugins: [vuetify],
+      components: components.components,
+      ...options?.global,
+    },
+  });
+};
+
+export const mountComponentWithVuetifyAndPinia = (
+  component: unknown,
+  pinia: TestingPinia,
+  options?: ComponentMountingOptions<Record<string, unknown>>
+) => {
+  return mount(component, {
+    ...options,
+    global: {
+      plugins: [vuetify, pinia],
       components: components.components,
       ...options?.global,
     },
