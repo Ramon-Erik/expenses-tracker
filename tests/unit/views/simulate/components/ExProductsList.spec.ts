@@ -1,106 +1,93 @@
-// import { useCart } from "@/stores/CartStore";
-// import { currencyFormat } from "@/utils/currency";
-// import ExProductsList from "@/views/simulate/components/ExProductsList.vue";
-// import { createTestingPinia } from "@pinia/testing";
-// import { mount } from "@vue/test-utils";
+import { useCart } from "@/stores/CartStore";
+import { currencyFormat } from "@/utils/currency";
+import ExProductsList from "@/views/simulate/components/ExProductsList.vue";
+import { createTestingPinia } from "@pinia/testing";
+import { mountComponentWithVuetifyAndPinia } from "../../../../test-utils/mountComponent";
 
-// describe("ExProductsList", () => {
-//   beforeEach(() => {
-//     localStorage.clear();
-//   });
+describe("ExProductsList", () => {
+  const pinia = createTestingPinia({ stubActions: false });
+  beforeEach(() => {
+    localStorage.clear();
+  });
 
-//   it("should render a ul", () => {
-//     const wrapper = mount(ExProductsList, {
-//       global: {
-//         plugins: [createTestingPinia()],
-//       },
-//     });
+  it("não deveria carregar uma lista no início", () => {
+    const wrapper = mountComponentWithVuetifyAndPinia(ExProductsList, pinia);
 
-//     const ul = wrapper.find("ul.cart-list");
+    const ul = wrapper.find("ul");
 
-//     expect(ul.exists()).toBe(true);
-//   });
+    expect(ul.exists()).toBe(false);
+  });
 
-//   it("should render only and exactly cart items", async () => {
-//     const wrapper = mount(ExProductsList, {
-//       global: {
-//         plugins: [createTestingPinia({ stubActions: false })],
-//       },
-//     });
+  it("deveria carregar apenas itens do carrinho", async () => {
+    const store = useCart();
+    const mockProds = [
+      {
+        amount: 1,
+        id: 1,
+        name: "mock",
+        price: 100,
+      },
 
-//     const store = useCart();
-//     const mockProds = [
-//       {
-//         amount: 1,
-//         id: 1,
-//         name: "mock",
-//         price: 100,
-//       },
+      {
+        amount: 2,
+        id: 2,
+        name: "mock 2",
+        price: 10,
+      },
+    ];
 
-//       {
-//         amount: 2,
-//         id: 2,
-//         name: "mock 2",
-//         price: 10,
-//       },
-//     ];
+    store.addProduct(mockProds[0]);
 
-//     store.addProduct(mockProds[0]);
+    store.addProduct(mockProds[1]);
 
-//     store.addProduct(mockProds[1]);
+    const wrapper = mountComponentWithVuetifyAndPinia(ExProductsList, pinia);
 
-//     await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
 
-//     const li = wrapper.findAll("li.cart-item");
+    console.log(wrapper.html());
 
-//     expect(li.length).toBe(2);
+    const li = wrapper.findAll(".v-list-item");
 
-//     li.forEach((prod, index) => {
-//       const amount = prod.find("span.item-amount");
-//       const name = prod.find("span.item-name");
-//       const price = prod.find("span.item-price");
+    expect(li.length).toBe(2);
 
-//       expect(amount.text()).toBe(`${mockProds[index].amount}x`);
-//       expect(name.text()).toBe(`${mockProds[index].name}`);
-//       expect(price.text()).toBe(currencyFormat(mockProds[index].price));
-//     });
-//   });
+    li.forEach((prod, index) => {
+      const amount = prod.find("span.item-amount");
+      const name = prod.find("span.item-name");
+      const price = prod.find("span.item-price");
 
-//   it("should delete item when it is double clicked and update ul", async () => {
-//     const wrapper = mount(ExProductsList, {
-//       global: {
-//         plugins: [
-//           createTestingPinia({
-//             stubActions: false,
-//           }),
-//         ],
-//       },
-//     });
+      expect(amount.text()).toBe(`${mockProds[index].amount}x`);
+      expect(name.text()).toBe(`${mockProds[index].name}`);
+      expect(price.text()).toBe(currencyFormat(mockProds[index].price));
+    });
+  });
 
-//     const store = useCart();
-//     const mockProds = [
-//       {
-//         amount: 1,
-//         id: 1,
-//         name: "mock",
-//         price: 100,
-//       },
+  it("deveria apagar o item no dbl click e atualizar a lista", async () => {
+    const store = useCart();
+    const mockProds = [
+      {
+        amount: 1,
+        id: 1,
+        name: "mock",
+        price: 100,
+      },
 
-//       {
-//         amount: 2,
-//         id: 2,
-//         name: "mock 2",
-//         price: 10,
-//       },
-//     ];
+      {
+        amount: 2,
+        id: 2,
+        name: "mock 2",
+        price: 10,
+      },
+    ];
 
-//     store.addProduct(mockProds[0]);
+    store.addProduct(mockProds[0]);
 
-//     await wrapper.vm.$nextTick();
+    const wrapper = mountComponentWithVuetifyAndPinia(ExProductsList, pinia);
 
-//     const li = wrapper.find("li.cart-item");
-//     await li.trigger("dblclick");
+    await wrapper.vm.$nextTick();
 
-//     expect(store.removeProduct).toBeCalledTimes(1);
-//   });
-// });
+    const li = wrapper.find(".v-list-item");
+    await li.trigger("dblclick");
+
+    expect(store.removeProduct).toBeCalledTimes(1);
+  });
+});
