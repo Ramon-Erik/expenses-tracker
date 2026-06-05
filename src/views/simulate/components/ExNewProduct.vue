@@ -77,9 +77,6 @@ const getFormatedProduct: () => IProduct = () => {
 
 const isProductValid = () => {
   const prod = product.value;
-  console.log(
-    prod.amount < 1 || prod.name.trim().length < 3 || prod.price <= 0
-  );
 
   if (prod.amount < 1 || prod.name.trim().length < 3 || prod.price <= 0)
     return false;
@@ -88,7 +85,6 @@ const isProductValid = () => {
 
 const handleAddItem = () => {
   if (!isProductValid()) return;
-  console.log("prod valid", isProductValid());
 
   const productInfo = getFormatedProduct();
   store.addProduct(productInfo);

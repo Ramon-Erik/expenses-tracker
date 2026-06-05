@@ -261,7 +261,6 @@ const formValueProcessor = (): IRawTransaction => ({
 
 const handleSubmit = () => {
   if (!form.value.valid) return;
-  console.log(form.value.values);
   store.addTransaction(formValueProcessor());
   clearForm();
 };

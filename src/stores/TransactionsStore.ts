@@ -73,8 +73,6 @@ export const useTransactions = defineStore("transactions", () => {
   };
 
   const deleteTag = (id: number) => {
-    console.log(id);
-
     tagList.value = tagList.value.filter((tag) => tag.value != id);
   };
 

@@ -44,8 +44,6 @@ describe("ExProductsList", () => {
 
     await wrapper.vm.$nextTick();
 
-    console.log(wrapper.html());
-
     const li = wrapper.findAll(".v-list-item");
 
     expect(li.length).toBe(2);
