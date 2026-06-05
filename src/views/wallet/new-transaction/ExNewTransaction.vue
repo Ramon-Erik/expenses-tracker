@@ -6,6 +6,7 @@
     <v-card-text>
       <v-form v-model="form.valid" ref="formRef" @submit.prevent="handleSubmit">
         <v-text-field
+          id="desc"
           v-model="form.values.description"
           label="Descrição"
           variant="outlined"
