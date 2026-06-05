@@ -3,6 +3,7 @@ import ExNewTransaction from "@/views/wallet/new-transaction/ExNewTransaction.vu
 import { createTestingPinia } from "@pinia/testing";
 import { mountComponentWithVuetifyAndPinia } from "../../../../test-utils/mountComponent";
 
+type ExNewTransactionInstance = InstanceType<typeof ExNewTransaction>;
 interface IRules {
   required: (v: unknown) => true | "Este campo é obrigatório";
   minElements: (min: number) => (v: number[]) => string | true;
@@ -52,24 +53,6 @@ describe("ExNewTransaction", () => {
     expect(wrapper.findAll("input").length > 1).toBe(true);
   });
 
-  it(" ", async () => {
-    const wrapper = mountComponentWithVuetifyAndPinia(
-      ExNewTransaction,
-      pinia,
-      opts
-    );
-
-    const rules = wrapper.vm.rules as {
-      required: (v: unknown) => true | "Este campo é obrigatório";
-      minElements: (min: number) => (v: number[]) => string | true;
-      minValue: (min: number) => (v: number) => string | true;
-      minLength: (min: number) => (v: string) => string | true;
-      maxLength: (max: number) => (v: string) => string | true;
-    };
-
-    expect(rules.required("")).toBe("Este campo é obrigatório");
-  });
-
   it("deveria validar todas as regras do formulário (rules)", async () => {
     const wrapper = mountComponentWithVuetifyAndPinia(
       ExNewTransaction,
@@ -96,7 +79,7 @@ describe("ExNewTransaction", () => {
     expect(rules.maxLength(5)("abcdef")).toBe("Máximo de 5 caracteres");
     expect(rules.maxLength(5)("abc")).toBe(true);
 
-    const vm = wrapper.vm as any;
+    const vm = wrapper.vm as ExNewTransactionInstance;
     vm.form.values.inicialDate = null;
     expect(rules.finalDate("2026-06-10")).toBe(
       "Selecione a data de início antes"
@@ -107,5 +90,46 @@ describe("ExNewTransaction", () => {
       "A data final deve ser maior que a inicial"
     );
     expect(rules.finalDate("2026-06-15")).toBe(true);
+  });
+
+  it("deveria impedir de chamar a store com o form inválido", () => {
+    const wrapper = mountComponentWithVuetifyAndPinia(
+      ExNewTransaction,
+      pinia,
+      opts
+    );
+    const store = useTransactions();
+
+    const vm = wrapper.vm as unknown as ExNewTransactionInstance;
+
+    vm.handleSubmit();
+
+    expect(store.addTransaction).not.toHaveBeenCalled();
+  });
+
+  it("deveria impedir de chamar a store com o form inválido", () => {
+    const wrapper = mountComponentWithVuetifyAndPinia(
+      ExNewTransaction,
+      pinia,
+      opts
+    );
+    const store = useTransactions();
+
+    const vm = wrapper.vm as unknown as ExNewTransactionInstance;
+
+    vm.form.values = {
+      description: "teste",
+      amount: 11,
+      isIncoming: false,
+      inicialDate: new Date(),
+      finalDate: null,
+      category: "teste",
+      paymentMethod: "teste",
+      tags: ["teste"],
+    };
+    vm.form.valid = true;
+    vm.handleSubmit();
+
+    expect(store.addTransaction).toHaveBeenCalled();
   });
 });
